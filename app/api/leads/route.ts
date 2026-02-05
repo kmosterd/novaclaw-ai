@@ -32,16 +32,17 @@ export async function POST(request: NextRequest) {
 
     if (existingLead) {
       // Update existing lead metadata
+      const updateData = {
+        metadata: {
+          ...validatedData.metadata,
+          revisit_count: ((existingLead as any).metadata?.revisit_count || 0) + 1,
+          last_visit: new Date().toISOString(),
+        },
+        updated_at: new Date().toISOString(),
+      };
       const { data, error } = await supabase
         .from("leads")
-        .update({
-          metadata: {
-            ...validatedData.metadata,
-            revisit_count: ((existingLead as any).metadata?.revisit_count || 0) + 1,
-            last_visit: new Date().toISOString(),
-          },
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData as any)
         .eq("id", existingLead.id)
         .select()
         .single();
@@ -55,19 +56,20 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert new lead
+    const insertData = {
+      email: validatedData.email,
+      name: validatedData.name,
+      company: validatedData.company || null,
+      source: validatedData.source,
+      status: "new",
+      metadata: {
+        ...validatedData.metadata,
+        signup_timestamp: new Date().toISOString(),
+      },
+    };
     const { data, error } = await supabase
       .from("leads")
-      .insert({
-        email: validatedData.email,
-        name: validatedData.name,
-        company: validatedData.company || null,
-        source: validatedData.source,
-        status: "new",
-        metadata: {
-          ...validatedData.metadata,
-          signup_timestamp: new Date().toISOString(),
-        },
-      })
+      .insert(insertData as any)
       .select()
       .single();
 
@@ -102,7 +104,7 @@ async function triggerOutreachAgent(leadId: string) {
   const supabase = getSupabaseAdmin();
 
   // Log agent trigger
-  await supabase.from("agent_logs").insert({
+  const logData = {
     agent_type: "distributor",
     action: "trigger_outreach",
     status: "running",
@@ -110,7 +112,8 @@ async function triggerOutreachAgent(leadId: string) {
     output: {},
     error: null,
     duration_ms: null,
-  });
+  };
+  await supabase.from("agent_logs").insert(logData as any);
 
   // In production, this would call a webhook or add to a queue
   // For now, we just log the intent
