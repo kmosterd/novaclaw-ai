@@ -40,9 +40,10 @@ export async function POST(request: NextRequest) {
         },
         updated_at: new Date().toISOString(),
       };
+      // @ts-expect-error - Supabase types don't match dynamic schema
       const { data, error } = await supabase
         .from("leads")
-        .update(updateData as any)
+        .update(updateData)
         .eq("id", existingLead.id)
         .select()
         .single();
@@ -67,9 +68,10 @@ export async function POST(request: NextRequest) {
         signup_timestamp: new Date().toISOString(),
       },
     };
+    // @ts-expect-error - Supabase types don't match dynamic schema
     const { data, error } = await supabase
       .from("leads")
-      .insert(insertData as any)
+      .insert(insertData)
       .select()
       .single();
 
@@ -113,7 +115,8 @@ async function triggerOutreachAgent(leadId: string) {
     error: null,
     duration_ms: null,
   };
-  await supabase.from("agent_logs").insert(logData as any);
+  // @ts-expect-error - Supabase types don't match dynamic schema
+  await supabase.from("agent_logs").insert(logData);
 
   // In production, this would call a webhook or add to a queue
   // For now, we just log the intent
