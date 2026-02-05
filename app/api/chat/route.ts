@@ -29,42 +29,44 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { messages } = chatRequestSchema.parse(body);
 
-    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY;
 
-    if (!anthropicKey) {
+    if (!groqKey) {
       // Fallback response if API key not configured
       return NextResponse.json({
         message: "I'm currently in demo mode. Sign up for early access to interact with the full NovaClaw AI system!",
       });
     }
 
-    // Call Claude API
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    // Call Groq API (OpenAI-compatible format)
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": anthropicKey,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${groqKey}`,
       },
       body: JSON.stringify({
-        model: "claude-3-haiku-20240307", // Using Haiku for cost efficiency
+        model: "llama-3.1-70b-versatile", // Fast & capable
         max_tokens: 500,
-        system: SYSTEM_PROMPT,
-        messages: messages.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Anthropic API error:", errorData);
+      console.error("Groq API error:", errorData);
       throw new Error("Failed to get AI response");
     }
 
     const data = await response.json();
-    const assistantMessage = data.content[0]?.text || "I'm sorry, I couldn't generate a response.";
+    const assistantMessage = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
 
     return NextResponse.json({
       message: assistantMessage,
