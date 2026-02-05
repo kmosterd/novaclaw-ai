@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
         "Authorization": `Bearer ${groqKey}`,
       },
       body: JSON.stringify({
-        model: "llama-3.1-70b-versatile", // Fast & capable
+        model: "llama-3.3-70b-versatile", // Fast & capable
         max_tokens: 500,
         temperature: 0.7,
         messages: [
