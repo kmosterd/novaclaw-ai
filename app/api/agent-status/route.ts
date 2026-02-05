@@ -3,26 +3,38 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const runtime = "edge";
 
+interface ContentItem {
+  status: string;
+}
+
+interface AgentLog {
+  agent_type: string;
+  status: string;
+  created_at: string;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = getSupabaseAdmin();
 
     // Get latest agent logs
-    const { data: logs, error: logsError } = await supabase
+    const { data: logsData, error: logsError } = await supabase
       .from("agent_logs")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(10);
 
     if (logsError) throw logsError;
+    const logs = logsData as AgentLog[] | null;
 
     // Get content pipeline stats
-    const { data: contentStats, error: contentError } = await supabase
+    const { data: contentData, error: contentError } = await supabase
       .from("content_calendar")
       .select("status")
       .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
 
     if (contentError) throw contentError;
+    const contentStats = contentData as ContentItem[] | null;
 
     // Calculate stats
     const stats = {
