@@ -1,0 +1,156 @@
+# ============================================
+# NOVACLAW AI - AUTONOMOUS CONTENT LOOP
+# GitHub Actions Workflow
+# ============================================
+# This workflow runs every 12 hours to:
+# 1. Scrape trends
+# 2. Generate content
+# 3. Create visuals
+# 4. Run quality checks
+# 5. Schedule distribution
+# ============================================
+
+name: 🤖 Content Loop Agent
+
+on:
+  # Run every 12 hours
+  schedule:
+    - cron: '0 */12 * * *'
+
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no database writes)'
+        required: false
+        default: 'false'
+        type: boolean
+
+# Prevent concurrent runs
+concurrency:
+  group: content-loop
+  cancel-in-progress: false
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  content-loop:
+    name: 🔄 Run Content Loop
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ============================================
+      # SETUP
+      # ============================================
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: agents/requirements.txt
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r agents/requirements.txt
+
+      # ============================================
+      # RUN AGENT
+      # ============================================
+      - name: 🤖 Run Content Loop Agent
+        id: agent
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          echo "Starting Content Loop Agent..."
+          echo "Time: $(date -u)"
+          echo "---"
+          python agents/content_loop.py 2>&1 | tee agent_output.log
+          echo "---"
+          echo "Agent completed!"
+
+      # ============================================
+      # ARTIFACTS & NOTIFICATIONS
+      # ============================================
+      - name: 📊 Upload agent logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-logs-${{ github.run_number }}
+          path: agent_output.log
+          retention-days: 7
+
+      - name: 📈 Extract metrics
+        id: metrics
+        if: success()
+        run: |
+          # Extract metrics from log
+          SCHEDULED=$(grep -oP 'Scheduled: \K\d+' agent_output.log || echo "0")
+          DURATION=$(grep -oP 'Duration: \K\d+' agent_output.log || echo "0")
+          echo "scheduled=$SCHEDULED" >> $GITHUB_OUTPUT
+          echo "duration=$DURATION" >> $GITHUB_OUTPUT
+
+      - name: 📝 Job Summary
+        if: always()
+        run: |
+          echo "## 🤖 Content Loop Agent Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f agent_output.log ]; then
+            echo "### 📊 Metrics" >> $GITHUB_STEP_SUMMARY
+            echo "- Posts Scheduled: ${{ steps.metrics.outputs.scheduled || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Duration: ${{ steps.metrics.outputs.duration || 'N/A' }}ms" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 📜 Log Output" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 agent_output.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ============================================
+  # HEALTH CHECK JOB
+  # ============================================
+  health-check:
+    name: 🏥 System Health Check
+    runs-on: ubuntu-latest
+    needs: content-loop
+    if: always()
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check Supabase Connection
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          # Simple health check
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: $SUPABASE_SERVICE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
+            "$SUPABASE_URL/rest/v1/agent_logs?limit=1")
+
+          if [ "$RESPONSE" == "200" ]; then
+            echo "✅ Supabase connection healthy"
+          else
+            echo "⚠️ Supabase connection issue (HTTP $RESPONSE)"
+            exit 1
+          fi
+
+      - name: 📝 Health Summary
+        run: |
+          echo "## 🏥 Health Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Supabase:** ✅ Connected" >> $GITHUB_STEP_SUMMARY
+          echo "- **Previous Job:** ${{ needs.content-loop.result }}" >> $GITHUB_STEP_SUMMARY
