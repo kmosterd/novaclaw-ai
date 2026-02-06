@@ -1,89 +1,116 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-// Edge Runtime for low latency
+const messageSchema = z.object({
+  messages: z.array(
+    z.object({
+      role: z.enum(["user", "assistant"]),
+      content: z.string(),
+    })
+  ),
+});
+
+const SYSTEM_PROMPT = `Je bent Nova, de AI-assistent van NovaClaw - een Nederlands bureau dat custom AI-agents bouwt voor bedrijven.
+
+## Over NovaClaw
+NovaClaw is een agency die op maat gemaakte AI-agents ontwikkelt. Wij bouwen, jij groeit. Onze klanten hoeven zelf niets te configureren - wij doen al het technische werk.
+
+## Onze Pakketten
+
+### Starter - €497/maand
+- 1 Custom AI Agent
+- 1 Platform integratie
+- 20 geautomatiseerde acties/maand
+- Email support
+- Maandelijkse optimalisatie
+- Ideaal voor: Kleine bedrijven die willen starten met AI
+
+### Growth - €997/maand (Meest gekozen)
+- 3 Custom AI Agents
+- Alle platforms
+- Onbeperkte acties
+- Prioriteit support
+- Wekelijkse optimalisatie
+- Performance dashboard
+- Ideaal voor: Groeiende bedrijven die serieus willen automatiseren
+
+### Enterprise - Op maat
+- Onbeperkte agents
+- Custom integraties
+- Dedicated account manager
+- 24/7 support
+- Dagelijkse optimalisatie
+- Custom development
+- Ideaal voor: Grote organisaties met complexe behoeften
+
+## Hoe het werkt
+1. **Kennismakingsgesprek** - Gratis intake om jouw behoeften te begrijpen
+2. **Wij bouwen** - Ons team ontwikkelt jouw custom AI-agents
+3. **Launch & beheer** - Wij zorgen voor onderhoud en optimalisatie
+
+## Jouw rol als Nova
+- Beantwoord vragen vriendelijk en professioneel in het Nederlands
+- Help bezoekers het juiste pakket te kiezen
+- Leg uit wat AI-agents kunnen doen voor hun specifieke situatie
+- Moedig aan om een gratis gesprek in te plannen
+- Wees eerlijk: als iets buiten onze scope valt, zeg dat dan
+- Houd antwoorden beknopt (max 3-4 zinnen) tenzij meer uitleg nodig is
+
+## Belangrijke punten
+- Wij zijn een AGENCY, geen self-service tool
+- Klanten hoeven NIETS zelf te configureren
+- Focus op veiligheid en compliance (GDPR)
+- Gebaseerd in Nederland`;
+
 export const runtime = "edge";
 
-const messageSchema = z.object({
-  role: z.enum(["user", "assistant"]),
-  content: z.string(),
-});
-
-const chatRequestSchema = z.object({
-  messages: z.array(messageSchema),
-});
-
-const SYSTEM_PROMPT = `You are NovaClaw AI, an autonomous marketing intelligence assistant. You help users understand and leverage AI-powered marketing automation.
-
-Key capabilities you can explain:
-1. **Autonomous Content Loop**: AI agents that research trends, generate multi-modal content, and distribute across platforms 24/7
-2. **Lead Intelligence**: Automatic lead capture, scoring, and personalized outreach sequences
-3. **Multi-Platform Distribution**: Automated posting to LinkedIn, Instagram, Twitter, and blogs
-4. **Quality Control**: Critic-agent system that reviews content for quality and compliance before publication
-5. **Analytics & Optimization**: Real-time performance tracking and autonomous optimization
-
-Keep responses concise, helpful, and focused on the user's question. Use a professional but friendly tone. If asked about pricing or specific features not mentioned, suggest they sign up for early access to learn more.`;
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
-    const { messages } = chatRequestSchema.parse(body);
+    const body = await req.json();
+    const { messages } = messageSchema.parse(body);
 
-    const groqKey = process.env.GROQ_API_KEY;
-
-    if (!groqKey) {
-      // Fallback response if API key not configured
+    const apiKey = process.env.GROQ_API_KEY;
+    
+    if (!apiKey) {
       return NextResponse.json({
-        message: "I'm currently in demo mode. Sign up for early access to interact with the full NovaClaw AI system!",
+        response: "Hoi! Ik ben Nova van NovaClaw. Op dit moment ben ik even offline voor onderhoud. Vul gerust het formulier in en we nemen binnen 24 uur contact met je op!"
       });
     }
 
-    // Call Groq API (OpenAI-compatible format)
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${groqKey}`,
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile", // Fast & capable
-        max_tokens: 500,
-        temperature: 0.7,
+        model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...messages.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
+          ...messages,
         ],
+        max_tokens: 500,
+        temperature: 0.7,
       }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Groq API error:", errorData);
-      throw new Error("Failed to get AI response");
+      const error = await response.text();
+      console.error("Groq API error:", error);
+      return NextResponse.json({
+        response: "Er ging iets mis. Probeer het later opnieuw of vul het contactformulier in."
+      });
     }
 
     const data = await response.json();
-    const assistantMessage = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response.";
+    const assistantMessage = data.choices[0]?.message?.content || "Ik kon geen antwoord genereren.";
 
-    return NextResponse.json({
-      message: assistantMessage,
-      usage: data.usage,
-    });
+    return NextResponse.json({ response: assistantMessage });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: "Invalid request format", details: error.errors },
-        { status: 400 }
-      );
-    }
-
-    console.error("Chat error:", error);
+    console.error("Chat API error:", error);
     return NextResponse.json(
-      { message: "I'm having trouble connecting right now. Please try again in a moment." },
-      { status: 200 } // Return 200 to show graceful degradation message
+      { error: "Er ging iets mis met de chat." },
+      { status: 500 }
     );
   }
 }

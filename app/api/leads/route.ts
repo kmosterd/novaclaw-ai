@@ -1,155 +1,211 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { getSupabaseAdmin } from "@/lib/supabase";
 
-// Edge Runtime for maximum performance on Vercel free tier
-export const runtime = "edge";
-
-// Input validation schema
 const leadSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  name: z.string().min(1, "Name is required").max(100),
-  company: z.string().max(200).optional().nullable(),
-  source: z.string().default("website"),
-  metadata: z.record(z.unknown()).optional().default({}),
+  email: z.string().email(),
+  name: z.string().min(1),
+  company: z.string().optional(),
+  source: z.string().optional(),
+  metadata: z.record(z.any()).optional(),
 });
 
-export async function POST(request: NextRequest) {
+export const runtime = "edge";
+
+async function sendNotificationEmail(lead: any) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || "karsten.mosterd@gmail.com";
+
+  if (!RESEND_API_KEY) {
+    console.log("No RESEND_API_KEY - skipping email notification");
+    return;
+  }
+
+  const metadata = lead.metadata || {};
+  
+  const emailContent = `
+Nieuwe lead via NovaClaw website!
+
+📋 CONTACT GEGEVENS
+━━━━━━━━━━━━━━━━━━━
+Naam: ${lead.name}
+Email: ${lead.email}
+Bedrijf: ${lead.company || "Niet opgegeven"}
+
+📊 BUSINESS INFO
+━━━━━━━━━━━━━━━━━━━
+Type bedrijf: ${metadata.business_type || "Niet opgegeven"}
+Doel: ${metadata.business_goal || "Niet opgegeven"}
+Budget: ${metadata.budget || "Niet opgegeven"}
+
+⏰ DETAILS
+━━━━━━━━━━━━━━━━━━━
+Bron: ${lead.source || "website"}
+Tijdstip: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}
+GDPR Consent: ${metadata.gdpr_consent ? "✅ Ja" : "❌ Nee"}
+
+---
+Bekijk alle leads in je Supabase dashboard.
+  `.trim();
+
   try {
-    const body = await request.json();
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "NovaClaw <leads@novaclaw.nl>",
+        to: [NOTIFICATION_EMAIL],
+        subject: `🚀 Nieuwe Lead: ${lead.name} - ${lead.company || "Particulier"}`,
+        text: emailContent,
+      }),
+    });
 
-    // Validate input
-    const validatedData = leadSchema.parse(body);
+    if (!response.ok) {
+      console.error("Email send failed:", await response.text());
+    } else {
+      console.log("Notification email sent successfully");
+    }
+  } catch (error) {
+    console.error("Email error:", error);
+  }
+}
 
-    const supabase = getSupabaseAdmin();
+async function saveToSupabase(lead: any) {
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    // Check for existing lead with same email
-    const { data: existingLead } = await supabase
-      .from("leads")
-      .select("id")
-      .eq("email", validatedData.email)
-      .single();
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    console.log("Supabase not configured - lead not saved to database");
+    return null;
+  }
 
-    if (existingLead) {
-      // Update existing lead metadata
-      const updateData = {
-        metadata: {
-          ...validatedData.metadata,
-          revisit_count: ((existingLead as any).metadata?.revisit_count || 0) + 1,
-          last_visit: new Date().toISOString(),
-        },
-        updated_at: new Date().toISOString(),
-      };
-      // @ts-expect-error - Supabase types don't match dynamic schema
-      const { data, error } = await supabase
-        .from("leads")
-        .update(updateData)
-        .eq("id", existingLead.id)
-        .select()
-        .single();
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation",
+      },
+      body: JSON.stringify({
+        email: lead.email,
+        name: lead.name,
+        company: lead.company,
+        source: lead.source || "website",
+        status: "new",
+        metadata: lead.metadata,
+      }),
+    });
 
-      if (error) throw error;
-
-      return NextResponse.json(
-        { success: true, data, message: "Welcome back!" },
-        { status: 200 }
-      );
+    if (!response.ok) {
+      console.error("Supabase error:", await response.text());
+      return null;
     }
 
-    // Insert new lead
-    const insertData = {
-      email: validatedData.email,
-      name: validatedData.name,
-      company: validatedData.company || null,
-      source: validatedData.source,
-      status: "new",
-      metadata: {
-        ...validatedData.metadata,
-        signup_timestamp: new Date().toISOString(),
-      },
-    };
-    // @ts-expect-error - Supabase types don't match dynamic schema
-    const { data, error } = await supabase
-      .from("leads")
-      .insert(insertData)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Trigger personalized outreach agent (via webhook or queue)
-    // This is fire-and-forget, don't await
-    triggerOutreachAgent(data.id).catch(console.error);
-
-    return NextResponse.json(
-      { success: true, data, message: "Lead captured successfully" },
-      { status: 201 }
-    );
+    return await response.json();
   } catch (error) {
+    console.error("Database error:", error);
+    return null;
+  }
+}
+
+async function logAgentAction(action: string, input: any, output: any) {
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) return;
+
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/agent_logs`, {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        agent_type: "lead_processor",
+        action: action,
+        status: "completed",
+        input: input,
+        output: output,
+      }),
+    });
+  } catch (error) {
+    console.error("Log error:", error);
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const lead = leadSchema.parse(body);
+
+    // 1. Save to database
+    const savedLead = await saveToSupabase(lead);
+
+    // 2. Send email notification
+    await sendNotificationEmail(lead);
+
+    // 3. Log the action
+    await logAgentAction("new_lead_captured", 
+      { email: lead.email, source: lead.source },
+      { saved: !!savedLead, notified: true }
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: "Lead captured successfully",
+    });
+  } catch (error) {
+    console.error("Lead API error:", error);
+    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, errors: error.errors },
+        { error: "Invalid input", details: error.errors },
         { status: 400 }
       );
     }
 
-    console.error("Lead capture error:", error);
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
 }
 
-// Fire-and-forget function to trigger outreach agent
-async function triggerOutreachAgent(leadId: string) {
-  const supabase = getSupabaseAdmin();
+export async function GET(req: NextRequest) {
+  const authHeader = req.headers.get("authorization");
+  const expectedToken = process.env.AGENT_CRON_SECRET;
 
-  // Log agent trigger
-  const logData = {
-    agent_type: "distributor",
-    action: "trigger_outreach",
-    status: "running",
-    input: { lead_id: leadId },
-    output: {},
-    error: null,
-    duration_ms: null,
-  };
-  // @ts-expect-error - Supabase types don't match dynamic schema
-  await supabase.from("agent_logs").insert(logData);
-
-  // In production, this would call a webhook or add to a queue
-  // For now, we just log the intent
-  console.log(`[Agent] Outreach triggered for lead: ${leadId}`);
-}
-
-export async function GET(request: NextRequest) {
-  // Verify cron secret for protected endpoint
-  const authHeader = request.headers.get("authorization");
-  const cronSecret = process.env.AGENT_CRON_SECRET;
-
-  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+  if (!expectedToken || authHeader !== `Bearer ${expectedToken}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return NextResponse.json({ error: "Database not configured" }, { status: 500 });
+  }
+
   try {
-    const supabase = getSupabaseAdmin();
-
-    const { data, error } = await supabase
-      .from("leads")
-      .select("*")
-      .eq("status", "new")
-      .order("created_at", { ascending: false })
-      .limit(100);
-
-    if (error) throw error;
-
-    return NextResponse.json({ success: true, data, count: data.length });
-  } catch (error) {
-    console.error("Lead fetch error:", error);
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/leads?status=eq.new&order=created_at.desc&limit=100`,
+      {
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+        },
+      }
     );
+
+    const leads = await response.json();
+    return NextResponse.json({ leads });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch leads" }, { status: 500 });
   }
 }
