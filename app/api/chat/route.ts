@@ -67,11 +67,20 @@ export const runtime = "edge";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { messages } = messageSchema.parse(body);
+    const result = messageSchema.safeParse(body);
 
+    if (!result.success) {
+      return NextResponse.json(
+        { error: "Ongeldig bericht format." },
+        { status: 400 }
+      );
+    }
+
+    const { messages } = result.data;
     const apiKey = process.env.GROQ_API_KEY;
-    
+
     if (!apiKey) {
+      console.warn("GROQ_API_KEY not configured - returning offline message");
       return NextResponse.json({
         response: "Hoi! Ik ben Nova van NovaClaw. Op dit moment ben ik even offline voor onderhoud. Vul gerust het formulier in en we nemen binnen 24 uur contact met je op!"
       });
@@ -96,7 +105,7 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("Groq API error:", error);
+      console.error("Groq API error:", response.status, error);
       return NextResponse.json({
         response: "Er ging iets mis. Probeer het later opnieuw of vul het contactformulier in."
       });
@@ -108,9 +117,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ response: assistantMessage });
   } catch (error) {
     console.error("Chat API error:", error);
-    return NextResponse.json(
-      { error: "Er ging iets mis met de chat." },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      response: "Er ging iets mis. Probeer het later opnieuw of vul het contactformulier in."
+    });
   }
 }
