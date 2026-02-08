@@ -269,6 +269,9 @@ Return JSON:
                 data = await response.json()
                 raw_text = data["content"][0]["text"]
                 result = extract_json(raw_text)
+                # Handle case where Claude returns a list wrapper
+                if isinstance(result, list) and len(result) > 0:
+                    result = result[0]
                 return GeneratedContent(
                     platform=platform,
                     content=result["content"][:config["max_length"]],
@@ -358,7 +361,11 @@ Return JSON:
             if response.status == 200:
                 data = await response.json()
                 raw_text = data["content"][0]["text"]
-                return extract_json(raw_text)
+                result = extract_json(raw_text)
+                # Handle case where Claude returns [{"approved": ...}] instead of {"approved": ...}
+                if isinstance(result, list) and len(result) > 0:
+                    result = result[0]
+                return result
             else:
                 error_text = await response.text()
                 print(f"Critic API error {response.status}: {error_text[:200]}")
