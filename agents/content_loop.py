@@ -12,6 +12,7 @@ This agent runs every 12 hours via GitHub Actions to:
 
 import os
 import json
+import re
 import time
 import hashlib
 import asyncio
@@ -21,6 +22,38 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Any
 from dataclasses import dataclass, asdict
 from supabase import create_client, Client
+
+
+def extract_json(text: str) -> Any:
+    """Extract JSON from Claude response, handling markdown code blocks and extra text."""
+    # Strip whitespace
+    text = text.strip()
+
+    # Try direct parse first
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Try extracting from markdown code block ```json ... ```
+    match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', text, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(1).strip())
+        except json.JSONDecodeError:
+            pass
+
+    # Try finding first [ or { and matching to last ] or }
+    for start_char, end_char in [('[', ']'), ('{', '}')]:
+        start = text.find(start_char)
+        end = text.rfind(end_char)
+        if start != -1 and end != -1 and end > start:
+            try:
+                return json.loads(text[start:end + 1])
+            except json.JSONDecodeError:
+                pass
+
+    raise json.JSONDecodeError("No valid JSON found in response", text, 0)
 
 # ============================================
 # CONFIGURATION
@@ -166,10 +199,14 @@ Trends:
         ) as response:
             if response.status == 200:
                 data = await response.json()
-                scores = json.loads(data["content"][0]["text"])
+                raw_text = data["content"][0]["text"]
+                scores = extract_json(raw_text)
                 for i, score in enumerate(scores):
                     if i < len(trends):
                         trends[i].relevance_score = float(score)
+            else:
+                error_text = await response.text()
+                print(f"Claude scoring API error {response.status}: {error_text[:200]}")
     except Exception as e:
         print(f"Claude scoring failed: {e}")
 
@@ -230,7 +267,8 @@ Return JSON:
         ) as response:
             if response.status == 200:
                 data = await response.json()
-                result = json.loads(data["content"][0]["text"])
+                raw_text = data["content"][0]["text"]
+                result = extract_json(raw_text)
                 return GeneratedContent(
                     platform=platform,
                     content=result["content"][:config["max_length"]],
@@ -238,6 +276,9 @@ Return JSON:
                     hashtags=result.get("hashtags", []),
                     trend_source=trend.url
                 )
+            else:
+                error_text = await response.text()
+                print(f"Content gen API error {response.status}: {error_text[:200]}")
     except Exception as e:
         print(f"Content generation failed: {e}")
 
@@ -316,7 +357,11 @@ Return JSON:
         ) as response:
             if response.status == 200:
                 data = await response.json()
-                return json.loads(data["content"][0]["text"])
+                raw_text = data["content"][0]["text"]
+                return extract_json(raw_text)
+            else:
+                error_text = await response.text()
+                print(f"Critic API error {response.status}: {error_text[:200]}")
     except Exception as e:
         print(f"Critic review failed: {e}")
 
