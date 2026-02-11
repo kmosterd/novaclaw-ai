@@ -2,7 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Globe, Tag, Languages } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getAllSlugs, BlogPost } from "@/lib/blog-data";
+import {
+  getPostBySlug,
+  getAllSlugs,
+  getDynamicPostBySlug,
+  getAllPostsCombined,
+  BlogPost,
+} from "@/lib/blog-data";
 
 function formatDate(dateStr: string, lang: "nl" | "en") {
   return new Intl.DateTimeFormat(lang === "nl" ? "nl-NL" : "en-US", {
@@ -13,11 +19,15 @@ function formatDate(dateStr: string, lang: "nl" | "en") {
 }
 
 /**
- * Static params for all blog posts — enables static generation
+ * Static params for all blog posts — enables static generation at build time
+ * Dynamic posts are handled via dynamicParams = true
  */
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
 }
+
+/** Allow dynamic posts not in static params */
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
@@ -25,7 +35,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+
+  // Try static first, then dynamic
+  const post = getPostBySlug(slug) || (await getDynamicPostBySlug(slug));
 
   if (!post) {
     return { title: "Niet gevonden | NovaClaw AI" };
@@ -62,7 +74,7 @@ export async function generateMetadata({
 
 /**
  * Simple markdown-to-JSX renderer for blog content.
- * Handles: ##, ###, **bold**, - lists, paragraphs
+ * Handles: ##, ###, **bold**, [links](url), - lists, paragraphs
  */
 function renderMarkdown(content: string) {
   const lines = content.split("\n");
@@ -86,14 +98,30 @@ function renderMarkdown(content: string) {
   }
 
   function renderInline(text: string): React.ReactNode {
-    // Handle **bold** text
-    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    // Handle **bold**, [links](url), and plain text
+    const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
     return parts.map((part, i) => {
+      // Bold
       if (part.startsWith("**") && part.endsWith("**")) {
         return (
           <strong key={i} className="text-white font-semibold">
             {part.slice(2, -2)}
           </strong>
+        );
+      }
+      // Markdown link
+      const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+      if (linkMatch) {
+        return (
+          <a
+            key={i}
+            href={linkMatch[2]}
+            className="text-neon-cyan hover:underline"
+            target={linkMatch[2].startsWith("http") ? "_blank" : undefined}
+            rel={linkMatch[2].startsWith("http") ? "noopener noreferrer" : undefined}
+          >
+            {linkMatch[1]}
+          </a>
         );
       }
       return part;
@@ -136,6 +164,12 @@ function renderMarkdown(content: string) {
       continue;
     }
 
+    // Numbered list item
+    if (/^\d+\.\s/.test(trimmed)) {
+      listItems.push(trimmed.replace(/^\d+\.\s/, ""));
+      continue;
+    }
+
     // Regular paragraph
     flushList();
     elements.push(
@@ -155,10 +189,12 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+
+  // Try static first, then Supabase dynamic
+  const post = getPostBySlug(slug) || (await getDynamicPostBySlug(slug));
   if (!post) notFound();
 
-  // Get translation if available
+  // Get translation if available (only for static posts with translationSlug)
   const translation = post.translationSlug
     ? getPostBySlug(post.translationSlug)
     : undefined;
@@ -223,7 +259,7 @@ export default async function BlogPostPage({
               href={`/blog/${translation.slug}`}
               className="text-xs font-medium text-neon-cyan hover:underline"
             >
-              {post.lang === "nl" ? "Read in English →" : "Lees in het Nederlands →"}
+              {post.lang === "nl" ? "Read in English \u2192" : "Lees in het Nederlands \u2192"}
             </Link>
           </div>
         )}
@@ -263,10 +299,12 @@ export default async function BlogPostPage({
         <div className="w-full h-48 sm:h-64 rounded-2xl bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center mb-10">
           <span className="text-6xl opacity-30">
             {post.category.includes("Uitleg") || post.category.includes("Explained")
-              ? "🤖"
+              ? "\u{1F916}"
               : post.category.includes("AIO") || post.category.includes("SEO")
-              ? "🔍"
-              : "⚡"}
+              ? "\u{1F50D}"
+              : post.category.includes("Trends")
+              ? "\u{1F4C8}"
+              : "\u26A1"}
           </span>
         </div>
 

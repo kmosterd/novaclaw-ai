@@ -13,6 +13,8 @@ export interface BlogPost {
   featuredImage?: string;
   /** Slug of the translated version */
   translationSlug?: string;
+  /** Whether this post comes from Supabase (dynamic) */
+  isDynamic?: boolean;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -507,10 +509,14 @@ We build, test, and manage everything for you. No technical knowledge needed, no
   },
 ];
 
+// ============================================================
+// STATIC HELPERS (for the 6 handwritten articles)
+// ============================================================
+
 /**
- * Get all posts for a specific language
+ * Get static posts for a specific language
  */
-export function getPostsByLang(lang: "nl" | "en"): BlogPost[] {
+export function getStaticPostsByLang(lang: "nl" | "en"): BlogPost[] {
   return blogPosts
     .filter((p) => p.lang === lang)
     .sort(
@@ -520,23 +526,146 @@ export function getPostsByLang(lang: "nl" | "en"): BlogPost[] {
 }
 
 /**
- * Get a single post by slug
+ * Get a single static post by slug
  */
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
 }
 
 /**
- * Get all unique slugs (for static generation)
+ * Get all static slugs (for build-time generation)
  */
 export function getAllSlugs(): string[] {
   return blogPosts.map((p) => p.slug);
 }
 
 /**
- * Get unique categories for a language
+ * Legacy: Get static posts by lang (still used in some components)
+ */
+export function getPostsByLang(lang: "nl" | "en"): BlogPost[] {
+  return getStaticPostsByLang(lang);
+}
+
+// ============================================================
+// DYNAMIC: Fetch blog posts from Supabase content_calendar
+// ============================================================
+
+interface SupabaseBlogRow {
+  id: string;
+  content: string;
+  status: string;
+  performance: Record<string, any>;
+  created_at: string;
+  media_url: string | null;
+}
+
+/**
+ * Parse a Supabase content_calendar row into a BlogPost
+ */
+function parseSupabasePost(row: SupabaseBlogRow): BlogPost | null {
+  try {
+    const meta = row.performance || {};
+    const content = row.content || "";
+
+    // Extract title from first markdown heading
+    const titleMatch = content.match(/^#\s+(.+)/m);
+    const title = titleMatch ? titleMatch[1].trim() : content.substring(0, 60);
+
+    // Remove the title line from content
+    const bodyContent = titleMatch
+      ? content.replace(/^#\s+.+\n*/m, "").trim()
+      : content;
+
+    const slug = meta.slug || `post-${row.id}`;
+    const lang = (meta.lang as "nl" | "en") || "nl";
+
+    return {
+      slug,
+      lang,
+      title,
+      description: meta.description || bodyContent.substring(0, 155) + "...",
+      content: bodyContent,
+      category: meta.category || "AI Trends",
+      tags: meta.tags || ["AI"],
+      publishedAt: row.created_at,
+      updatedAt: row.created_at,
+      author: meta.author || "NovaClaw AI Team",
+      readingTime: meta.reading_time || "5 min",
+      featuredImage: row.media_url || undefined,
+      isDynamic: true,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch dynamic blog posts from Supabase
+ */
+export async function getDynamicPosts(lang?: "nl" | "en"): Promise<BlogPost[]> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return [];
+  }
+
+  try {
+    const url = `${supabaseUrl}/rest/v1/content_calendar?platform=eq.blog&status=eq.published&order=created_at.desc&limit=100`;
+
+    const response = await fetch(url, {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+      },
+      next: { revalidate: 300 }, // Cache for 5 minutes
+    });
+
+    if (!response.ok) return [];
+
+    const rows: SupabaseBlogRow[] = await response.json();
+    const posts = rows
+      .map(parseSupabasePost)
+      .filter((p): p is BlogPost => p !== null);
+
+    // Filter by language if specified
+    if (lang) {
+      return posts.filter((p) => p.lang === lang);
+    }
+
+    return posts;
+  } catch (error) {
+    console.error("Error fetching dynamic blog posts:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetch a single dynamic post by slug from Supabase
+ */
+export async function getDynamicPostBySlug(slug: string): Promise<BlogPost | null> {
+  const posts = await getDynamicPosts();
+  return posts.find((p) => p.slug === slug) || null;
+}
+
+/**
+ * Get ALL posts: static + dynamic, sorted by date (newest first)
+ */
+export async function getAllPostsCombined(lang?: "nl" | "en"): Promise<BlogPost[]> {
+  const staticPosts = lang ? getStaticPostsByLang(lang) : blogPosts;
+  const dynamicPosts = await getDynamicPosts(lang);
+
+  // Merge and sort by date
+  return [...dynamicPosts, ...staticPosts].sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
+}
+
+/**
+ * Get unique categories across all posts
  */
 export function getCategoriesByLang(lang: "nl" | "en"): string[] {
-  const posts = getPostsByLang(lang);
+  const posts = getStaticPostsByLang(lang);
   return [...new Set(posts.map((p) => p.category))];
 }

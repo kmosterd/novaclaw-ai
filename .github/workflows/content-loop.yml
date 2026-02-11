@@ -2,26 +2,34 @@
 # NOVACLAW AI - AUTONOMOUS CONTENT LOOP
 # GitHub Actions Workflow
 # ============================================
-# This workflow runs every 12 hours to:
-# 1. Scrape trends
-# 2. Generate content
-# 3. Create visuals
-# 4. Run quality checks
-# 5. Schedule distribution
+# This workflow runs daily at 07:00 UTC to:
+# 1. Generate 2 blog articles (1 NL + 1 EN) based on AI trends
+# 2. Generate social media content (LinkedIn, Twitter, Instagram)
+# 3. Run quality checks & health monitoring
 # ============================================
 
-name: 🤖 Content Loop Agent
+name: "\U0001F916 Content Loop Agent"
 
 on:
-  # Run every 12 hours
+  # Run daily at 07:00 UTC
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 7 * * *'
 
   # Manual trigger for testing
   workflow_dispatch:
     inputs:
       dry_run:
         description: 'Dry run (no database writes)'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_blog:
+        description: 'Skip blog generation'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_social:
+        description: 'Skip social media generation'
         required: false
         default: 'false'
         type: boolean
@@ -35,34 +43,100 @@ env:
   PYTHON_VERSION: '3.11'
 
 jobs:
-  content-loop:
-    name: 🔄 Run Content Loop
+  # ============================================
+  # BLOG GENERATOR
+  # ============================================
+  blog-generator:
+    name: "\U0001F4DD Generate Blog Articles"
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    if: ${{ github.event.inputs.skip_blog != 'true' }}
 
     steps:
-      # ============================================
-      # SETUP
-      # ============================================
-      - name: 📥 Checkout repository
+      - name: "\U0001F4E5 Checkout repository"
         uses: actions/checkout@v4
 
-      - name: 🐍 Setup Python
+      - name: "\U0001F40D Setup Python"
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: agents/requirements.txt
 
-      - name: 📦 Install dependencies
+      - name: "\U0001F4E6 Install dependencies"
         run: |
           python -m pip install --upgrade pip
           pip install -r agents/requirements.txt
 
-      # ============================================
-      # RUN AGENT
-      # ============================================
-      - name: 🤖 Run Content Loop Agent
+      - name: "\U0001F4DD Run Blog Generator Agent"
+        id: blog
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          echo "Starting Blog Generator Agent..."
+          echo "Time: $(date -u)"
+          echo "---"
+          python agents/blog_generator.py 2>&1 | tee blog_output.log
+          echo "---"
+          echo "Blog Generator completed!"
+
+      - name: "\U0001F4CA Upload blog logs"
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blog-logs-${{ github.run_number }}
+          path: blog_output.log
+          retention-days: 7
+
+      - name: "\U0001F4DD Blog Summary"
+        if: always()
+        run: |
+          echo "## \U0001F4DD Blog Generator Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f blog_output.log ]; then
+            SAVED=$(grep -oP 'Articles saved: \K\d+' blog_output.log || echo "0")
+            echo "### \U0001F4CA Blog Metrics" >> $GITHUB_STEP_SUMMARY
+            echo "- Articles Saved: $SAVED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### \U0001F4DC Log Output" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -30 blog_output.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # ============================================
+  # SOCIAL MEDIA CONTENT LOOP
+  # ============================================
+  content-loop:
+    name: "\U0001F504 Run Social Media Content Loop"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: blog-generator
+    if: ${{ always() && github.event.inputs.skip_social != 'true' }}
+
+    steps:
+      - name: "\U0001F4E5 Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "\U0001F40D Setup Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: agents/requirements.txt
+
+      - name: "\U0001F4E6 Install dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r agents/requirements.txt
+
+      - name: "\U0001F916 Run Content Loop Agent"
         id: agent
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -77,10 +151,7 @@ jobs:
           echo "---"
           echo "Agent completed!"
 
-      # ============================================
-      # ARTIFACTS & NOTIFICATIONS
-      # ============================================
-      - name: 📊 Upload agent logs
+      - name: "\U0001F4CA Upload agent logs"
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -88,30 +159,29 @@ jobs:
           path: agent_output.log
           retention-days: 7
 
-      - name: 📈 Extract metrics
+      - name: "\U0001F4C8 Extract metrics"
         id: metrics
         if: success()
         run: |
-          # Extract metrics from log
           SCHEDULED=$(grep -oP 'Scheduled: \K\d+' agent_output.log || echo "0")
           DURATION=$(grep -oP 'Duration: \K\d+' agent_output.log || echo "0")
           echo "scheduled=$SCHEDULED" >> $GITHUB_OUTPUT
           echo "duration=$DURATION" >> $GITHUB_OUTPUT
 
-      - name: 📝 Job Summary
+      - name: "\U0001F4DD Job Summary"
         if: always()
         run: |
-          echo "## 🤖 Content Loop Agent Report" >> $GITHUB_STEP_SUMMARY
+          echo "## \U0001F916 Content Loop Agent Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Run Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
           echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f agent_output.log ]; then
-            echo "### 📊 Metrics" >> $GITHUB_STEP_SUMMARY
+            echo "### \U0001F4CA Metrics" >> $GITHUB_STEP_SUMMARY
             echo "- Posts Scheduled: ${{ steps.metrics.outputs.scheduled || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
             echo "- Duration: ${{ steps.metrics.outputs.duration || 'N/A' }}ms" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 📜 Log Output" >> $GITHUB_STEP_SUMMARY
+            echo "### \U0001F4DC Log Output" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
             tail -50 agent_output.log >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
@@ -121,16 +191,16 @@ jobs:
   # HEALTH CHECK JOB
   # ============================================
   health-check:
-    name: 🏥 System Health Check
+    name: "\U0001F3E5 System Health Check"
     runs-on: ubuntu-latest
-    needs: content-loop
+    needs: [blog-generator, content-loop]
     if: always()
 
     steps:
-      - name: 📥 Checkout
+      - name: "\U0001F4E5 Checkout"
         uses: actions/checkout@v4
 
-      - name: 🔍 Check Supabase Connection
+      - name: "\U0001F50D Check Supabase Connection"
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -142,15 +212,16 @@ jobs:
             "$SUPABASE_URL/rest/v1/agent_logs?limit=1")
 
           if [ "$RESPONSE" == "200" ]; then
-            echo "✅ Supabase connection healthy"
+            echo "Supabase connection healthy"
           else
-            echo "⚠️ Supabase connection issue (HTTP $RESPONSE)"
+            echo "Supabase connection issue (HTTP $RESPONSE)"
             exit 1
           fi
 
-      - name: 📝 Health Summary
+      - name: "\U0001F4DD Health Summary"
         run: |
-          echo "## 🏥 Health Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "## \U0001F3E5 Health Check Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Supabase:** ✅ Connected" >> $GITHUB_STEP_SUMMARY
-          echo "- **Previous Job:** ${{ needs.content-loop.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Supabase:** Connected" >> $GITHUB_STEP_SUMMARY
+          echo "- **Blog Generator:** ${{ needs.blog-generator.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Content Loop:** ${{ needs.content-loop.result }}" >> $GITHUB_STEP_SUMMARY

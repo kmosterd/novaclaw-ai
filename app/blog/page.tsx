@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, Globe, Tag } from "lucide-react";
-import { getPostsByLang, BlogPost } from "@/lib/blog-data";
+import { getAllPostsCombined, BlogPost } from "@/lib/blog-data";
 
 export const metadata: Metadata = {
   title: "Blog & Kennisbank | NovaClaw AI",
@@ -41,10 +41,12 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
       >
         <span className="text-4xl opacity-30">
           {post.category.includes("Uitleg") || post.category.includes("Explained")
-            ? "🤖"
+            ? "\u{1F916}"
             : post.category.includes("AIO") || post.category.includes("SEO")
-            ? "🔍"
-            : "⚡"}
+            ? "\u{1F50D}"
+            : post.category.includes("Trends")
+            ? "\u{1F4C8}"
+            : "\u26A1"}
         </span>
       </div>
 
@@ -63,6 +65,11 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
             <Globe size={12} />
             {post.lang === "nl" ? "Nederlands" : "English"}
           </span>
+          {post.isDynamic && (
+            <span className="text-[10px] text-neon-green/60 px-1.5 py-0.5 rounded border border-neon-green/20">
+              Nieuw
+            </span>
+          )}
         </div>
 
         {/* Category badge */}
@@ -105,9 +112,9 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
   );
 }
 
-export default function BlogPage() {
-  const nlPosts = getPostsByLang("nl");
-  const enPosts = getPostsByLang("en");
+export default async function BlogPage() {
+  const nlPosts = await getAllPostsCombined("nl");
+  const enPosts = await getAllPostsCombined("en");
 
   return (
     <main className="relative min-h-screen">
