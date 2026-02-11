@@ -1,23 +1,34 @@
 import Link from "next/link";
 import { Mail, Globe, MapPin } from "lucide-react";
 
-const agentTypes = [
+const agentsCommunication = [
   { label: "Klantenservice Agent", href: "/#diensten" },
+  { label: "Voice Agent", href: "/#diensten" },
+  { label: "Chatbot Agent", href: "/#diensten" },
+  { label: "Helpdesk Agent", href: "/#diensten" },
+];
+
+const agentsMarketing = [
   { label: "Content Agent", href: "/#diensten" },
   { label: "SEO & AIO Agent", href: "/#diensten" },
   { label: "Email Marketing Agent", href: "/#diensten" },
   { label: "Social Media Agent", href: "/#diensten" },
-  { label: "Automation Agent", href: "/#diensten" },
+  { label: "Ads & Campaign Agent", href: "/#diensten" },
 ];
 
-const industries = [
-  { label: "E-commerce & Retail" },
-  { label: "Marketing Bureaus" },
-  { label: "IT & Software" },
-  { label: "Financiële Diensten" },
-  { label: "Gezondheidszorg" },
-  { label: "Consultancy" },
-  { label: "SaaS Bedrijven" },
+const agentsSales = [
+  { label: "Lead Generation Agent", href: "/#diensten" },
+  { label: "Appointment Setter Agent", href: "/#diensten" },
+  { label: "E-commerce Agent", href: "/#diensten" },
+];
+
+const agentsData = [
+  { label: "Automation Agent", href: "/#diensten" },
+  { label: "Data & Analytics Agent", href: "/#diensten" },
+  { label: "Data Entry Agent", href: "/#diensten" },
+  { label: "Compliance Agent", href: "/#diensten" },
+  { label: "Web Scraping Agent", href: "/#diensten" },
+  { label: "Custom AI Agent", href: "/#diensten" },
 ];
 
 const resources = [
@@ -40,14 +51,14 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Main footer grid — 5 columns on desktop */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6">
+        {/* Main footer grid — responsive multi-column */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-5">
 
-          {/* Brand & Contact */}
-          <div className="col-span-2 md:col-span-3 lg:col-span-1">
+          {/* Brand & Contact — spans 2 cols on large */}
+          <div className="col-span-2">
             <h3 className="text-xl font-bold neon-text mb-3">NovaClaw AI</h3>
             <p className="text-sm text-white/50 leading-relaxed mb-4">
-              Nederlands bureau dat custom AI-agents bouwt voor bedrijven. Wij bouwen, jij groeit.
+              Nederlands bureau dat custom AI-agents bouwt voor bedrijven. Meer dan 18 agent-types. Wij bouwen, jij groeit.
             </p>
             <div className="flex flex-col gap-2 text-sm text-white/40">
               <a
@@ -68,13 +79,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* AI Agent Types */}
+          {/* Klant & Sales Agents */}
           <div>
             <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">
-              Onze AI Agents
+              Klant & Sales
             </h4>
             <ul className="space-y-2">
-              {agentTypes.map((item) => (
+              {[...agentsCommunication, ...agentsSales].map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
@@ -87,25 +98,43 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Industries */}
+          {/* Marketing & Data Agents */}
           <div>
             <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">
-              Industrieën
+              Marketing & Data
             </h4>
             <ul className="space-y-2">
-              {industries.map((item) => (
+              {[...agentsMarketing, ...agentsData.slice(0, 3)].map((item) => (
                 <li key={item.label}>
-                  <span className="text-sm text-white/40">
+                  <Link
+                    href={item.href}
+                    className="text-sm text-white/40 hover:text-neon-cyan transition-colors"
+                  >
                     {item.label}
-                  </span>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Operations + Resources */}
           <div>
             <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-4">
+              Operations
+            </h4>
+            <ul className="space-y-2">
+              {agentsData.slice(3).map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-white/40 hover:text-neon-cyan transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mt-6 mb-4">
               Resources
             </h4>
             <ul className="space-y-2">

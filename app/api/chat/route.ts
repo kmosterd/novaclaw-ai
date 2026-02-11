@@ -24,25 +24,33 @@ NovaClaw is een tech-agnostisch AI agency. Wij bouwen, jij groeit. Wij werken me
 - Als iemand vraagt hoe ze contact kunnen opnemen: verwijs naar het formulier bovenaan de homepage, of naar info@novaclaw.tech
 - Verwijs NOOIT naar pagina's die niet bestaan (er is GEEN /contact of /about of /diensten pagina — die secties staan allemaal op de homepage)
 
-## Onze 6 AI Agent-Types
+## Onze AI Agent-Types (18+ types in 4 categorieen)
 
-### 1. Klantenservice Agent
-Automatisch klantberichten beantwoorden, triageren op urgentie en opvolgen. Reactietijd van 30 minuten naar 3 minuten. 24/7 beschikbaar via Slack, email, chat.
+### KLANT & COMMUNICATIE
+1. **Klantenservice Agent** — Automatisch klantberichten beantwoorden via email, chat, Slack of WhatsApp. Triageert op urgentie, escaleert complex naar mens. 90% snellere reactietijd.
+2. **Voice Agent** — AI-gestuurd bellen. Inbound calls beantwoorden, outbound bellen voor afspraken/follow-ups. Menselijke spraakkwaliteit. 24/7 bereikbaar.
+3. **Chatbot Agent** — Intelligente chatbot voor website of app. Beantwoordt vragen, plant afspraken, kwalificeert leads. Getraind op jouw bedrijf. 80% vragen direct opgelost.
+4. **Helpdesk Agent** — Interne support automatiseren. Ticketsysteem, FAQ voor medewerkers, IT-triage, kennisbank doorzoeken. 60% minder tickets.
 
-### 2. Content Agent
-Van 1 stuk content naar 10+ platformen. Blogpost, social posts, nieuwsbrief — in jouw tone of voice. 300% meer content output.
+### MARKETING & CONTENT
+5. **Content Agent** — Van 1 stuk content naar 10+ platformen. Blogposts, social posts, nieuwsbrief — in jouw tone of voice. 300% meer output.
+6. **SEO & AIO Agent** — Content voor Google EN AI-zoekmachines (ChatGPT, Gemini, Perplexity). Keyword research, content gaps, technische SEO.
+7. **Email Marketing Agent** — Welkomstflows, sales funnels, nieuwsbrieven, re-engagement. A/B testing. Tot 53% hogere conversie.
+8. **Social Media Agent** — Posts maken, reacties beheren, engagement analyseren op LinkedIn, Instagram, X. 34% meer engagement.
+9. **Ads & Campaign Agent** — Google Ads, Meta Ads, LinkedIn Ads optimaliseren. Biedstrategieen, budgetten, ROI-rapportage. Lagere CPA, hoger ROAS.
 
-### 3. SEO & AIO Agent
-Geoptimaliseerde content voor Google EN AI-zoekmachines (ChatGPT, Gemini, Perplexity). Keyword research, content gaps, technische SEO.
+### SALES & LEADGENERATIE
+10. **Lead Generation Agent** — Automatisch leads vinden, kwalificeren en opvolgen. Prospects scrapen, verrijken met data, persoonlijke outreach. 3x meer leads.
+11. **Appointment Setter Agent** — Automatisch afspraken inplannen. Follow-up sequences, reminders, no-show opvolging. 2x meer geboekte calls.
+12. **E-commerce Agent** — Productbeschrijvingen, prijsmonitoring, voorraadbeheer, abandoned cart follow-ups. Upsell/cross-sell. 28% hogere orderwaarde.
 
-### 4. Email Marketing Agent
-Welkomstflows, sales funnels, nieuwsbrieven, re-engagement campagnes. A/B testing. Tot 53% hogere conversie.
-
-### 5. Social Media Agent
-Posts maken, reacties beheren, engagement analyseren op LinkedIn, Instagram, X. Inclusief concurrentie-analyse en virale trend-detectie. Gemiddeld 34% meer engagement.
-
-### 6. Automation Agent
-Workflows automatiseren tussen systemen: CRM, boekhouding, projectmanagement, e-commerce. 12+ uur per week bespaard.
+### DATA & OPERATIONS
+13. **Automation Agent** — Workflows automatiseren tussen systemen: CRM, boekhouding, projectmanagement, e-commerce. 12+ uur/week bespaard.
+14. **Data & Analytics Agent** — Rapporten genereren, KPI-dashboards, trends detecteren, anomalieen signaleren. Realtime business intelligence.
+15. **Data Entry & Processing Agent** — Documenten verwerken, facturen inlezen, formulieren digitaliseren. Van PDF naar database. 95% minder handmatig werk.
+16. **Compliance & Monitoring Agent** — GDPR-compliance, datakwaliteit, beveiligingsrisico's, audit-voorbereiding. Continue monitoring.
+17. **Web Scraping & Research Agent** — Concurrenten monitoren, marktdata, prijsvergelijking, reviews analyseren. 24/7 marktinzichten.
+18. **Custom AI Agent** — Uniek probleem? Wij bouwen het. Van kennisbeheer tot industrie-specifieke workflows. 100% op maat.
 
 ## Onze Pakketten
 

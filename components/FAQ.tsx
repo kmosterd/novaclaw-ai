@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: "Welke AI agents bieden jullie aan?",
-    a: "Wij bieden 6 typen AI agents: Klantenservice Agent (automatische klantcommunicatie), Content Agent (content repurposing naar 10+ platformen), SEO & AIO Agent (gevonden worden door Google en AI-zoekmachines), Email Marketing Agent (campagnes en funnels), Social Media Agent (posten, analyseren, groeien) en Automation Agent (workflows tussen al je systemen). Je kiest zelf welke agents je wilt bij elk pakket."
+    a: "Wij bieden meer dan 18 typen AI agents in 4 categorieen. Klant & Communicatie: Klantenservice Agent, Voice Agent, Chatbot Agent en Helpdesk Agent. Marketing & Content: Content Agent, SEO & AIO Agent, Email Marketing Agent, Social Media Agent en Ads & Campaign Agent. Sales & Leadgeneratie: Lead Generation Agent, Appointment Setter Agent en E-commerce Agent. Data & Operations: Automation Agent, Data & Analytics Agent, Data Entry Agent, Compliance Agent, Web Scraping Agent en Custom AI Agent. Heb je een uniek probleem? Wij bouwen elke agent die je kunt bedenken."
   },
   {
     q: "Welke AI-technologie gebruiken jullie?",

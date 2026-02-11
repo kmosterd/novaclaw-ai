@@ -8,58 +8,192 @@ import {
   Mail,
   Share2,
   Workflow,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  Bot,
+  Phone,
+  Globe,
+  Shield,
+  CalendarCheck,
+  BrainCircuit,
+  Megaphone,
+  Database,
+  Headphones,
 } from "lucide-react";
 
-const services = [
+interface AgentCategory {
+  category: string;
+  description: string;
+  agents: Agent[];
+}
+
+interface Agent {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  stats: string;
+}
+
+const agentCategories: AgentCategory[] = [
   {
-    icon: MessageSquareMore,
-    title: "Klantenservice Agent",
+    category: "Klant & Communicatie",
     description:
-      "Automatisch klantberichten beantwoorden, triageren op urgentie en opvolgen. Reactietijd van 30 minuten naar 3 minuten. 24/7 beschikbaar, nooit ziek.",
-    stats: "90% snellere reactietijd",
-    color: "neon-cyan",
+      "Agents die klantcontact automatiseren en je bereikbaarheid verbeteren",
+    agents: [
+      {
+        icon: MessageSquareMore,
+        title: "Klantenservice Agent",
+        description:
+          "Automatisch klantberichten beantwoorden via email, chat, Slack of WhatsApp. Triageert op urgentie en escaleert complexe vragen naar een mens.",
+        stats: "90% snellere reactietijd",
+      },
+      {
+        icon: Phone,
+        title: "Voice Agent",
+        description:
+          "AI-gestuurd bellen en gespreksafhandeling. Inbound calls beantwoorden, outbound bellen voor afspraken en follow-ups. Menselijke spraakkwaliteit.",
+        stats: "24/7 telefonisch bereikbaar",
+      },
+      {
+        icon: Bot,
+        title: "Chatbot Agent",
+        description:
+          "Intelligente chatbot voor je website of app. Beantwoordt vragen, plant afspraken, kwalificeert leads en verwijst door — getraind op jouw bedrijf.",
+        stats: "80% vragen direct opgelost",
+      },
+      {
+        icon: Headphones,
+        title: "Helpdesk Agent",
+        description:
+          "Interne support automatiseren. Ticketsysteem beheren, FAQ beantwoorden voor medewerkers, IT-vragen triageren en kennisbank doorzoeken.",
+        stats: "60% minder tickets",
+      },
+    ],
   },
   {
-    icon: FileText,
-    title: "Content Agent",
+    category: "Marketing & Content",
     description:
-      "Van 1 stuk content naar 10+ platformen. Blogpost, social media posts, nieuwsbrief en meer — allemaal in jouw tone of voice en automatisch verspreid.",
-    stats: "300% meer content output",
-    color: "neon-purple",
+      "Agents die je marketing automatiseren en content op schaal produceren",
+    agents: [
+      {
+        icon: FileText,
+        title: "Content Agent",
+        description:
+          "Van 1 stuk content naar 10+ platformen. Blogposts, social media posts, nieuwsbrief en meer — allemaal in jouw tone of voice.",
+        stats: "300% meer content output",
+      },
+      {
+        icon: Search,
+        title: "SEO & AIO Agent",
+        description:
+          "Content die rankt bij Google en AI-zoekmachines (ChatGPT, Gemini, Perplexity). Keyword research, content gaps en technische SEO.",
+        stats: "Gevonden door mens en AI",
+      },
+      {
+        icon: Mail,
+        title: "Email Marketing Agent",
+        description:
+          "Welkomstflows, sales funnels, nieuwsbrieven en re-engagement campagnes. A/B testing op onderwerpregels. Hogere open rates.",
+        stats: "Tot 53% hogere conversie",
+      },
+      {
+        icon: Share2,
+        title: "Social Media Agent",
+        description:
+          "Posts maken, reacties beheren, engagement analyseren op LinkedIn, Instagram en X. Virale trend-detectie en concurrentie-analyse.",
+        stats: "34% meer engagement",
+      },
+      {
+        icon: Megaphone,
+        title: "Ads & Campaign Agent",
+        description:
+          "Google Ads, Meta Ads en LinkedIn Ads campagnes optimaliseren. Biedstrategieën aanpassen, budgetten herverdelen en rapporteren op ROI.",
+        stats: "Lagere CPA, hoger ROAS",
+      },
+    ],
   },
   {
-    icon: Search,
-    title: "SEO & AIO Agent",
+    category: "Sales & Leadgeneratie",
     description:
-      "Geoptimaliseerde content die rankt bij Google en AI-zoekmachines zoals ChatGPT, Gemini en Perplexity. Keyword research, content gaps en technische SEO — volledig geautomatiseerd.",
-    stats: "Gevonden door mens en AI",
-    color: "neon-magenta",
+      "Agents die je salesproces versnellen en leads omzetten in klanten",
+    agents: [
+      {
+        icon: Users,
+        title: "Lead Generation Agent",
+        description:
+          "Automatisch leads vinden, kwalificeren en opvolgen. Scrape prospects, verrijk met data, en stuur persoonlijke outreach via email of LinkedIn.",
+        stats: "3x meer gekwalificeerde leads",
+      },
+      {
+        icon: CalendarCheck,
+        title: "Appointment Setter Agent",
+        description:
+          "Automatisch afspraken inplannen met prospects. Follow-up sequences, reminders en no-show opvolging. Integreert met je agenda.",
+        stats: "2x meer geboekte calls",
+      },
+      {
+        icon: ShoppingCart,
+        title: "E-commerce Agent",
+        description:
+          "Productbeschrijvingen genereren, prijzen monitoren, voorraad beheren en abandoned cart follow-ups. Upsell en cross-sell automatiseren.",
+        stats: "28% hogere orderwaarde",
+      },
+    ],
   },
   {
-    icon: Mail,
-    title: "Email Marketing Agent",
+    category: "Data & Operations",
     description:
-      "Welkomstflows, sales funnels, nieuwsbrieven en re-engagement campagnes. A/B testing van onderwerpregels. Hogere open rates en meer conversies op automatische piloot.",
-    stats: "Tot 53% hogere conversie",
-    color: "neon-cyan",
-  },
-  {
-    icon: Share2,
-    title: "Social Media Agent",
-    description:
-      "Posts maken, reacties beheren, engagement analyseren en groeien op LinkedIn, Instagram en X. Inclusief concurrentie-analyse en virale trend-detectie.",
-    stats: "Gemiddeld 34% meer engagement",
-    color: "neon-purple",
-  },
-  {
-    icon: Workflow,
-    title: "Automation Agent",
-    description:
-      "Workflows automatiseren tussen al je systemen. CRM, boekhouding, projectmanagement, e-commerce — wij koppelen alles en laten AI het zware werk doen.",
-    stats: "12+ uur per week bespaard",
-    color: "neon-magenta",
+      "Agents die je bedrijfsprocessen automatiseren en inzichten leveren",
+    agents: [
+      {
+        icon: Workflow,
+        title: "Automation Agent",
+        description:
+          "Workflows automatiseren tussen al je systemen. CRM, boekhouding, projectmanagement, e-commerce — alles gekoppeld.",
+        stats: "12+ uur per week bespaard",
+      },
+      {
+        icon: BarChart3,
+        title: "Data & Analytics Agent",
+        description:
+          "Automatisch rapporten genereren, KPI-dashboards vullen, trends detecteren en anomalieën signaleren. Van ruwe data naar bruikbare inzichten.",
+        stats: "Realtime business intelligence",
+      },
+      {
+        icon: Database,
+        title: "Data Entry & Processing Agent",
+        description:
+          "Documenten verwerken, facturen inlezen, formulieren digitaliseren, data invoeren en valideren. Van PDF naar database in seconden.",
+        stats: "95% minder handmatig werk",
+      },
+      {
+        icon: Shield,
+        title: "Compliance & Monitoring Agent",
+        description:
+          "GDPR-compliance monitoren, datakwaliteit controleren, beveiligingsrisico's signaleren en audits voorbereiden. Altijd up-to-date.",
+        stats: "Continue compliance monitoring",
+      },
+      {
+        icon: Globe,
+        title: "Web Scraping & Research Agent",
+        description:
+          "Concurrenten monitoren, marktdata verzamelen, prijzen vergelijken, reviews analyseren en trends signaleren. Geautomatiseerd marktonderzoek.",
+        stats: "24/7 marktinzichten",
+      },
+      {
+        icon: BrainCircuit,
+        title: "Custom AI Agent",
+        description:
+          "Heb je een uniek probleem? Wij bouwen een agent op maat. Van intern kennisbeheer tot specifieke industrie-workflows. Alles is mogelijk.",
+        stats: "100% op maat gebouwd",
+      },
+    ],
   },
 ];
+
+// Flatten all agents for JSON-LD
+const allAgents = agentCategories.flatMap((cat) => cat.agents);
 
 // JSON-LD for services (Service schema for AIO/GEO)
 const servicesJsonLd = {
@@ -67,15 +201,15 @@ const servicesJsonLd = {
   "@type": "ItemList",
   name: "AI Agent Diensten van NovaClaw",
   description:
-    "Custom AI agents voor Nederlandse bedrijven: klantenservice, content, SEO, email marketing, social media en workflow automation.",
-  numberOfItems: services.length,
-  itemListElement: services.map((service, index) => ({
+    "Custom AI agents voor bedrijven: klantenservice, voice, content, SEO, email marketing, social media, leadgeneratie, e-commerce, data analytics, workflow automation en meer.",
+  numberOfItems: allAgents.length,
+  itemListElement: allAgents.map((agent, index) => ({
     "@type": "ListItem",
     position: index + 1,
     item: {
       "@type": "Service",
-      name: service.title,
-      description: service.description,
+      name: agent.title,
+      description: agent.description,
       provider: {
         "@type": "Organization",
         name: "NovaClaw AI",
@@ -84,6 +218,9 @@ const servicesJsonLd = {
     },
   })),
 };
+
+// Color cycling for visual variety
+const colors = ["neon-cyan", "neon-purple", "neon-magenta"];
 
 export default function Services() {
   return (
@@ -97,83 +234,105 @@ export default function Services() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
       />
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <span className="text-neon-cyan text-sm font-semibold tracking-widest uppercase">
             Onze AI Agents
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-            Welke Agent Past Bij Jouw Bedrijf?
+            Meer Dan {allAgents.length} Agent-Types. Eindeloze Mogelijkheden.
           </h2>
           <p className="text-xl text-white/60 max-w-3xl mx-auto">
-            Wij bouwen gespecialiseerde AI agents die specifieke taken overnemen.
-            Elk type agent wordt op maat gemaakt voor jouw merk, doelgroep en
-            doelen.
+            Van klantenservice tot data-analyse, van leadgeneratie tot compliance
+            monitoring. Wij bouwen elke AI agent die jouw bedrijf nodig heeft —
+            op maat, met de beste technologie.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, idx) => (
+        {/* Category sections */}
+        {agentCategories.map((category, catIdx) => (
+          <div key={catIdx} className="mb-20">
             <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="glass group hover:border-white/20 transition-all duration-300 p-8"
+              className="mb-8"
             >
-              <div
-                className={`w-14 h-14 rounded-2xl bg-${service.color}/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}
-              >
-                <service.icon
-                  className={`w-7 h-7 text-${service.color}`}
-                  strokeWidth={1.5}
-                />
-              </div>
-
-              <h3 className="text-xl font-bold mb-3 text-white">
-                {service.title}
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {category.category}
               </h3>
-
-              <p className="text-white/50 text-sm leading-relaxed mb-4">
-                {service.description}
-              </p>
-
-              <div
-                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-${service.color}/10 border border-${service.color}/20`}
-              >
-                <div
-                  className={`w-2 h-2 rounded-full bg-${service.color} animate-pulse`}
-                />
-                <span className={`text-xs font-medium text-${service.color}`}>
-                  {service.stats}
-                </span>
-              </div>
+              <p className="text-white/40 text-sm">{category.description}</p>
             </motion.div>
-          ))}
-        </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {category.agents.map((agent, idx) => {
+                const color = colors[(catIdx + idx) % colors.length];
+                const globalIdx = catIdx * 10 + idx;
+
+                return (
+                  <motion.div
+                    key={globalIdx}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="glass group hover:border-white/20 transition-all duration-300 p-6"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <agent.icon
+                        className="w-6 h-6 text-neon-cyan"
+                        strokeWidth={1.5}
+                      />
+                    </div>
+
+                    <h4 className="text-lg font-bold mb-2 text-white">
+                      {agent.title}
+                    </h4>
+
+                    <p className="text-white/50 text-sm leading-relaxed mb-4">
+                      {agent.description}
+                    </p>
+
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+                      <div className="w-2 h-2 rounded-full bg-neon-cyan animate-pulse" />
+                      <span className="text-xs font-medium text-neon-cyan">
+                        {agent.stats}
+                      </span>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
 
         {/* CTA under services */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-8"
         >
-          <p className="text-white/50 mb-6">
-            Niet zeker welke agent je nodig hebt? Wij adviseren je graag.
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
-          >
-            Gratis Adviesgesprek Inplannen
-          </a>
+          <div className="glass-dark rounded-2xl p-10 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-bold text-white mb-3">
+              Jouw agent staat er niet tussen?
+            </h3>
+            <p className="text-white/50 mb-6">
+              Geen probleem. Wij bouwen elke AI agent die je kunt bedenken. Vertel
+              ons je uitdaging en wij maken het.
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
+            >
+              Gratis Adviesgesprek Inplannen
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

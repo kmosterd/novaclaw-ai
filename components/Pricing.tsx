@@ -12,7 +12,7 @@ export default function Pricing() {
       description: "Perfect om te starten met AI",
       features: [
         "1 Custom AI Agent naar keuze",
-        "Keuze uit: Klantenservice, Content, Email, Social Media of Automation",
+        "Keuze uit 18+ agent-types (bijv. Klantenservice, Content, Voice, SEO)",
         "1 Platform integratie",
         "Tot 20 geautomatiseerde acties/maand",
         "Email support",
@@ -27,7 +27,7 @@ export default function Pricing() {
       description: "Voor bedrijven die serieus willen opschalen",
       features: [
         "3 Custom AI Agents naar keuze",
-        "Mix & match alle agent-types",
+        "Mix & match uit 18+ agent-types",
         "Alle platforms geintegreerd",
         "Onbeperkte acties",
         "Priority support",
@@ -44,7 +44,7 @@ export default function Pricing() {
       description: "Voor organisaties met complexe behoeften",
       features: [
         "Onbeperkte AI Agents",
-        "Alle 6 agent-types beschikbaar",
+        "Alle 18+ agent-types beschikbaar",
         "Custom integraties & workflows",
         "Dedicated account manager",
         "24/7 support",
@@ -139,16 +139,28 @@ export default function Pricing() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-white/40 mb-3">
-            Beschikbare agent-types voor alle pakketten:
+            18+ beschikbare agent-types voor alle pakketten:
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-2">
             {[
               "Klantenservice",
+              "Voice",
+              "Chatbot",
+              "Helpdesk",
               "Content",
               "SEO & AIO",
               "Email Marketing",
               "Social Media",
+              "Ads & Campaigns",
+              "Lead Generation",
+              "Appointment Setter",
+              "E-commerce",
               "Automation",
+              "Data & Analytics",
+              "Data Entry",
+              "Compliance",
+              "Web Scraping",
+              "Custom Agent",
             ].map((type) => (
               <span
                 key={type}
