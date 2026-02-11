@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { TrendingUp, Clock, Zap, Target } from "lucide-react";
 
 const results = [
@@ -34,12 +31,7 @@ export default function Results() {
   return (
     <section className="relative py-24 px-4">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16 animate-fade-in-up">
           <span className="text-neon-magenta text-sm font-semibold tracking-widest uppercase">
             Bewezen Resultaten
           </span>
@@ -50,17 +42,14 @@ export default function Results() {
             Geen vage beloftes. Dit zijn concrete resultaten die bedrijven behalen
             met custom AI agents.
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {results.map((result, idx) => (
-            <motion.div
+            <div
               key={idx}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="glass-dark p-8 text-center group"
+              className="glass-dark p-8 text-center group animate-fade-in-up"
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
               <div className="w-12 h-12 rounded-xl bg-neon-magenta/10 flex items-center justify-center mx-auto mb-4">
                 <result.icon
@@ -80,17 +69,12 @@ export default function Results() {
               <div className="text-xs text-white/40 leading-relaxed">
                 {result.detail}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Social proof */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-16 glass-dark rounded-2xl p-8 md:p-12 text-center"
-        >
+        <div className="mt-16 glass-dark rounded-2xl p-8 md:p-12 text-center animate-fade-in-up" style={{ animationDelay: '400ms' }}>
           <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-6">
             &ldquo;Bedrijven die AI agents inzetten besparen gemiddeld{" "}
             <span className="text-neon-cyan font-semibold">12-20 uur per week</span>{" "}
@@ -110,7 +94,7 @@ export default function Results() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -10,9 +10,9 @@ import Pricing from "@/components/Pricing";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import AgentChat from "@/components/AgentChat";
 
 const ParticleField = dynamic(() => import("@/components/three/ParticleField"), { ssr: false });
+const AgentChat = dynamic(() => import("@/components/AgentChat"), { ssr: false });
 
 export default function Home() {
   return (

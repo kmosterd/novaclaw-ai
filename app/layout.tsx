@@ -142,11 +142,11 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen overflow-x-hidden">
         <div className="relative">
-          {/* Gradient Orbs Background */}
+          {/* Gradient Orbs Background — reduced blur for better performance */}
           <div className="fixed inset-0 -z-10 overflow-hidden">
-            <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-neon-purple/30 rounded-full blur-[128px] animate-pulse" />
-            <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-neon-cyan/20 rounded-full blur-[128px] animate-pulse" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-magenta/10 rounded-full blur-[200px]" />
+            <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-[80px]" />
+            <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-neon-cyan/15 rounded-full blur-[80px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-neon-magenta/8 rounded-full blur-[100px]" />
           </div>
           {children}
         </div>

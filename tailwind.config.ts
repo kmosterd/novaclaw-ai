@@ -33,6 +33,10 @@ const config: Config = {
         "float": "float 6s ease-in-out infinite",
         "glow": "glow 2s ease-in-out infinite alternate",
         "gradient-shift": "gradient-shift 8s ease infinite",
+        "spin-slow": "spin 20s linear infinite",
+        "spin-reverse": "spin 15s linear infinite reverse",
+        "twinkle": "twinkle 4s ease-in-out infinite",
+        "fade-in-up": "fade-in-up 0.6s ease-out both",
       },
       keyframes: {
         "pulse-neon": {
@@ -54,6 +58,14 @@ const config: Config = {
         "gradient-shift": {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
+        },
+        "twinkle": {
+          "0%, 100%": { opacity: "0.2" },
+          "50%": { opacity: "0.8" },
+        },
+        "fade-in-up": {
+          "from": { opacity: "0", transform: "translateY(20px)" },
+          "to": { opacity: "1", transform: "translateY(0)" },
         },
       },
       backdropBlur: {
