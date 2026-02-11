@@ -25,12 +25,20 @@ const faqs = [
     a: "Absoluut. We zijn volledig GDPR-compliant en verwerken alle data binnen de EU. We gebruiken enterprise-grade beveiliging met encryptie. Jouw data wordt nooit gedeeld met derden en je behoudt altijd volledige eigendom over je content en gegevens."
   },
   {
+    q: "Welke AI agents bieden jullie aan?",
+    a: "Wij bieden 6 typen AI agents: Klantenservice Agent (automatische klantcommunicatie), Content Agent (content repurposing naar 10+ platformen), SEO & AIO Agent (gevonden worden door Google en AI-zoekmachines), Email Marketing Agent (campagnes en funnels), Social Media Agent (posten, analyseren, groeien) en Automation Agent (workflows tussen al je systemen). Je kiest zelf welke agents je wilt bij elk pakket."
+  },
+  {
+    q: "Welke AI-technologie gebruiken jullie?",
+    a: "Wij zijn tech-agnostisch en werken met de beste AI-modellen: OpenAI (GPT-4o), Anthropic Claude, Google Gemini en Meta Llama. Per project kiezen wij de technologie die de beste resultaten levert voor jouw specifieke use case. Je bent dus nooit gebonden aan een leverancier."
+  },
+  {
     q: "Welke platforms ondersteunen jullie?",
     a: "We integreren met alle gangbare platforms: LinkedIn, Instagram, Twitter/X, Facebook, je website, email marketing tools, CRM-systemen en meer. Bij het Enterprise-pakket bouwen we ook custom integraties voor specifieke software die je gebruikt."
   },
   {
     q: "Wat is het verschil tussen NovaClaw en een chatbot zoals ChatGPT?",
-    a: "ChatGPT is een generieke AI-tool die jij zelf moet aansturen. NovaClaw bouwt gespecialiseerde AI agents die autonoom taken uitvoeren, specifiek getraind op jouw merk, doelgroep en doelen. Het verschil is als een universeel zakmes versus een op maat gemaakt professioneel gereedschap."
+    a: "ChatGPT is een generieke AI-tool die jij zelf moet aansturen. NovaClaw bouwt gespecialiseerde AI agents die autonoom taken uitvoeren, specifiek getraind op jouw merk, doelgroep en doelen. Bovendien werken wij niet met een enkel AI-model maar kiezen per taak het beste model (OpenAI, Claude, Gemini). Het verschil is als een universeel zakmes versus een compleet op maat gemaakt professioneel gereedschap."
   },
   {
     q: "Hoe kan ik contact opnemen met NovaClaw?",

@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
+  { label: "Diensten", href: "#diensten" },
+  { label: "Resultaten", href: "#resultaten" },
   { label: "Hoe het werkt", href: "#hoe-het-werkt" },
-  { label: "Wat je krijgt", href: "#wat-je-krijgt" },
   { label: "Prijzen", href: "#prijzen" },
   { label: "FAQ", href: "#faq" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
