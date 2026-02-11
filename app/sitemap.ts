@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
-import { createClient } from "@supabase/supabase-js";
+import { blogPosts } from "@/lib/blog-data";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://novaclaw.tech";
 
   // Static pages
@@ -20,34 +20,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic blog posts from Supabase
-  let blogPages: MetadataRoute.Sitemap = [];
-
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (supabaseUrl && supabaseKey) {
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data: posts } = await supabase
-        .from("content_calendar")
-        .select("id, created_at, platform")
-        .eq("platform", "blog")
-        .order("created_at", { ascending: false })
-        .limit(100);
-
-      if (posts) {
-        blogPages = posts.map((post) => ({
-          url: `${baseUrl}/blog/${post.id}`,
-          lastModified: new Date(post.created_at),
-          changeFrequency: "monthly" as const,
-          priority: 0.6,
-        }));
-      }
-    }
-  } catch (error) {
-    console.error("Sitemap: Error fetching blog posts", error);
-  }
+  // Blog posts from static blog data
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.updatedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
   return [...staticPages, ...blogPages];
 }
