@@ -14,6 +14,8 @@ export const runtime = "edge";
 async function sendNotificationEmail(lead: any) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || "karsten.mosterd@gmail.com";
+  // Use verified domain, fallback to Resend's default for testing
+  const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "NovaClaw <onboarding@resend.dev>";
 
   if (!RESEND_API_KEY) {
     console.log("No RESEND_API_KEY - skipping email notification");
@@ -21,7 +23,7 @@ async function sendNotificationEmail(lead: any) {
   }
 
   const metadata = lead.metadata || {};
-  
+
   const emailContent = `
 Nieuwe lead via NovaClaw website!
 
@@ -48,6 +50,8 @@ Bekijk alle leads in je Supabase dashboard.
   `.trim();
 
   try {
+    console.log(`Sending notification email from: ${FROM_EMAIL} to: ${NOTIFICATION_EMAIL}`);
+
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -55,17 +59,19 @@ Bekijk alle leads in je Supabase dashboard.
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "NovaClaw <leads@novaclaw.nl>",
+        from: FROM_EMAIL,
         to: [NOTIFICATION_EMAIL],
         subject: `🚀 Nieuwe Lead: ${lead.name} - ${lead.company || "Particulier"}`,
         text: emailContent,
       }),
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      console.error("Email send failed:", await response.text());
+      console.error(`Email send failed (${response.status}):`, responseText);
     } else {
-      console.log("Notification email sent successfully");
+      console.log("Notification email sent successfully:", responseText);
     }
   } catch (error) {
     console.error("Email error:", error);
