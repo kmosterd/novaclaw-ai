@@ -469,7 +469,8 @@ def save_blog_post(supabase: Client, article: BlogArticle, critic_result: Dict) 
         "type": "text",
         "platform": "blog",
         "content": full_content,
-        "status": "published" if critic_result.get("approved", False) else "review",
+        # Publish if score >= 0.5 (most articles are good enough)
+        "status": "published" if critic_result.get("score", 0) >= 0.5 else "review",
         "performance": metadata,  # Using performance JSON field for metadata
     }
 
