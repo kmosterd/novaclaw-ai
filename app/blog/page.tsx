@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, Globe, Tag } from "lucide-react";
 import { getAllPostsCombined, BlogPost } from "@/lib/blog-data";
 
@@ -33,21 +34,33 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
         featured ? "md:col-span-2" : ""
       }`}
     >
-      {/* Gradient header as image placeholder */}
+      {/* Featured image */}
       <div
-        className={`w-full bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center ${
+        className={`w-full relative overflow-hidden ${
           featured ? "h-48" : "h-36"
         }`}
       >
-        <span className="text-4xl opacity-30">
-          {post.category.includes("Uitleg") || post.category.includes("Explained")
-            ? "\u{1F916}"
-            : post.category.includes("AIO") || post.category.includes("SEO")
-            ? "\u{1F50D}"
-            : post.category.includes("Trends")
-            ? "\u{1F4C8}"
-            : "\u26A1"}
-        </span>
+        {post.featuredImage ? (
+          <Image
+            src={post.featuredImage}
+            alt={post.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes={featured ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 50vw"}
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center">
+            <span className="text-4xl opacity-30">
+              {post.category.includes("Uitleg") || post.category.includes("Explained")
+                ? "\u{1F916}"
+                : post.category.includes("AIO") || post.category.includes("SEO")
+                ? "\u{1F50D}"
+                : post.category.includes("Trends")
+                ? "\u{1F4C8}"
+                : "\u26A1"}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="p-6">

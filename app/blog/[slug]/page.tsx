@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, Globe, Tag, Languages } from "lucide-react";
 import { notFound } from "next/navigation";
 import {
@@ -63,6 +64,9 @@ export async function generateMetadata({
       authors: [post.author],
       locale: post.lang === "nl" ? "nl_NL" : "en_US",
       tags: post.tags,
+      ...(post.featuredImage && {
+        images: [{ url: post.featuredImage, width: 1200, height: 630, alt: post.title }],
+      }),
     },
     twitter: {
       card: "summary_large_image",
@@ -295,17 +299,30 @@ export default async function BlogPostPage({
           {post.description}
         </p>
 
-        {/* Gradient header as image placeholder */}
-        <div className="w-full h-48 sm:h-64 rounded-2xl bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center mb-10">
-          <span className="text-6xl opacity-30">
-            {post.category.includes("Uitleg") || post.category.includes("Explained")
-              ? "\u{1F916}"
-              : post.category.includes("AIO") || post.category.includes("SEO")
-              ? "\u{1F50D}"
-              : post.category.includes("Trends")
-              ? "\u{1F4C8}"
-              : "\u26A1"}
-          </span>
+        {/* Featured image */}
+        <div className="w-full h-48 sm:h-64 rounded-2xl overflow-hidden relative mb-10">
+          {post.featuredImage ? (
+            <Image
+              src={post.featuredImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center">
+              <span className="text-6xl opacity-30">
+                {post.category.includes("Uitleg") || post.category.includes("Explained")
+                  ? "\u{1F916}"
+                  : post.category.includes("AIO") || post.category.includes("SEO")
+                  ? "\u{1F50D}"
+                  : post.category.includes("Trends")
+                  ? "\u{1F4C8}"
+                  : "\u26A1"}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Article content */}

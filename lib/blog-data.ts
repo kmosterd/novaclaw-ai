@@ -33,6 +33,7 @@ export const blogPosts: BlogPost[] = [
     updatedAt: "2026-02-10",
     author: "NovaClaw AI Team",
     readingTime: "8 min",
+    featuredImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
     translationSlug: "what-are-ai-agents",
     content: `## Wat zijn AI agents precies?
 
@@ -123,6 +124,7 @@ De bedrijven die nu beginnen met AI agents bouwen een voorsprong die moeilijk in
     updatedAt: "2026-02-10",
     author: "NovaClaw AI Team",
     readingTime: "8 min",
+    featuredImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
     translationSlug: "wat-zijn-ai-agents",
     content: `## What are AI agents exactly?
 
@@ -213,6 +215,7 @@ Businesses that start with AI agents now are building a lead that's hard to catc
     updatedAt: "2026-02-09",
     author: "NovaClaw AI Team",
     readingTime: "6 min",
+    featuredImage: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=1200&h=630&fit=crop",
     translationSlug: "aio-vs-seo-difference",
     content: `## De verschuiving: van Google naar AI
 
@@ -279,6 +282,7 @@ Onze SEO & AIO Agent doet het zware werk: keyword research, content optimalisati
     updatedAt: "2026-02-09",
     author: "NovaClaw AI Team",
     readingTime: "6 min",
+    featuredImage: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=1200&h=630&fit=crop",
     translationSlug: "aio-vs-seo-verschil",
     content: `## The shift: from Google to AI
 
@@ -345,6 +349,7 @@ Our SEO & AIO Agent does the heavy lifting: keyword research, content optimizati
     updatedAt: "2026-02-08",
     author: "NovaClaw AI Team",
     readingTime: "7 min",
+    featuredImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=630&fit=crop",
     translationSlug: "6-ai-agents-every-business-needs",
     content: `## Waarom AI agents onmisbaar worden voor het MKB
 
@@ -435,6 +440,7 @@ Wij bouwen, testen en beheren alles voor je. Geen technische kennis nodig, geen 
     updatedAt: "2026-02-08",
     author: "NovaClaw AI Team",
     readingTime: "7 min",
+    featuredImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=630&fit=crop",
     translationSlug: "6-ai-agents-voor-mkb",
     content: `## Why AI agents are becoming essential for businesses
 
