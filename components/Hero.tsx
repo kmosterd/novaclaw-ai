@@ -104,7 +104,7 @@ export default function Hero() {
         </div>
 
         <div className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-          <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-8 border border-gray-700/50">
+          <div className="bg-gray-900/90 md:bg-gray-900/50 md:backdrop-blur-xl rounded-2xl p-8 border border-gray-700/50">
             {isSubmitted ? (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
