@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   MessageSquareMore,
   FileText,
@@ -235,12 +232,7 @@ export default function Services() {
       />
 
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
+        <div className="text-center mb-20 animate-fade-in-up">
           <span className="text-neon-cyan text-sm font-semibold tracking-widest uppercase">
             Onze AI Agents
           </span>
@@ -252,22 +244,17 @@ export default function Services() {
             monitoring. Wij bouwen elke AI agent die jouw bedrijf nodig heeft —
             op maat, met de beste technologie.
           </p>
-        </motion.div>
+        </div>
 
         {/* Category sections */}
         {agentCategories.map((category, catIdx) => (
           <div key={catIdx} className="mb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mb-8"
-            >
+            <div className="mb-8 animate-fade-in-up">
               <h3 className="text-2xl font-bold text-white mb-2">
                 {category.category}
               </h3>
               <p className="text-white/40 text-sm">{category.description}</p>
-            </motion.div>
+            </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {category.agents.map((agent, idx) => {
@@ -275,13 +262,10 @@ export default function Services() {
                 const globalIdx = catIdx * 10 + idx;
 
                 return (
-                  <motion.div
+                  <div
                     key={globalIdx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="glass group hover:border-white/20 transition-all duration-300 p-6"
+                    className="glass group hover:border-white/20 transition-all duration-300 p-6 animate-fade-in-up"
+                    style={{ animationDelay: `${idx * 0.05}s` }}
                   >
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                       <agent.icon
@@ -304,7 +288,7 @@ export default function Services() {
                         {agent.stats}
                       </span>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
@@ -312,12 +296,7 @@ export default function Services() {
         ))}
 
         {/* CTA under services */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mt-8"
-        >
+        <div className="text-center mt-8 animate-fade-in-up">
           <div className="glass-dark rounded-2xl p-10 max-w-2xl mx-auto">
             <h3 className="text-2xl font-bold text-white mb-3">
               Jouw agent staat er niet tussen?
@@ -333,7 +312,7 @@ export default function Services() {
               Gratis Adviesgesprek Inplannen
             </a>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

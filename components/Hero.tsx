@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
 
 const businessTypes = [
@@ -29,7 +28,7 @@ const businessGoals = [
 
 const budgetRanges = [
   "Starter (€497/maand)",
-  "Growth (€997/maand)", 
+  "Growth (€997/maand)",
   "Enterprise (op maat)",
   "Weet ik nog niet"
 ];
@@ -50,7 +49,7 @@ export default function Hero() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.gdprConsent) {
       setError("Je moet akkoord gaan met de privacyvoorwaarden.");
       return;
@@ -90,7 +89,7 @@ export default function Hero() {
   return (
     <section id="contact" className="relative min-h-screen flex items-center justify-center px-4 py-20">
       <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+        <div className="animate-fade-in-up">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">Wij Bouwen</span>
             <br />
@@ -98,13 +97,13 @@ export default function Hero() {
           </h1>
           <p className="text-xl text-gray-300 mb-8">NovaClaw is een Nederlands bureau dat custom AI-agents ontwikkelt voor jouw bedrijf. Wij bouwen, testen en beheren - jij plukt de vruchten.</p>
           <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /><span>100% op maat</span></div>
-            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /><span>GDPR compliant</span></div>
-            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /><span>Nederlands team</span></div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full" /><span>100% op maat</span></div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full" /><span>GDPR compliant</span></div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 bg-green-400 rounded-full" /><span>Nederlands team</span></div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
           <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl p-8 border border-gray-700/50">
             {isSubmitted ? (
               <div className="text-center py-8">
@@ -166,7 +165,7 @@ export default function Hero() {
               </>
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
