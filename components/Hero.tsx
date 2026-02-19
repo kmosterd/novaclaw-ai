@@ -79,6 +79,15 @@ export default function Hero() {
 
       if (!response.ok) throw new Error("Verzenden mislukt");
       setIsSubmitted(true);
+
+      // GA4 conversie event
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "generate_lead", {
+          event_category: "form",
+          event_label: formData.businessGoal || "hero_form",
+          value: formData.budget || "unknown",
+        });
+      }
     } catch (err) {
       setError("Er ging iets mis. Probeer het opnieuw.");
     } finally {
