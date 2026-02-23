@@ -10,6 +10,8 @@ import {
   getAllPostsCombined,
   BlogPost,
 } from "@/lib/blog-data";
+import InlineArticleCTA from "@/components/blog/InlineArticleCTA";
+import LeadMagnetCTA from "@/components/blog/LeadMagnetCTA";
 
 function formatDate(dateStr: string, lang: "nl" | "en") {
   return new Intl.DateTimeFormat(lang === "nl" ? "nl-NL" : "en-US", {
@@ -326,9 +328,21 @@ export default async function BlogPostPage({
           )}
         </div>
 
-        {/* Article content */}
+        {/* Article content with inline CTA */}
         <article className="mb-12">
-          {renderMarkdown(post.content)}
+          {(() => {
+            const allElements = renderMarkdown(post.content);
+            const midpoint = Math.floor(allElements.length / 2);
+            const firstHalf = allElements.slice(0, midpoint);
+            const secondHalf = allElements.slice(midpoint);
+            return (
+              <>
+                {firstHalf}
+                <InlineArticleCTA variant="newsletter" lang={post.lang} />
+                {secondHalf}
+              </>
+            );
+          })()}
         </article>
 
         {/* Tags */}
@@ -357,6 +371,11 @@ export default async function BlogPostPage({
                 : "The NovaClaw team writes about AI agents, AIO and marketing automation."}
             </p>
           </div>
+        </div>
+
+        {/* Lead Magnet CTA */}
+        <div className="mb-12">
+          <LeadMagnetCTA lang={post.lang} />
         </div>
 
         {/* CTA */}

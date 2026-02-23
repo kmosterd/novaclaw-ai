@@ -3,6 +3,8 @@ import Link from "next/link";
 import BlogImage from "@/components/BlogImage";
 import { ArrowLeft, Calendar, Clock, Globe, Tag } from "lucide-react";
 import { getAllPostsCombined, BlogPost } from "@/lib/blog-data";
+import NewsletterBanner from "@/components/blog/NewsletterBanner";
+import LeadMagnetCTA from "@/components/blog/LeadMagnetCTA";
 
 export const metadata: Metadata = {
   title: "Blog & Kennisbank | NovaClaw AI",
@@ -180,6 +182,11 @@ export default async function BlogPage() {
           )}
         </div>
 
+        {/* Newsletter Banner */}
+        <div className="mb-16">
+          <NewsletterBanner lang="nl" />
+        </div>
+
         {/* English articles */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-6">
@@ -204,6 +211,11 @@ export default async function BlogPage() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Lead Magnet CTA */}
+        <div className="mb-12">
+          <LeadMagnetCTA lang="nl" />
         </div>
 
         {/* CTA */}
