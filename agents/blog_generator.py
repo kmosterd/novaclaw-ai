@@ -442,6 +442,59 @@ Return JSON: {{"approved": true/false, "score": 0.0-1.0, "feedback": "brief feed
 
 
 # ============================================
+# UNSPLASH FEATURED IMAGES
+# ============================================
+
+# Curated Unsplash photo IDs mapped to common blog topics
+# These are high-quality, landscape photos that work well as featured images
+UNSPLASH_IMAGES = {
+    "ai": "photo-1677442136019-21780ecad995",       # AI brain visualization
+    "security": "photo-1555949963-ff9fe0c870eb",     # Cybersecurity lock
+    "automation": "photo-1485827404703-89b55fcc595e", # Abstract tech lines
+    "business": "photo-1552664730-d307ca884978",      # Business meeting
+    "marketing": "photo-1460925895917-afdab827c52f",  # Marketing dashboard
+    "seo": "photo-1432888498266-38ffec3eaf0a",        # SEO/search desk
+    "data": "photo-1551288049-bebda4e38f71",           # Data analytics
+    "content": "photo-1499750310107-5fef28a66643",     # Content creation desk
+    "agents": "photo-1620712943543-bcc4688e7485",      # Robot/AI agent
+    "coding": "photo-1461749280684-dccba630e2f6",      # Code on screen
+    "cloud": "photo-1544197150-b99a580bb7a8",           # Cloud technology
+    "default": "photo-1535378917042-10a22c95931a",      # Abstract tech
+}
+
+
+def get_unsplash_image(article: "BlogArticle") -> str:
+    """Pick a relevant Unsplash image based on article tags and category."""
+    text = " ".join(article.tags + [article.category]).lower()
+
+    if any(w in text for w in ["security", "veiligheid", "privacy", "gdpr", "compliance"]):
+        key = "security"
+    elif any(w in text for w in ["seo", "aio", "search", "zoek", "vindbaarheid"]):
+        key = "seo"
+    elif any(w in text for w in ["marketing", "email", "social media", "ads"]):
+        key = "marketing"
+    elif any(w in text for w in ["automation", "automatisering", "workflow"]):
+        key = "automation"
+    elif any(w in text for w in ["data", "analytics", "dashboard"]):
+        key = "data"
+    elif any(w in text for w in ["content", "blog", "schrijven", "writing"]):
+        key = "content"
+    elif any(w in text for w in ["code", "coding", "developer", "programming", "api"]):
+        key = "coding"
+    elif any(w in text for w in ["agent", "chatbot", "assistant"]):
+        key = "agents"
+    elif any(w in text for w in ["business", "bedrijf", "mkb", "enterprise", "startup"]):
+        key = "business"
+    elif any(w in text for w in ["ai", "artificial intelligence", "machine learning", "llm"]):
+        key = "ai"
+    else:
+        key = "default"
+
+    photo_id = UNSPLASH_IMAGES[key]
+    return f"https://images.unsplash.com/{photo_id}?w=1200&h=630&fit=crop"
+
+
+# ============================================
 # SAVE TO SUPABASE
 # ============================================
 
@@ -465,6 +518,9 @@ def save_blog_post(supabase: Client, article: BlogArticle, critic_result: Dict) 
     # Content format: title as first line, then markdown body
     full_content = f"# {article.title}\n\n{article.content}"
 
+    # Pick a relevant Unsplash featured image
+    featured_image = get_unsplash_image(article)
+
     record = {
         "type": "text",
         "platform": "blog",
@@ -472,6 +528,7 @@ def save_blog_post(supabase: Client, article: BlogArticle, critic_result: Dict) 
         # Publish if score >= 0.5 (most articles are good enough)
         "status": "published" if critic_result.get("score", 0) >= 0.5 else "review",
         "performance": metadata,  # Using performance JSON field for metadata
+        "media_url": featured_image,
     }
 
     try:
