@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import BlogImage from "@/components/BlogImage";
 import { ArrowLeft, Calendar, Clock, Globe, Tag, Languages } from "lucide-react";
 import { notFound } from "next/navigation";
 import {
@@ -302,13 +302,14 @@ export default async function BlogPostPage({
         {/* Featured image */}
         <div className="w-full h-48 sm:h-64 rounded-2xl overflow-hidden relative mb-10">
           {post.featuredImage ? (
-            <Image
+            <BlogImage
               src={post.featuredImage}
               alt={post.title}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 768px"
               priority
+              category={post.category}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center">

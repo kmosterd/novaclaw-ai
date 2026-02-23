@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import BlogImage from "@/components/BlogImage";
 import { ArrowLeft, Calendar, Clock, Globe, Tag } from "lucide-react";
 import { getAllPostsCombined, BlogPost } from "@/lib/blog-data";
 
@@ -41,12 +41,13 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
         }`}
       >
         {post.featuredImage ? (
-          <Image
+          <BlogImage
             src={post.featuredImage}
             alt={post.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes={featured ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 50vw"}
+            category={post.category}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-neon-purple/20 via-neon-cyan/10 to-neon-magenta/20 flex items-center justify-center">

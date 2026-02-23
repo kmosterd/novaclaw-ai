@@ -457,7 +457,7 @@ UNSPLASH_IMAGES = {
     "security": [
         "photo-1555949963-ff9fe0c870eb",  # Cybersecurity lock
         "photo-1614064641938-3bbee52942c7",  # Shield digital
-        "photo-1563986768609-322da13575f2",  # Security padlock
+        "photo-1550751827-4bd374c3f58b",  # Security padlock
         "photo-1510511459019-5dda7724fd87",  # Fingerprint scan
     ],
     "automation": [
@@ -499,7 +499,7 @@ UNSPLASH_IMAGES = {
     "agents": [
         "photo-1620712943543-bcc4688e7485",  # Robot/AI agent
         "photo-1535378917042-10a22c95931a",  # Abstract tech
-        "photo-1531746790095-e5995fce0854",  # Chatbot concept
+        "photo-1531482615713-2afd69097998",  # Chatbot concept
         "photo-1676299081847-824916de030a",  # AI assistant
     ],
     "coding": [
