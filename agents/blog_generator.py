@@ -446,25 +446,73 @@ Return JSON: {{"approved": true/false, "score": 0.0-1.0, "feedback": "brief feed
 # ============================================
 
 # Curated Unsplash photo IDs mapped to common blog topics
-# These are high-quality, landscape photos that work well as featured images
+# Multiple photos per category so no two articles get the same image
 UNSPLASH_IMAGES = {
-    "ai": "photo-1677442136019-21780ecad995",       # AI brain visualization
-    "security": "photo-1555949963-ff9fe0c870eb",     # Cybersecurity lock
-    "automation": "photo-1485827404703-89b55fcc595e", # Abstract tech lines
-    "business": "photo-1552664730-d307ca884978",      # Business meeting
-    "marketing": "photo-1460925895917-afdab827c52f",  # Marketing dashboard
-    "seo": "photo-1432888498266-38ffec3eaf0a",        # SEO/search desk
-    "data": "photo-1551288049-bebda4e38f71",           # Data analytics
-    "content": "photo-1499750310107-5fef28a66643",     # Content creation desk
-    "agents": "photo-1620712943543-bcc4688e7485",      # Robot/AI agent
-    "coding": "photo-1461749280684-dccba630e2f6",      # Code on screen
-    "cloud": "photo-1544197150-b99a580bb7a8",           # Cloud technology
-    "default": "photo-1535378917042-10a22c95931a",      # Abstract tech
+    "ai": [
+        "photo-1677442136019-21780ecad995",  # AI brain visualization
+        "photo-1684369175833-4b445ad6bfb5",  # Neural network blue
+        "photo-1655720828018-edd2daec9349",  # AI chip abstract
+        "photo-1696258686454-60082b2c33e2",  # Futuristic AI interface
+    ],
+    "security": [
+        "photo-1555949963-ff9fe0c870eb",  # Cybersecurity lock
+        "photo-1614064641938-3bbee52942c7",  # Shield digital
+        "photo-1563986768609-322da13575f2",  # Security padlock
+        "photo-1510511459019-5dda7724fd87",  # Fingerprint scan
+    ],
+    "automation": [
+        "photo-1485827404703-89b55fcc595e",  # Abstract tech lines
+        "photo-1518432031352-d6fc5c10da5a",  # Code automation
+        "photo-1551434678-e076c223a692",  # Team workflow
+        "photo-1581091226825-a6a2a5aee158",  # Robot arm industry
+    ],
+    "business": [
+        "photo-1552664730-d307ca884978",  # Business meeting
+        "photo-1542744173-8e7e53415bb0",  # Conference room
+        "photo-1556761175-5973dc0f32e7",  # Startup team
+        "photo-1454165804606-c3d57bc86b40",  # Business desk laptop
+    ],
+    "marketing": [
+        "photo-1460925895917-afdab827c52f",  # Marketing dashboard
+        "photo-1533750349088-cd871a92f312",  # Digital marketing
+        "photo-1557838923-2985c318be48",  # Social media phone
+        "photo-1432888622747-4eb9a8efeb07",  # Creative strategy
+    ],
+    "seo": [
+        "photo-1432888498266-38ffec3eaf0a",  # SEO/search desk
+        "photo-1504868584819-f8e8b4b6d7e3",  # Analytics screen
+        "photo-1460925895917-afdab827c52f",  # Search optimization
+        "photo-1553877522-43269d4ea984",  # Google search
+    ],
+    "data": [
+        "photo-1551288049-bebda4e38f71",  # Data analytics
+        "photo-1543286386-713bdd548da4",  # Dashboard charts
+        "photo-1504868584819-f8e8b4b6d7e3",  # Data visualization
+        "photo-1509228468518-180dd4864904",  # Server room
+    ],
+    "content": [
+        "photo-1499750310107-5fef28a66643",  # Content creation desk
+        "photo-1455390582262-044cdead277a",  # Writing workspace
+        "photo-1488190211105-8b0e65b80b4e",  # Blogging setup
+        "photo-1519389950473-47ba0277781c",  # Creative office
+    ],
+    "agents": [
+        "photo-1620712943543-bcc4688e7485",  # Robot/AI agent
+        "photo-1535378917042-10a22c95931a",  # Abstract tech
+        "photo-1531746790095-e5995fce0854",  # Chatbot concept
+        "photo-1676299081847-824916de030a",  # AI assistant
+    ],
+    "coding": [
+        "photo-1461749280684-dccba630e2f6",  # Code on screen
+        "photo-1555066931-4365d14bab8c",  # Code IDE dark
+        "photo-1498050108023-c5249f4df085",  # Developer laptop
+        "photo-1504639725590-34d0984388bd",  # Programming screen
+    ],
 }
 
 
 def get_unsplash_image(article: "BlogArticle") -> str:
-    """Pick a relevant Unsplash image based on article tags and category."""
+    """Pick a relevant and unique Unsplash image based on article tags, category and slug."""
     text = " ".join(article.tags + [article.category]).lower()
 
     if any(w in text for w in ["security", "veiligheid", "privacy", "gdpr", "compliance"]):
@@ -488,9 +536,12 @@ def get_unsplash_image(article: "BlogArticle") -> str:
     elif any(w in text for w in ["ai", "artificial intelligence", "machine learning", "llm"]):
         key = "ai"
     else:
-        key = "default"
+        key = "ai"
 
-    photo_id = UNSPLASH_IMAGES[key]
+    photos = UNSPLASH_IMAGES[key]
+    # Use slug hash to pick a unique photo from the pool
+    slug_hash = sum(ord(c) for c in article.slug)
+    photo_id = photos[slug_hash % len(photos)]
     return f"https://images.unsplash.com/{photo_id}?w=1200&h=630&fit=crop"
 
 
