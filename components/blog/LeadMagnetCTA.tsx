@@ -1,7 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { Download, CheckCircle, Loader2, FileText } from "lucide-react";
+import Link from "next/link";
+import { Calculator, ArrowRight } from "lucide-react";
 
 interface LeadMagnetCTAProps {
   lang?: "nl" | "en";
@@ -9,107 +7,35 @@ interface LeadMagnetCTAProps {
 
 const copy = {
   nl: {
-    badge: "Gratis Download",
-    title: "AI Agent Checklist",
+    badge: "Gratis Tool",
+    title: "AI Agent ROI Calculator",
     subtitle:
-      "Ontdek welke AI agents het meeste impact hebben voor jouw bedrijf. Inclusief ROI-berekening en implementatieplan.",
+      "Bereken in 2 minuten hoeveel je bespaart met AI agents. Gepersonaliseerd voor jouw bedrijf.",
     items: [
-      "6 AI agent types met concrete voorbeelden",
-      "ROI calculator per agent type",
-      "Stap-voor-stap implementatiegids",
-      "Vergelijkingstabel: welke agent past bij jou?",
+      "Selecteer de agents die je wilt inzetten",
+      "Zie je maandelijkse en jaarlijkse besparing",
+      "Ontdek je terugverdientijd in dagen",
+      "Krijg een persoonlijk planadvies",
     ],
-    placeholder: "Jouw emailadres",
-    button: "Download Gratis",
-    gdpr: "Ik ga akkoord met het privacybeleid",
-    success: "Check je inbox!",
-    successSub: "De checklist is naar je email verstuurd.",
-    downloadButton: "Direct downloaden",
-    error: "Er ging iets mis. Probeer het opnieuw.",
+    button: "Start Gratis Calculator",
   },
   en: {
-    badge: "Free Download",
-    title: "AI Agent Checklist",
+    badge: "Free Tool",
+    title: "AI Agent ROI Calculator",
     subtitle:
-      "Discover which AI agents have the most impact for your business. Including ROI calculation and implementation plan.",
+      "Calculate in 2 minutes how much you save with AI agents. Personalized for your business.",
     items: [
-      "6 AI agent types with concrete examples",
-      "ROI calculator per agent type",
-      "Step-by-step implementation guide",
-      "Comparison table: which agent fits you?",
+      "Select the agents you want to deploy",
+      "See your monthly and yearly savings",
+      "Discover your payback period in days",
+      "Get a personalized plan recommendation",
     ],
-    placeholder: "Your email address",
-    button: "Download Free",
-    gdpr: "I agree to the privacy policy",
-    success: "Check your inbox!",
-    successSub: "The checklist has been sent to your email.",
-    downloadButton: "Download directly",
-    error: "Something went wrong. Please try again.",
+    button: "Start Free Calculator",
   },
 };
 
 export default function LeadMagnetCTA({ lang = "nl" }: LeadMagnetCTAProps) {
-  const [email, setEmail] = useState("");
-  const [agreed, setAgreed] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const t = copy[lang];
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email || !agreed) return;
-
-    setStatus("loading");
-
-    try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          source: "lead_magnet",
-          lang,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Subscribe failed");
-
-      const data = await res.json();
-      setDownloadUrl(data.downloadUrl || "/downloads/ai-agent-checklist.pdf");
-      setStatus("success");
-
-      // GA4 tracking
-      if (typeof window !== "undefined" && (window as Record<string, unknown>).gtag) {
-        (window as Record<string, unknown> & { gtag: (...args: unknown[]) => void }).gtag("event", "generate_lead", {
-          event_category: "lead_magnet",
-          event_label: "ai_agent_checklist",
-          value: 5,
-        });
-      }
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  if (status === "success") {
-    return (
-      <div className="glass-dark rounded-2xl p-8 text-center border border-green-500/20">
-        <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-4" />
-        <p className="text-lg font-semibold text-white mb-1">{t.success}</p>
-        <p className="text-sm text-white/50 mb-6">{t.successSub}</p>
-        {downloadUrl && (
-          <a
-            href={downloadUrl}
-            download
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
-          >
-            <Download className="w-4 h-4" />
-            {t.downloadButton}
-          </a>
-        )}
-      </div>
-    );
-  }
 
   return (
     <div className="glass-dark rounded-2xl overflow-hidden border border-neon-purple/20">
@@ -117,11 +43,11 @@ export default function LeadMagnetCTA({ lang = "nl" }: LeadMagnetCTAProps) {
       <div className="h-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-magenta" />
 
       <div className="p-6 md:p-8">
-        <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 md:items-center">
           {/* Left: Info */}
           <div className="flex-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium bg-neon-purple/10 text-neon-purple border border-neon-purple/20 mb-3">
-              <FileText className="w-3 h-3" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20 mb-3">
+              <Calculator className="w-3 h-3" />
               {t.badge}
             </span>
 
@@ -143,47 +69,15 @@ export default function LeadMagnetCTA({ lang = "nl" }: LeadMagnetCTAProps) {
             </ul>
           </div>
 
-          {/* Right: Form */}
-          <div className="flex-1 max-w-sm">
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t.placeholder}
-                required
-                className="glass-input text-sm"
-              />
-
-              <button
-                type="submit"
-                disabled={!agreed || status === "loading"}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                {status === "loading" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <>
-                    <Download className="w-4 h-4" />
-                    {t.button}
-                  </>
-                )}
-              </button>
-
-              <label className="flex items-start gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={agreed}
-                  onChange={(e) => setAgreed(e.target.checked)}
-                  className="mt-0.5 rounded border-white/20 bg-white/5 text-neon-cyan focus:ring-neon-cyan/30"
-                />
-                <span className="text-xs text-white/40">{t.gdpr}</span>
-              </label>
-
-              {status === "error" && (
-                <p className="text-xs text-red-400">{t.error}</p>
-              )}
-            </form>
+          {/* Right: CTA */}
+          <div className="flex-shrink-0">
+            <Link
+              href="/tools/roi-calculator"
+              className="inline-flex items-center gap-2 px-8 py-4 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
+            >
+              {t.button}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </div>

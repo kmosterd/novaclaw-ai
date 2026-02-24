@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Download, CheckCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Mail, Calculator, CheckCircle, Loader2, ArrowRight } from "lucide-react";
 
 interface InlineArticleCTAProps {
   variant?: "newsletter" | "lead_magnet";
@@ -19,12 +20,12 @@ const copy = {
       success: "Je bent aangemeld!",
     },
     lead_magnet: {
-      icon: Download,
-      title: "Gratis AI Agent Checklist",
-      subtitle: "Download de checklist en ontdek welke AI agents bij jouw bedrijf passen.",
-      placeholder: "Jouw emailadres",
-      button: "Download",
-      success: "Check je inbox!",
+      icon: Calculator,
+      title: "Gratis AI ROI Calculator",
+      subtitle: "Bereken hoeveel je bespaart met AI agents.",
+      placeholder: "",
+      button: "Bereken je ROI",
+      success: "",
     },
     gdpr: "Ik ga akkoord met het privacybeleid",
     error: "Probeer het opnieuw.",
@@ -39,12 +40,12 @@ const copy = {
       success: "You're subscribed!",
     },
     lead_magnet: {
-      icon: Download,
-      title: "Free AI Agent Checklist",
-      subtitle: "Download the checklist and discover which AI agents fit your business.",
-      placeholder: "Your email address",
-      button: "Download",
-      success: "Check your inbox!",
+      icon: Calculator,
+      title: "Free AI ROI Calculator",
+      subtitle: "Calculate how much you save with AI agents.",
+      placeholder: "",
+      button: "Calculate your ROI",
+      success: "",
     },
     gdpr: "I agree to the privacy policy",
     error: "Please try again.",
@@ -95,6 +96,31 @@ export default function InlineArticleCTA({
     }
   }
 
+  // Lead magnet variant: link to ROI calculator (no form)
+  if (variant === "lead_magnet") {
+    return (
+      <div className="my-8 glass-dark rounded-xl p-5 border border-neon-cyan/10">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <Icon className="w-5 h-5 text-neon-cyan mt-0.5 shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-white">{t.title}</p>
+              <p className="text-xs text-white/50">{t.subtitle}</p>
+            </div>
+          </div>
+          <Link
+            href="/tools/roi-calculator"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity whitespace-nowrap shrink-0"
+          >
+            {t.button}
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Newsletter variant: email form
   if (status === "success") {
     return (
       <div className="my-8 glass-dark rounded-xl p-5 text-center border border-green-500/20">

@@ -5,8 +5,9 @@ import { syncContactToHubSpot } from "@/lib/hubspot";
 const subscribeSchema = z.object({
   email: z.string().email(),
   name: z.string().optional(),
-  source: z.enum(["newsletter", "lead_magnet", "inline_cta"]),
+  source: z.enum(["newsletter", "lead_magnet", "inline_cta", "roi_calculator"]),
   lang: z.enum(["nl", "en"]).optional().default("nl"),
+  metadata: z.record(z.any()).optional(),
 });
 
 export const runtime = "edge";
@@ -49,6 +50,9 @@ async function saveSubscriber(data: {
           lang: data.lang,
           ...(data.source === "lead_magnet" && {
             lead_magnet: "ai-agent-checklist",
+          }),
+          ...(data.source === "roi_calculator" && data.metadata && {
+            roi_calculator_results: data.metadata,
           }),
         },
       }),
@@ -160,6 +164,102 @@ You're receiving this email because you requested the AI Agent Checklist on nova
 }
 
 /**
+ * Send ROI calculator report email via Resend
+ */
+async function sendRoiReportEmail(
+  email: string,
+  lang: string,
+  metadata: Record<string, unknown>
+) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const FROM_EMAIL =
+    process.env.RESEND_FROM_EMAIL || "NovaClaw <onboarding@resend.dev>";
+
+  if (!RESEND_API_KEY) return;
+
+  const monthly = metadata.monthlySavingsEur || 0;
+  const yearly = metadata.yearlySavingsEur || 0;
+  const payback = metadata.paybackPeriodDays || 0;
+  const roi = metadata.roiPercentage || 0;
+  const plan = metadata.recommendedPlan || "growth";
+  const agents = metadata.agents || "";
+
+  const subject =
+    lang === "nl"
+      ? `Jouw AI Agent ROI Rapport — €${monthly} besparing/maand`
+      : `Your AI Agent ROI Report — €${monthly} savings/month`;
+
+  const body =
+    lang === "nl"
+      ? `Hi!
+
+Hier is je persoonlijke AI Agent ROI rapport van NovaClaw:
+
+JOUW RESULTATEN
+- Maandelijkse besparing: €${monthly}
+- Jaarlijkse besparing: €${yearly}
+- Terugverdientijd: ${payback} dagen
+- ROI: ${roi}%
+
+Geselecteerde agents: ${agents}
+Aanbevolen plan: ${String(plan).charAt(0).toUpperCase() + String(plan).slice(1)}
+
+VOLGENDE STAP
+Plan een gratis kennismakingsgesprek en ontdek hoe we deze besparing voor jouw bedrijf realiseren:
+https://novaclaw.tech/#contact
+
+Binnen 1-2 weken is je eerste AI agent live.
+
+Met vriendelijke groet,
+Het NovaClaw AI Team
+
+---
+Je ontvangt deze email omdat je de ROI Calculator hebt gebruikt op novaclaw.tech.`
+      : `Hi!
+
+Here's your personal AI Agent ROI report from NovaClaw:
+
+YOUR RESULTS
+- Monthly savings: €${monthly}
+- Yearly savings: €${yearly}
+- Payback period: ${payback} days
+- ROI: ${roi}%
+
+Selected agents: ${agents}
+Recommended plan: ${String(plan).charAt(0).toUpperCase() + String(plan).slice(1)}
+
+NEXT STEP
+Schedule a free consultation and discover how we can realize these savings for your business:
+https://novaclaw.tech/#contact
+
+Your first AI agent goes live within 1-2 weeks.
+
+Best regards,
+The NovaClaw AI Team
+
+---
+You're receiving this email because you used the ROI Calculator on novaclaw.tech.`;
+
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: [email],
+        subject,
+        text: body,
+      }),
+    });
+  } catch (error) {
+    console.error("ROI report email error:", error);
+  }
+}
+
+/**
  * Send notification to site owner about new subscriber
  */
 async function sendNotification(email: string, source: string) {
@@ -172,11 +272,13 @@ async function sendNotification(email: string, source: string) {
   if (!RESEND_API_KEY) return;
 
   const sourceLabel =
-    source === "lead_magnet"
-      ? "AI Agent Checklist download"
-      : source === "inline_cta"
-        ? "Inline blog CTA"
-        : "Newsletter banner";
+    source === "roi_calculator"
+      ? "ROI Calculator resultaat"
+      : source === "lead_magnet"
+        ? "AI Agent Checklist download"
+        : source === "inline_cta"
+          ? "Inline blog CTA"
+          : "Newsletter banner";
 
   try {
     await fetch("https://api.resend.com/emails", {
@@ -205,9 +307,11 @@ export async function POST(req: NextRequest) {
     // 1. Save/upsert subscriber in Supabase
     await saveSubscriber(data);
 
-    // 2. Send lead magnet email if applicable
+    // 2. Send lead magnet or ROI report email if applicable
     if (data.source === "lead_magnet") {
       await sendLeadMagnetEmail(data.email, data.lang);
+    } else if (data.source === "roi_calculator" && data.metadata) {
+      await sendRoiReportEmail(data.email, data.lang, data.metadata);
     }
 
     // 3. Notify site owner
@@ -220,6 +324,9 @@ export async function POST(req: NextRequest) {
       subscribe_source: data.source,
       ...(data.source === "lead_magnet" && {
         lead_magnet_downloaded: "ai-agent-checklist",
+      }),
+      ...(data.source === "roi_calculator" && {
+        lead_magnet_downloaded: "roi-calculator",
       }),
     }).catch((err) => console.error("[HubSpot] Background sync error:", err));
 
