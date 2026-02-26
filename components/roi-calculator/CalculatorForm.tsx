@@ -20,6 +20,7 @@ import {
   type CalculatorInputs,
 } from "./calculator-data";
 import ResultsDisplay from "./ResultsDisplay";
+import { useLang } from "@/components/LangProvider";
 
 const iconMap: Record<string, React.ReactNode> = {
   MessageSquare: <MessageSquare className="w-6 h-6" />,
@@ -31,7 +32,7 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function CalculatorForm() {
-  const [lang, setLang] = useState<"nl" | "en">("nl");
+  const { lang } = useLang();
   const [step, setStep] = useState(1);
   const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
   const [hourlyRate, setHourlyRate] = useState(75);
@@ -107,30 +108,6 @@ export default function CalculatorForm() {
         <p className="text-white/50 max-w-lg mx-auto text-sm">
           {t.pageSubtitle}
         </p>
-
-        {/* Lang toggle */}
-        <div className="flex items-center justify-center gap-2 mt-4">
-          <button
-            onClick={() => setLang("nl")}
-            className={`px-3 py-1 text-xs rounded-full transition-colors ${
-              lang === "nl"
-                ? "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30"
-                : "text-white/40 border border-white/10 hover:text-white/60"
-            }`}
-          >
-            NL
-          </button>
-          <button
-            onClick={() => setLang("en")}
-            className={`px-3 py-1 text-xs rounded-full transition-colors ${
-              lang === "en"
-                ? "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30"
-                : "text-white/40 border border-white/10 hover:text-white/60"
-            }`}
-          >
-            EN
-          </button>
-        </div>
       </div>
 
       {/* Step indicator */}

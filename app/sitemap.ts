@@ -26,12 +26,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Static blog posts
+  // Static blog posts with translation alternates
   const staticBlogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+    ...(post.translationSlug && {
+      alternates: {
+        languages: {
+          [post.lang === "nl" ? "en" : "nl-NL"]: `${baseUrl}/blog/${post.translationSlug}`,
+        },
+      },
+    }),
   }));
 
   // Dynamic blog posts from Supabase

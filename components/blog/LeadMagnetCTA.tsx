@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { Calculator, ArrowRight } from "lucide-react";
-
-interface LeadMagnetCTAProps {
-  lang?: "nl" | "en";
-}
+import { getServerLang } from "@/lib/i18n";
 
 const copy = {
   nl: {
@@ -34,7 +31,8 @@ const copy = {
   },
 };
 
-export default function LeadMagnetCTA({ lang = "nl" }: LeadMagnetCTAProps) {
+export default async function LeadMagnetCTA() {
+  const lang = await getServerLang();
   const t = copy[lang];
 
   return (

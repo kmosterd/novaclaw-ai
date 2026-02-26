@@ -1,77 +1,86 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { getServerLang } from "@/lib/i18n";
+import { LangProvider } from "@/components/LangProvider";
+import { layoutT } from "@/lib/translations";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://novaclaw.tech"),
-  title: {
-    default: "NovaClaw AI | Custom AI Agents voor Bedrijven in Nederland",
-    template: "%s | NovaClaw AI",
-  },
-  description:
-    "NovaClaw is een Nederlands bureau dat 18+ typen custom AI-agents bouwt voor bedrijven. Van klantenservice en voice agents tot lead generation, content automation, SEO & AIO, e-commerce en data analytics agents. Powered by OpenAI, Claude, Gemini. GDPR-compliant, 100% op maat.",
-  keywords: [
-    "AI agents",
-    "AI agency Nederland",
-    "custom AI agents",
-    "klantenservice AI agent",
-    "voice agent",
-    "chatbot agent",
-    "helpdesk AI",
-    "content automatisering",
-    "SEO AI agent",
-    "AIO optimalisatie",
-    "email marketing AI",
-    "social media AI agent",
-    "ads campaign agent",
-    "lead generation AI agent",
-    "appointment setter AI",
-    "e-commerce AI agent",
-    "workflow automation AI",
-    "data analytics AI",
-    "data entry automation",
-    "compliance monitoring AI",
-    "web scraping agent",
-    "AI bureau",
-    "marketing automation",
-    "AI chatbot",
-    "NovaClaw",
-    "OpenAI",
-    "Claude AI",
-    "Gemini AI",
-  ],
-  authors: [{ name: "NovaClaw AI", url: "https://novaclaw.tech" }],
-  creator: "NovaClaw AI",
-  publisher: "NovaClaw AI",
-  alternates: {
-    canonical: "https://novaclaw.tech",
-    languages: { "nl-NL": "https://novaclaw.tech" },
-  },
-  openGraph: {
-    title: "NovaClaw AI | Custom AI Agents voor Bedrijven",
-    description:
-      "Nederlands bureau dat 18+ typen custom AI-agents bouwt: klantenservice, voice, content, SEO, lead generation, e-commerce, data analytics en meer. Powered by OpenAI, Claude & Gemini.",
-    url: "https://novaclaw.tech",
-    siteName: "NovaClaw AI",
-    locale: "nl_NL",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "NovaClaw AI | Custom AI Agents",
-    description: "Nederlands bureau voor custom AI agents. Wij bouwen, jij groeit.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getServerLang();
+  const t = layoutT[lang];
+
+  return {
+    metadataBase: new URL("https://novaclaw.tech"),
+    title: {
+      default: t.title,
+      template: "%s | NovaClaw AI",
+    },
+    description: t.description,
+    keywords: [
+      "AI agents",
+      "AI agency Nederland",
+      "custom AI agents",
+      "klantenservice AI agent",
+      "voice agent",
+      "chatbot agent",
+      "helpdesk AI",
+      "content automatisering",
+      "SEO AI agent",
+      "AIO optimalisatie",
+      "email marketing AI",
+      "social media AI agent",
+      "ads campaign agent",
+      "lead generation AI agent",
+      "appointment setter AI",
+      "e-commerce AI agent",
+      "workflow automation AI",
+      "data analytics AI",
+      "data entry automation",
+      "compliance monitoring AI",
+      "web scraping agent",
+      "AI bureau",
+      "marketing automation",
+      "AI chatbot",
+      "NovaClaw",
+      "OpenAI",
+      "Claude AI",
+      "Gemini AI",
+    ],
+    authors: [{ name: "NovaClaw AI", url: "https://novaclaw.tech" }],
+    creator: "NovaClaw AI",
+    publisher: "NovaClaw AI",
+    alternates: {
+      canonical: "https://novaclaw.tech",
+      languages: {
+        "nl-NL": "https://novaclaw.tech",
+        en: "https://novaclaw.tech",
+      },
+    },
+    openGraph: {
+      title: t.ogTitle,
+      description: t.ogDescription,
+      url: "https://novaclaw.tech",
+      siteName: "NovaClaw AI",
+      locale: lang === "nl" ? "nl_NL" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "NovaClaw AI | Custom AI Agents",
+      description: t.twitterDescription,
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
+  };
+}
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -125,16 +134,21 @@ const organizationJsonLd = {
   slogan: "Wij bouwen, jij groeit.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const lang = await getServerLang();
+
   return (
-    <html lang="nl" className="dark">
+    <html lang={lang} className="dark">
       <head>
         {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4WMTVF45XS" />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-4WMTVF45XS"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4WMTVF45XS');`,
@@ -146,12 +160,26 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
+        <link
+          rel="alternate"
+          hrefLang="nl"
+          href="https://novaclaw.tech"
+        />
+        <link
+          rel="alternate"
+          hrefLang="en"
+          href="https://novaclaw.tech"
+        />
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href="https://novaclaw.tech"
+        />
       </head>
       <body className="antialiased min-h-screen overflow-x-hidden">
-        <div className="relative">
-          {/* Background — static gradients baked into body, no blur needed */}
-          {children}
-        </div>
+        <LangProvider initialLang={lang}>
+          <div className="relative">{children}</div>
+        </LangProvider>
       </body>
     </html>
   );

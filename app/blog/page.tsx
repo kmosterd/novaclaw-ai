@@ -3,22 +3,27 @@ import Link from "next/link";
 import BlogImage from "@/components/BlogImage";
 import { ArrowLeft, Calendar, Clock, Globe, Tag } from "lucide-react";
 import { getAllPostsCombined, BlogPost } from "@/lib/blog-data";
+import { getServerLang } from "@/lib/i18n";
+import { blogPageT } from "@/lib/translations";
 import NewsletterBanner from "@/components/blog/NewsletterBanner";
 import LeadMagnetCTA from "@/components/blog/LeadMagnetCTA";
 
-export const metadata: Metadata = {
-  title: "Blog & Kennisbank | NovaClaw AI",
-  description:
-    "Lees de laatste inzichten over AI agents, AIO, marketing automation en hoe AI jouw bedrijf kan laten groeien. In het Nederlands en Engels.",
-  alternates: {
-    canonical: "https://novaclaw.tech/blog",
-  },
-  openGraph: {
-    title: "Blog & Kennisbank | NovaClaw AI",
-    description:
-      "Kennisbank over AI agents, AIO optimalisatie en marketing automation voor bedrijven.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getServerLang();
+  const t = blogPageT[lang];
+
+  return {
+    title: `${t.heading} | NovaClaw AI`,
+    description: t.subheading,
+    alternates: {
+      canonical: "https://novaclaw.tech/blog",
+    },
+    openGraph: {
+      title: `${t.heading} | NovaClaw AI`,
+      description: t.subheading,
+    },
+  };
+}
 
 function formatDate(dateStr: string, lang: "nl" | "en") {
   return new Intl.DateTimeFormat(lang === "nl" ? "nl-NL" : "en-US", {
@@ -129,8 +134,17 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
 }
 
 export default async function BlogPage() {
+  const lang = await getServerLang();
+  const t = blogPageT[lang];
+
   const nlPosts = await getAllPostsCombined("nl");
   const enPosts = await getAllPostsCombined("en");
+
+  // Show the user's language first
+  const firstLangPosts = lang === "en" ? enPosts : nlPosts;
+  const secondLangPosts = lang === "en" ? nlPosts : enPosts;
+  const firstSection = lang === "en" ? t.enSection : t.nlSection;
+  const secondSection = lang === "en" ? t.nlSection : t.enSection;
 
   return (
     <main className="relative min-h-screen">
@@ -141,41 +155,38 @@ export default async function BlogPage() {
             href="/"
             className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-neon-cyan transition-colors mb-6"
           >
-            <ArrowLeft size={16} /> Terug naar home
+            <ArrowLeft size={16} /> {t.backToHome}
           </Link>
         </div>
 
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Blog & Kennisbank
+            {t.heading}
           </h1>
           <p className="text-white/50 max-w-2xl leading-relaxed">
-            De laatste inzichten over AI agents, AIO optimalisatie en marketing
-            automation. Geschreven voor ondernemers die willen groeien met AI.
+            {t.subheading}
           </p>
         </div>
 
-        {/* Dutch articles */}
+        {/* First language articles */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-xl font-bold text-white">
-              Nederlands
+              {firstSection}
             </h2>
             <span className="text-xs text-white/30 px-2 py-0.5 rounded-full border border-white/10">
-              {nlPosts.length} artikelen
+              {t.articleCount(firstLangPosts.length)}
             </span>
           </div>
 
-          {nlPosts.length === 0 ? (
+          {firstLangPosts.length === 0 ? (
             <div className="glass-dark rounded-2xl p-12 text-center">
-              <p className="text-white/40">
-                Nog geen artikelen gepubliceerd. Kom binnenkort terug!
-              </p>
+              <p className="text-white/40">{t.noArticles}</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
-              {nlPosts.map((post, idx) => (
+              {firstLangPosts.map((post, idx) => (
                 <PostCard key={post.slug} post={post} featured={idx === 0} />
               ))}
             </div>
@@ -184,29 +195,27 @@ export default async function BlogPage() {
 
         {/* Newsletter Banner */}
         <div className="mb-16">
-          <NewsletterBanner lang="nl" />
+          <NewsletterBanner />
         </div>
 
-        {/* English articles */}
+        {/* Second language articles */}
         <div className="mb-16">
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-xl font-bold text-white">
-              English
+              {secondSection}
             </h2>
             <span className="text-xs text-white/30 px-2 py-0.5 rounded-full border border-white/10">
-              {enPosts.length} articles
+              {t.articleCount(secondLangPosts.length)}
             </span>
           </div>
 
-          {enPosts.length === 0 ? (
+          {secondLangPosts.length === 0 ? (
             <div className="glass-dark rounded-2xl p-12 text-center">
-              <p className="text-white/40">
-                No articles published yet. Check back soon!
-              </p>
+              <p className="text-white/40">{t.noArticles}</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
-              {enPosts.map((post, idx) => (
+              {secondLangPosts.map((post, idx) => (
                 <PostCard key={post.slug} post={post} featured={idx === 0} />
               ))}
             </div>
@@ -215,23 +224,22 @@ export default async function BlogPage() {
 
         {/* Lead Magnet CTA */}
         <div className="mb-12">
-          <LeadMagnetCTA lang="nl" />
+          <LeadMagnetCTA />
         </div>
 
         {/* CTA */}
         <div className="glass-dark rounded-2xl p-8 md:p-12 text-center">
           <h3 className="text-lg font-semibold text-white mb-2">
-            Wil je AI agents voor jouw bedrijf?
+            {t.ctaHeading}
           </h3>
           <p className="text-sm text-white/50 mb-6 max-w-lg mx-auto">
-            Plan een gratis kennismakingsgesprek en ontdek welke AI agents het
-            meeste impact hebben voor jouw business.
+            {t.ctaText}
           </p>
           <Link
             href="/#contact"
             className="inline-block px-8 py-4 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
           >
-            Plan Gratis Gesprek &rarr;
+            {t.ctaButton} &rarr;
           </Link>
         </div>
       </div>

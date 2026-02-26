@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import { Mail, CheckCircle, Loader2 } from "lucide-react";
-
-interface NewsletterBannerProps {
-  lang?: "nl" | "en";
-}
+import { useLang } from "@/components/LangProvider";
 
 const copy = {
   nl: {
@@ -32,7 +29,8 @@ const copy = {
   },
 };
 
-export default function NewsletterBanner({ lang = "nl" }: NewsletterBannerProps) {
+export default function NewsletterBanner() {
+  const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");

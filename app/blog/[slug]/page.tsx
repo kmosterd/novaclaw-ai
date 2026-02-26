@@ -10,8 +10,10 @@ import {
   getAllPostsCombined,
   BlogPost,
 } from "@/lib/blog-data";
+import { blogPostT } from "@/lib/translations";
 import InlineArticleCTA from "@/components/blog/InlineArticleCTA";
 import LeadMagnetCTA from "@/components/blog/LeadMagnetCTA";
+import BlogLangSync from "@/components/blog/BlogLangSync";
 
 function formatDate(dateStr: string, lang: "nl" | "en") {
   return new Intl.DateTimeFormat(lang === "nl" ? "nl-NL" : "en-US", {
@@ -43,8 +45,10 @@ export async function generateMetadata({
   const post = getPostBySlug(slug) || (await getDynamicPostBySlug(slug));
 
   if (!post) {
-    return { title: "Niet gevonden | NovaClaw AI" };
+    return { title: `${blogPostT.nl.notFound} | NovaClaw AI` };
   }
+
+  const t = blogPostT[post.lang];
 
   return {
     title: `${post.title} | NovaClaw AI Blog`,
@@ -200,6 +204,8 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug) || (await getDynamicPostBySlug(slug));
   if (!post) notFound();
 
+  const t = blogPostT[post.lang];
+
   // Get translation if available (only for static posts with translationSlug)
   const translation = post.translationSlug
     ? getPostBySlug(post.translationSlug)
@@ -237,6 +243,9 @@ export default async function BlogPostPage({
 
   return (
     <main className="relative min-h-screen">
+      {/* Sync site language to blog post language */}
+      <BlogLangSync postLang={post.lang} />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -249,7 +258,7 @@ export default async function BlogPostPage({
           className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-neon-cyan transition-colors mb-8"
         >
           <ArrowLeft size={16} />
-          {post.lang === "nl" ? "Terug naar blog" : "Back to blog"}
+          {t.backToBlog}
         </Link>
 
         {/* Translation banner */}
@@ -257,15 +266,13 @@ export default async function BlogPostPage({
           <div className="mb-6 glass-dark rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-white/50">
               <Languages size={16} className="text-neon-cyan" />
-              {post.lang === "nl"
-                ? "Dit artikel is ook beschikbaar in het Engels"
-                : "This article is also available in Dutch"}
+              {t.translationAvailable}
             </div>
             <Link
               href={`/blog/${translation.slug}`}
               className="text-xs font-medium text-neon-cyan hover:underline"
             >
-              {post.lang === "nl" ? "Read in English \u2192" : "Lees in het Nederlands \u2192"}
+              {t.readTranslation}
             </Link>
           </div>
         )}
@@ -338,7 +345,7 @@ export default async function BlogPostPage({
             return (
               <>
                 {firstHalf}
-                <InlineArticleCTA variant="newsletter" lang={post.lang} />
+                <InlineArticleCTA variant="newsletter" />
                 {secondHalf}
               </>
             );
@@ -365,36 +372,28 @@ export default async function BlogPostPage({
           </div>
           <div>
             <p className="text-sm font-medium text-white">{post.author}</p>
-            <p className="text-xs text-white/40">
-              {post.lang === "nl"
-                ? "Het NovaClaw team schrijft over AI agents, AIO en marketing automation."
-                : "The NovaClaw team writes about AI agents, AIO and marketing automation."}
-            </p>
+            <p className="text-xs text-white/40">{t.authorBio}</p>
           </div>
         </div>
 
         {/* Lead Magnet CTA */}
         <div className="mb-12">
-          <LeadMagnetCTA lang={post.lang} />
+          <LeadMagnetCTA />
         </div>
 
         {/* CTA */}
         <div className="glass-dark rounded-2xl p-8 md:p-12 text-center">
           <h3 className="text-lg font-semibold text-white mb-2">
-            {post.lang === "nl"
-              ? "Wil je AI agents voor jouw bedrijf?"
-              : "Want AI agents for your business?"}
+            {t.ctaHeading}
           </h3>
           <p className="text-sm text-white/50 mb-6 max-w-lg mx-auto">
-            {post.lang === "nl"
-              ? "Plan een gratis kennismakingsgesprek en ontdek wat NovaClaw voor jou kan betekenen."
-              : "Schedule a free consultation and discover what NovaClaw can do for you."}
+            {t.ctaText}
           </p>
           <Link
             href="/#contact"
             className="inline-block px-8 py-4 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
           >
-            {post.lang === "nl" ? "Plan Gratis Gesprek" : "Schedule Free Consultation"} &rarr;
+            {t.ctaButton} &rarr;
           </Link>
         </div>
       </div>

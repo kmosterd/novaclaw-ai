@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "wat-zijn-ai-agents",
     lang: "nl",
-    title: "Wat Zijn AI Agents? De Ultieme Gids voor Bedrijven in 2026",
+    title: "Wat zijn AI agents? De ultieme gids voor bedrijven in 2026",
     description:
       "Alles wat je moet weten over AI agents: wat ze zijn, hoe ze werken, en hoe ze jouw bedrijf kunnen automatiseren. Inclusief concrete voorbeelden en ROI-berekening.",
     category: "AI Uitleg",
@@ -45,11 +45,11 @@ Denk aan een AI agent als een digitale medewerker die 24 uur per dag werkt, nooi
 
 AI agents combineren drie kerncomponenten:
 
-**1. Taalmodel (LLM)** — Het "brein" van de agent. Dit kan OpenAI GPT-4o, Anthropic Claude, Google Gemini of Meta Llama zijn. Het model begrijpt instructies en genereert intelligente output.
+**1. Taalmodel (LLM)**: het "brein" van de agent. Dit kan OpenAI GPT-4o, Anthropic Claude, Google Gemini of Meta Llama zijn. Het model begrijpt instructies en genereert intelligente output.
 
-**2. Tools en integraties** — De "handen" van de agent. Via API-koppelingen kan de agent acties uitvoeren: emails sturen via je mailsysteem, posts plaatsen op social media, data opslaan in je CRM.
+**2. Tools en integraties**: de "handen" van de agent. Via API-koppelingen kan de agent acties uitvoeren: emails sturen via je mailsysteem, posts plaatsen op social media, data opslaan in je CRM.
 
-**3. Geheugen en context** — Het "geheugen" van de agent. De agent onthoudt eerdere gesprekken, klantvoorkeuren en projectdetails. Dit maakt de output steeds relevanter.
+**3. Geheugen en context**: het "geheugen" van de agent. De agent onthoudt eerdere gesprekken, klantvoorkeuren en projectdetails. Dit maakt de output steeds relevanter.
 
 ## 6 typen AI agents voor bedrijven
 
@@ -57,7 +57,7 @@ AI agents combineren drie kerncomponenten:
 Beantwoordt automatisch klantberichten via email, chat of Slack. Triageert op urgentie en escaleert complexe vragen naar een mens. Gemiddeld resultaat: 90% snellere reactietijd.
 
 ### Content Agent
-Neemt een stuk content (blogpost, podcast, video) en maakt er 10+ variaties van voor verschillende platformen. LinkedIn posts, tweets, nieuwsbrieven — allemaal in jouw tone of voice.
+Neemt een stuk content (blogpost, podcast, video) en maakt er 10+ variaties van voor verschillende platformen. LinkedIn posts, tweets, nieuwsbrieven. Allemaal in jouw tone of voice.
 
 ### SEO & AIO Agent
 Maakt content die rankt bij Google en AI-zoekmachines zoals ChatGPT, Gemini en Perplexity. Doet keyword research, analyseert concurrentie en identificeert content gaps.
@@ -96,15 +96,15 @@ Een AI agent daarentegen:
 
 De eenvoudigste manier is samenwerken met een gespecialiseerd bureau. NovaClaw bouwt, test en beheert custom AI agents voor Nederlandse bedrijven. Het proces:
 
-1. **Gratis kennismakingsgesprek** — We bespreken jouw doelen en uitdagingen
-2. **Wij bouwen** — Ons team ontwikkelt jouw custom agents binnen 1-2 weken
-3. **Launch en beheer** — De agents gaan live en wij optimaliseren continu
+1. **Gratis kennismakingsgesprek**: we bespreken jouw doelen en uitdagingen
+2. **Wij bouwen**: ons team ontwikkelt jouw custom agents binnen 1-2 weken
+3. **Launch en beheer**: de agents gaan live en wij optimaliseren continu
 
 Je hoeft zelf geen technische kennis te hebben. Wij doen al het werk.
 
 ## Conclusie
 
-AI agents zijn de volgende stap in bedrijfsautomatisering. Ze gaan verder dan chatbots door daadwerkelijk taken uit te voeren. Of je nu klantenservice wilt versnellen, content wilt opschalen, of workflows wilt automatiseren — er is een AI agent voor.
+AI agents zijn de volgende stap in bedrijfsautomatisering. Ze gaan verder dan chatbots door daadwerkelijk taken uit te voeren. Of je nu klantenservice wilt versnellen, content wilt opschalen, of workflows wilt automatiseren: er is een AI agent voor.
 
 De bedrijven die nu beginnen met AI agents bouwen een voorsprong die moeilijk in te halen is. De vraag is niet of je AI agents gaat inzetten, maar wanneer.`,
   },
@@ -136,11 +136,11 @@ Think of an AI agent as a digital employee that works 24 hours a day, never call
 
 AI agents combine three core components:
 
-**1. Language Model (LLM)** — The "brain" of the agent. This can be OpenAI GPT-4o, Anthropic Claude, Google Gemini, or Meta Llama. The model understands instructions and generates intelligent output.
+**1. Language Model (LLM)**: the "brain" of the agent. This can be OpenAI GPT-4o, Anthropic Claude, Google Gemini, or Meta Llama. The model understands instructions and generates intelligent output.
 
-**2. Tools and integrations** — The "hands" of the agent. Through API connections, the agent can execute actions: send emails via your mail system, post on social media, store data in your CRM.
+**2. Tools and integrations**: the "hands" of the agent. Through API connections, the agent can execute actions: send emails via your mail system, post on social media, store data in your CRM.
 
-**3. Memory and context** — The "memory" of the agent. The agent remembers previous conversations, customer preferences, and project details. This makes output increasingly relevant.
+**3. Memory and context**: the "memory" of the agent. The agent remembers previous conversations, customer preferences, and project details. This makes output increasingly relevant.
 
 ## 6 types of AI agents for businesses
 
@@ -148,7 +148,7 @@ AI agents combine three core components:
 Automatically responds to customer messages via email, chat, or Slack. Triages by urgency and escalates complex questions to a human. Average result: 90% faster response time.
 
 ### Content Agent
-Takes one piece of content (blog post, podcast, video) and creates 10+ variations for different platforms. LinkedIn posts, tweets, newsletters — all in your brand voice.
+Takes one piece of content (blog post, podcast, video) and creates 10+ variations for different platforms. LinkedIn posts, tweets, newsletters. All in your brand voice.
 
 ### SEO & AIO Agent
 Creates content that ranks on Google and AI search engines like ChatGPT, Gemini, and Perplexity. Performs keyword research, analyzes competition, and identifies content gaps.
@@ -187,15 +187,15 @@ An AI agent on the other hand:
 
 The easiest way is to work with a specialized agency. NovaClaw builds, tests, and manages custom AI agents for businesses. The process:
 
-1. **Free consultation** — We discuss your goals and challenges
-2. **We build** — Our team develops your custom agents within 1-2 weeks
-3. **Launch and manage** — The agents go live and we continuously optimize
+1. **Free consultation**: we discuss your goals and challenges
+2. **We build**: our team develops your custom agents within 1-2 weeks
+3. **Launch and manage**: the agents go live and we continuously optimize
 
 You don't need any technical knowledge. We do all the work.
 
 ## Conclusion
 
-AI agents are the next step in business automation. They go beyond chatbots by actually executing tasks. Whether you want to speed up customer service, scale content, or automate workflows — there's an AI agent for that.
+AI agents are the next step in business automation. They go beyond chatbots by actually executing tasks. Whether you want to speed up customer service, scale content, or automate workflows, there's an AI agent for that.
 
 Businesses that start with AI agents now are building a lead that's hard to catch up to. The question isn't whether you'll use AI agents, but when.`,
   },
@@ -206,7 +206,7 @@ Businesses that start with AI agents now are building a lead that's hard to catc
   {
     slug: "aio-vs-seo-verschil",
     lang: "nl",
-    title: "AIO vs SEO: Waarom Gevonden Worden Door AI Net Zo Belangrijk Is Als Google",
+    title: "AIO vs SEO: waarom gevonden worden door AI net zo belangrijk is als Google",
     description:
       "Wat is AIO (AI Optimization)? Hoe verschilt het van SEO? En waarom moet jouw bedrijf in 2026 vindbaar zijn voor zowel Google als AI-zoekmachines zoals ChatGPT en Perplexity.",
     category: "AIO & SEO",
@@ -225,7 +225,7 @@ Dit betekent dat jouw website niet alleen vindbaar moet zijn via traditionele zo
 
 ## Wat is AIO (AI Optimization)?
 
-AIO — ook wel GEO (Generative Engine Optimization) genoemd — is het optimaliseren van je online aanwezigheid zodat AI-systemen jouw bedrijf herkennen, begrijpen en aanbevelen.
+AIO, ook wel GEO (Generative Engine Optimization) genoemd, is het optimaliseren van je online aanwezigheid zodat AI-systemen jouw bedrijf herkennen, begrijpen en aanbevelen.
 
 Als iemand aan ChatGPT vraagt: "Welk bureau in Nederland maakt custom AI agents?", dan wil je dat jouw bedrijf in het antwoord staat.
 
@@ -264,7 +264,7 @@ De combinatie van SEO en AIO is de winnende strategie voor 2026 en daarna. Niet 
 
 ## Hoe NovaClaw helpt met AIO
 
-Onze SEO & AIO Agent doet het zware werk: keyword research, content optimalisatie, gestructureerde data en continue monitoring. Alles geautomatiseerd, zodat jij altijd vindbaar bent — door mensen en AI.`,
+Onze SEO & AIO Agent doet het zware werk: keyword research, content optimalisatie, gestructureerde data en continue monitoring. Alles geautomatiseerd, zodat jij altijd vindbaar bent. Door mensen en door AI.`,
   },
 
   // ============================================================
@@ -292,7 +292,7 @@ This means your website needs to not only be findable via traditional search eng
 
 ## What is AIO (AI Optimization)?
 
-AIO — also called GEO (Generative Engine Optimization) — is optimizing your online presence so that AI systems recognize, understand, and recommend your business.
+AIO, also called GEO (Generative Engine Optimization), is optimizing your online presence so that AI systems recognize, understand, and recommend your business.
 
 When someone asks ChatGPT: "Which agency in the Netherlands builds custom AI agents?", you want your business to appear in the answer.
 
@@ -331,7 +331,7 @@ The combination of SEO and AIO is the winning strategy for 2026 and beyond. Not 
 
 ## How NovaClaw helps with AIO
 
-Our SEO & AIO Agent does the heavy lifting: keyword research, content optimization, structured data, and continuous monitoring. All automated, so you're always discoverable — by people and AI.`,
+Our SEO & AIO Agent does the heavy lifting: keyword research, content optimization, structured data, and continuous monitoring. All automated, so you're always discoverable. By people and by AI.`,
   },
 
   // ============================================================
@@ -340,9 +340,9 @@ Our SEO & AIO Agent does the heavy lifting: keyword research, content optimizati
   {
     slug: "6-ai-agents-voor-mkb",
     lang: "nl",
-    title: "6 AI Agents Die Elk MKB Bedrijf Nodig Heeft in 2026",
+    title: "6 AI agents die elk MKB-bedrijf nodig heeft in 2026",
     description:
-      "Ontdek welke AI agents het meeste impact hebben voor MKB bedrijven. Van klantenservice tot workflow automation — met concrete ROI-voorbeelden.",
+      "Ontdek welke AI agents het meeste impact hebben voor MKB-bedrijven. Van klantenservice tot workflow automation, met concrete ROI-voorbeelden.",
     category: "AI voor MKB",
     tags: ["MKB", "AI agents", "automatisering", "ROI", "klantenservice"],
     publishedAt: "2026-02-08",
@@ -357,7 +357,7 @@ De AI-revolutie is niet meer alleen voor grote corporates. In 2026 zijn AI agent
 
 Hier zijn de 6 AI agents die de meeste impact hebben.
 
-## 1. Klantenservice Agent — Bespaar 12+ uur per week
+## 1. Klantenservice Agent: bespaar 12+ uur per week
 
 **Het probleem**: Je besteedt uren per dag aan het beantwoorden van klantberichten via email, chat en social media. Dezelfde vragen komen steeds terug.
 
@@ -367,7 +367,7 @@ Hier zijn de 6 AI agents die de meeste impact hebben.
 
 **ROI-voorbeeld**: 12 uur bespaard per week x €75/uur = €3.600/maand bespaard. Kosten agent: vanaf €497/maand. Netto winst: €3.100/maand.
 
-## 2. Content Agent — 300% meer content output
+## 2. Content Agent: 300% meer output
 
 **Het probleem**: Je weet dat content marketing belangrijk is, maar je hebt geen tijd om regelmatig te publiceren op alle kanalen.
 
@@ -377,7 +377,7 @@ Hier zijn de 6 AI agents die de meeste impact hebben.
 
 **ROI-voorbeeld**: Een freelance content creator kost €1.500-€3.000/maand. De Content Agent levert vergelijkbare output voor een fractie van de kosten.
 
-## 3. SEO & AIO Agent — Gevonden worden door mens en AI
+## 3. SEO & AIO Agent: gevonden worden door mens en AI
 
 **Het probleem**: Je website wordt niet gevonden op Google, en al helemaal niet door AI-zoekmachines zoals ChatGPT of Perplexity.
 
@@ -385,7 +385,7 @@ Hier zijn de 6 AI agents die de meeste impact hebben.
 
 **Resultaat**: Hogere rankings bij Google EN citaties door AI-zoekmachines.
 
-## 4. Email Marketing Agent — 53% hogere conversie
+## 4. Email Marketing Agent: 53% hogere conversie
 
 **Het probleem**: Je hebt een emaillijst maar stuurt zelden iets. Of je stuurt wel, maar de open rates en conversies zijn teleurstellend.
 
@@ -393,15 +393,15 @@ Hier zijn de 6 AI agents die de meeste impact hebben.
 
 **Resultaat**: Professionele email marketing op automatische piloot met aantoonbaar hogere conversies.
 
-## 5. Social Media Agent — 34% meer engagement
+## 5. Social Media Agent: 34% meer engagement
 
 **Het probleem**: Social media kost veel tijd, en je weet niet goed wat werkt.
 
 **De oplossing**: De Social Media Agent maakt posts, reageert op comments, analyseert engagement en detecteert virale trends. Inclusief concurrentie-analyse.
 
-**Resultaat**: Meer en betere content, hogere engagement, meer volgers — zonder dat jij er uren aan besteedt.
+**Resultaat**: Meer en betere content, hogere engagement, meer volgers. Zonder dat jij er uren aan besteedt.
 
-## 6. Automation Agent — Koppel al je systemen
+## 6. Automation Agent: koppel al je systemen
 
 **Het probleem**: Je gebruikt 5-10 verschillende tools die niet met elkaar praten. Data moet handmatig overgetypt worden.
 
@@ -433,7 +433,7 @@ Wij bouwen, testen en beheren alles voor je. Geen technische kennis nodig, geen 
     lang: "en",
     title: "6 AI Agents Every Business Needs in 2026",
     description:
-      "Discover which AI agents have the most impact for businesses. From customer service to workflow automation — with concrete ROI examples.",
+      "Discover which AI agents have the most impact for businesses. From customer service to workflow automation, with concrete ROI examples.",
     category: "AI for Business",
     tags: ["SMB", "AI agents", "automation", "ROI", "customer service"],
     publishedAt: "2026-02-08",
@@ -448,7 +448,7 @@ The AI revolution is no longer just for large corporates. In 2026, AI agents are
 
 Here are the 6 AI agents that have the most impact.
 
-## 1. Customer Service Agent — Save 12+ hours per week
+## 1. Customer Service Agent: save 12+ hours per week
 
 **The problem**: You spend hours each day answering customer messages via email, chat, and social media. The same questions keep coming back.
 
@@ -458,7 +458,7 @@ Here are the 6 AI agents that have the most impact.
 
 **ROI example**: 12 hours saved per week x €75/hour = €3,600/month saved. Agent cost: from €497/month. Net profit: €3,100/month.
 
-## 2. Content Agent — 300% more content output
+## 2. Content Agent: 300% more output
 
 **The problem**: You know content marketing is important, but you don't have time to publish regularly on all channels.
 
@@ -466,7 +466,7 @@ Here are the 6 AI agents that have the most impact.
 
 **Result**: From 2 posts per week to 10+ posts per week, all in your brand voice.
 
-## 3. SEO & AIO Agent — Found by humans and AI
+## 3. SEO & AIO Agent: found by humans and AI
 
 **The problem**: Your website doesn't rank on Google, and certainly isn't cited by AI search engines like ChatGPT or Perplexity.
 
@@ -474,7 +474,7 @@ Here are the 6 AI agents that have the most impact.
 
 **Result**: Higher rankings on Google AND citations by AI search engines.
 
-## 4. Email Marketing Agent — 53% higher conversion
+## 4. Email Marketing Agent: 53% higher conversion
 
 **The problem**: You have an email list but rarely send anything. Or you do send, but open rates and conversions are disappointing.
 
@@ -482,15 +482,15 @@ Here are the 6 AI agents that have the most impact.
 
 **Result**: Professional email marketing on autopilot with demonstrably higher conversions.
 
-## 5. Social Media Agent — 34% more engagement
+## 5. Social Media Agent: 34% more engagement
 
 **The problem**: Social media takes too much time, and you don't know what works.
 
 **The solution**: The Social Media Agent creates posts, responds to comments, analyzes engagement, and detects viral trends. Including competitor analysis.
 
-**Result**: More and better content, higher engagement, more followers — without spending hours on it.
+**Result**: More and better content, higher engagement, more followers. Without spending hours on it yourself.
 
-## 6. Automation Agent — Connect all your systems
+## 6. Automation Agent: connect all your systems
 
 **The problem**: You use 5-10 different tools that don't talk to each other. Data has to be manually transferred.
 

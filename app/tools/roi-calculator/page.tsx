@@ -1,29 +1,33 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { getServerLang } from "@/lib/i18n";
+import { roiCalcPageT } from "@/lib/translations";
 import CalculatorForm from "@/components/roi-calculator/CalculatorForm";
 
-export const metadata: Metadata = {
-  title: "Gratis AI Agent ROI Calculator | NovaClaw AI",
-  description:
-    "Bereken hoeveel je bespaart met AI agents. Selecteer je agents, vul je gegevens in en ontdek je maandelijkse besparing, terugverdientijd en het ideale plan.",
-  alternates: {
-    canonical: "https://novaclaw.tech/tools/roi-calculator",
-  },
-  openGraph: {
-    title: "AI Agent ROI Calculator — Bereken Je Besparing",
-    description:
-      "Hoeveel bespaar je met AI agents? Bereken het gratis in 2 minuten. Gepersonaliseerd voor jouw bedrijf.",
-    url: "https://novaclaw.tech/tools/roi-calculator",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "AI Agent ROI Calculator",
-    description:
-      "Bereken gratis hoeveel je bespaart met custom AI agents.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getServerLang();
+  const t = roiCalcPageT[lang];
+
+  return {
+    title: t.title,
+    description: t.description,
+    alternates: {
+      canonical: "https://novaclaw.tech/tools/roi-calculator",
+    },
+    openGraph: {
+      title: t.title,
+      description: t.description,
+      url: "https://novaclaw.tech/tools/roi-calculator",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.title,
+      description: t.description,
+    },
+  };
+}
 
 const calculatorJsonLd = {
   "@context": "https://schema.org",
@@ -47,7 +51,10 @@ const calculatorJsonLd = {
   inLanguage: ["nl", "en"],
 };
 
-export default function RoiCalculatorPage() {
+export default async function RoiCalculatorPage() {
+  const lang = await getServerLang();
+  const t = roiCalcPageT[lang];
+
   return (
     <main className="relative min-h-screen">
       <script
@@ -62,7 +69,7 @@ export default function RoiCalculatorPage() {
             href="/"
             className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-neon-cyan transition-colors"
           >
-            <ArrowLeft size={16} /> Terug naar home
+            <ArrowLeft size={16} /> {t.backToHome}
           </Link>
         </div>
 
@@ -71,17 +78,16 @@ export default function RoiCalculatorPage() {
         {/* Bottom CTA */}
         <div className="mt-16 glass-dark rounded-2xl p-8 md:p-12 text-center">
           <h3 className="text-lg font-semibold text-white mb-2">
-            Klaar om te starten met AI agents?
+            {t.bottomCtaHeading}
           </h3>
           <p className="text-sm text-white/50 mb-6 max-w-lg mx-auto">
-            Plan een gratis kennismakingsgesprek en ontdek wat NovaClaw voor
-            jouw bedrijf kan betekenen. Binnen 1-2 weken live.
+            {t.bottomCtaText}
           </p>
           <Link
             href="/#contact"
             className="inline-block px-8 py-4 text-sm font-medium rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
           >
-            Plan Gratis Gesprek &rarr;
+            {t.bottomCtaButton} &rarr;
           </Link>
         </div>
       </div>

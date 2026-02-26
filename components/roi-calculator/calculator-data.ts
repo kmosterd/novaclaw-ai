@@ -1,5 +1,5 @@
 /**
- * AI Agent ROI Calculator — Data & Logic
+ * AI Agent ROI Calculator - Data & Logic
  * Pure TypeScript, no React dependencies.
  */
 

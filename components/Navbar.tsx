@@ -1,18 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "Diensten", href: "#diensten" },
-  { label: "Resultaten", href: "#resultaten" },
-  { label: "Hoe het werkt", href: "#hoe-het-werkt" },
-  { label: "Prijzen", href: "#prijzen" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Blog", href: "/blog" },
-];
+import { Menu, X, Globe } from "lucide-react";
+import { useLang } from "@/components/LangProvider";
+import { navbarT } from "@/lib/translations";
 
 export default function Navbar() {
+  const { lang, setLang } = useLang();
+  const t = navbarT[lang];
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -21,6 +16,8 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleLang = () => setLang(lang === "nl" ? "en" : "nl");
 
   return (
     <nav
@@ -40,7 +37,7 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {t.links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -49,11 +46,22 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
+
+            {/* Language toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1 px-2.5 py-1 text-xs rounded-full border border-white/10 text-white/50 hover:text-white hover:border-white/30 transition-colors"
+              aria-label="Switch language"
+            >
+              <Globe size={12} />
+              {lang === "nl" ? "EN" : "NL"}
+            </button>
+
             <a
               href="#contact"
               className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white hover:opacity-90 transition-opacity"
             >
-              Gratis Gesprek
+              {t.cta}
             </a>
           </div>
 
@@ -72,7 +80,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-black/95 border-b border-white/10">
           <div className="px-4 py-4 space-y-3">
-            {navLinks.map((link) => (
+            {t.links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -82,12 +90,22 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
+
+            {/* Mobile language toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-2 text-sm text-white/50 hover:text-neon-cyan transition-colors"
+            >
+              <Globe size={14} />
+              {lang === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
+            </button>
+
             <a
               href="#contact"
               onClick={() => setMobileOpen(false)}
               className="block w-full text-center px-4 py-2 text-sm font-medium rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white"
             >
-              Gratis Gesprek
+              {t.cta}
             </a>
           </div>
         </div>

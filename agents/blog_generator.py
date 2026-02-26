@@ -48,7 +48,7 @@ CLAUDE_MODEL = "claude-haiku-4-5-20251001"
 # NovaClaw context for article generation
 NOVACLAW_CONTEXT = """
 NovaClaw is een Nederlands AI agency dat custom AI agents bouwt voor bedrijven.
-18+ agent types: Klantenservice, Voice, Chatbot, Helpdesk, Content, SEO & AIO,
+Meer dan 18 agent types: Klantenservice, Voice, Chatbot, Helpdesk, Content, SEO & AIO,
 Email Marketing, Social Media, Ads & Campaign, Lead Generation, Appointment Setter,
 E-commerce, Automation, Data & Analytics, Data Entry, Compliance, Web Scraping, Custom.
 Tech-agnostisch: OpenAI GPT-4o, Anthropic Claude, Google Gemini, Meta Llama.

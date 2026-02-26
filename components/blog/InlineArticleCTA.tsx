@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Mail, Calculator, CheckCircle, Loader2, ArrowRight } from "lucide-react";
+import { useLang } from "@/components/LangProvider";
 
 interface InlineArticleCTAProps {
   variant?: "newsletter" | "lead_magnet";
-  lang?: "nl" | "en";
 }
 
 const copy = {
@@ -54,8 +54,8 @@ const copy = {
 
 export default function InlineArticleCTA({
   variant = "newsletter",
-  lang = "nl",
 }: InlineArticleCTAProps) {
+  const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
