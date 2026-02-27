@@ -654,18 +654,54 @@ export async function getDynamicPostBySlug(slug: string): Promise<BlogPost | nul
   return posts.find((p) => p.slug === slug) || null;
 }
 
+// Fallback images for deduplication (all unique, not used in any category pool)
+const FALLBACK_IMAGES = [
+  "photo-1526374965328-7f61d4dc18c5",  // Matrix code
+  "photo-1517694712202-14dd9538aa97",  // Laptop code
+  "photo-1516321318423-f06f85e504b3",  // Web analytics
+  "photo-1559028012-481c04fa702d",  // Ranking
+  "photo-1503437313881-503a91226402",  // Abstract gradient
+  "photo-1518770660439-4636190af475",  // Microchip
+  "photo-1531297484001-80022131f5a1",  // Laptops row
+  "photo-1483478550801-ceba5fe50e8e",  // Creative tech
+  "photo-1550439062-609e1531270e",  // Digital globe
+  "photo-1478760329108-5c3ed9d495a0",  // Dark abstract
+];
+
 /**
- * Get ALL posts: static + dynamic, sorted by date (newest first)
+ * Get ALL posts: static + dynamic, sorted by date (newest first).
+ * Deduplicates featured images so no two posts on the same page share an image.
  */
 export async function getAllPostsCombined(lang?: "nl" | "en"): Promise<BlogPost[]> {
   const staticPosts = lang ? getStaticPostsByLang(lang) : blogPosts;
   const dynamicPosts = await getDynamicPosts(lang);
 
   // Merge and sort by date
-  return [...dynamicPosts, ...staticPosts].sort(
+  const allPosts = [...dynamicPosts, ...staticPosts].sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
+
+  // Deduplicate featured images: if two posts share the same image,
+  // replace the second one with a fallback
+  const usedImages = new Set<string>();
+  let fallbackIdx = 0;
+
+  return allPosts.map((post) => {
+    if (!post.featuredImage) return post;
+
+    if (usedImages.has(post.featuredImage)) {
+      const fallbackId = FALLBACK_IMAGES[fallbackIdx % FALLBACK_IMAGES.length];
+      fallbackIdx++;
+      return {
+        ...post,
+        featuredImage: `https://images.unsplash.com/${fallbackId}?w=1200&h=630&fit=crop`,
+      };
+    }
+
+    usedImages.add(post.featuredImage);
+    return post;
+  });
 }
 
 /**

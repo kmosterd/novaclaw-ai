@@ -453,60 +453,120 @@ UNSPLASH_IMAGES = {
         "photo-1684369175833-4b445ad6bfb5",  # Neural network blue
         "photo-1655720828018-edd2daec9349",  # AI chip abstract
         "photo-1696258686454-60082b2c33e2",  # Futuristic AI interface
+        "photo-1507146153580-69a1fe6d8aa1",  # Abstract neural connections
+        "photo-1636690513351-0af1763f6571",  # AI processor glow
+        "photo-1620825937374-87fc7d6bddc2",  # Digital brain network
+        "photo-1589254065878-42c014109b33",  # Machine learning diagram
+        "photo-1535930749574-1399327ce78f",  # Futuristic technology
+        "photo-1527474305167-d09807e31c5f",  # Sci-fi circuit board
     ],
     "security": [
         "photo-1555949963-ff9fe0c870eb",  # Cybersecurity lock
         "photo-1614064641938-3bbee52942c7",  # Shield digital
         "photo-1550751827-4bd374c3f58b",  # Security padlock
         "photo-1510511459019-5dda7724fd87",  # Fingerprint scan
+        "photo-1563013544-824ae1b704d3",  # Encrypted data stream
+        "photo-1558494949-ef010cbdcc31",  # Security monitoring
+        "photo-1526374965328-7f61d4dc18c5",  # Matrix code green
+        "photo-1562813733-b31f71025d54",  # Cyber defense
+        "photo-1667372393086-9d4001d51cf1",  # Digital shield glow
+        "photo-1633265486064-086b219458ec",  # Cybersecurity dashboard
     ],
     "automation": [
         "photo-1485827404703-89b55fcc595e",  # Abstract tech lines
         "photo-1518432031352-d6fc5c10da5a",  # Code automation
         "photo-1551434678-e076c223a692",  # Team workflow
         "photo-1581091226825-a6a2a5aee158",  # Robot arm industry
+        "photo-1563203369-26f2e4a5ccf7",  # Gears mechanism
+        "photo-1537498425277-c283d32ef9db",  # Smart factory
+        "photo-1558346490-a72e53ae2d4f",  # Workflow automation
+        "photo-1504384308090-c894fdcc538d",  # Circuit board macro
+        "photo-1573164713988-8665fc963095",  # Robotic automation
+        "photo-1531746790095-e5992cbe43ac",  # Industrial robotics
     ],
     "business": [
         "photo-1552664730-d307ca884978",  # Business meeting
         "photo-1542744173-8e7e53415bb0",  # Conference room
         "photo-1556761175-5973dc0f32e7",  # Startup team
         "photo-1454165804606-c3d57bc86b40",  # Business desk laptop
+        "photo-1521737711867-e3b97375f902",  # Office teamwork
+        "photo-1560472355-536de3962603",  # Business handshake
+        "photo-1522071820081-009f0129c71c",  # Team collaboration
+        "photo-1553028826-f4804a6dba3b",  # Strategy planning
+        "photo-1497366216548-37526070297c",  # Modern office
+        "photo-1559136555-9303baea8ebd",  # Business growth
     ],
     "marketing": [
-        "photo-1460925895917-afdab827c52f",  # Marketing dashboard
         "photo-1533750349088-cd871a92f312",  # Digital marketing
         "photo-1557838923-2985c318be48",  # Social media phone
         "photo-1432888622747-4eb9a8efeb07",  # Creative strategy
+        "photo-1611926653458-09294b3142bf",  # Social media icons
+        "photo-1563986768609-322da13575f2",  # Marketing analytics
+        "photo-1571721795195-a2ca2d3370a9",  # Email notification
+        "photo-1562577309-4932fdd64cd1",  # Content planning
+        "photo-1572044162444-ad60f128bdea",  # Campaign strategy
+        "photo-1565106430482-8f6e74349ca1",  # Digital advertising
+        "photo-1551836022-d5d88e9218df",  # Marketing meeting
     ],
     "seo": [
         "photo-1432888498266-38ffec3eaf0a",  # SEO/search desk
-        "photo-1504868584819-f8e8b4b6d7e3",  # Analytics screen
-        "photo-1460925895917-afdab827c52f",  # Search optimization
         "photo-1553877522-43269d4ea984",  # Google search
+        "photo-1571844307880-751c6d86f3f3",  # Search magnifying glass
+        "photo-1562577308-9e66f0c65ce5",  # Analytics overview
+        "photo-1542903660-eedba2cda473",  # Keyword research
+        "photo-1516321318423-f06f85e504b3",  # Web analytics
+        "photo-1460925895917-afdab827c52f",  # SEO dashboard
+        "photo-1559028012-481c04fa702d",  # Search engine ranking
+        "photo-1517292987719-0369a794ec0f",  # Organic growth
+        "photo-1556155092-490a1ba16284",  # Website optimization
     ],
     "data": [
         "photo-1551288049-bebda4e38f71",  # Data analytics
         "photo-1543286386-713bdd548da4",  # Dashboard charts
-        "photo-1504868584819-f8e8b4b6d7e3",  # Data visualization
         "photo-1509228468518-180dd4864904",  # Server room
+        "photo-1504868584819-f8e8b4b6d7e3",  # Data visualization
+        "photo-1518186285589-2f7649de83e0",  # Digital data grid
+        "photo-1558494949-ef010cbdcc31",  # Data center
+        "photo-1544197150-b99a580bb7a8",  # Analytics graphs
+        "photo-1527474305167-d09807e31c5f",  # Data network
+        "photo-1563986768494-4dee2763ff3f",  # Database infrastructure
+        "photo-1504639725590-34d0984388bd",  # Data processing
     ],
     "content": [
         "photo-1499750310107-5fef28a66643",  # Content creation desk
         "photo-1455390582262-044cdead277a",  # Writing workspace
         "photo-1488190211105-8b0e65b80b4e",  # Blogging setup
         "photo-1519389950473-47ba0277781c",  # Creative office
+        "photo-1471107340929-a87cd0f5b5f3",  # Laptop content
+        "photo-1542435503-956c469947f6",  # Notepad writing
+        "photo-1456324504439-367cee3b3c32",  # Creative workspace
+        "photo-1501504905252-473c47e087f8",  # Book and laptop
+        "photo-1586281380349-632531db7ed4",  # Editorial desk
+        "photo-1520971081497-30c9448c8899",  # Storytelling
     ],
     "agents": [
         "photo-1620712943543-bcc4688e7485",  # Robot/AI agent
         "photo-1535378917042-10a22c95931a",  # Abstract tech
         "photo-1531482615713-2afd69097998",  # Chatbot concept
         "photo-1676299081847-824916de030a",  # AI assistant
+        "photo-1485827404703-89b55fcc595e",  # Tech agent abstract
+        "photo-1596348158371-d3a25ec4dcf4",  # Virtual assistant
+        "photo-1639322537228-f710d846310a",  # Conversational AI
+        "photo-1616161560417-66d4db5892ec",  # AI robot face
+        "photo-1634017839464-5c339eba3df4",  # Chatbot interface
+        "photo-1593376893114-1aed528d80cf",  # Digital assistant
     ],
     "coding": [
         "photo-1461749280684-dccba630e2f6",  # Code on screen
         "photo-1555066931-4365d14bab8c",  # Code IDE dark
         "photo-1498050108023-c5249f4df085",  # Developer laptop
-        "photo-1504639725590-34d0984388bd",  # Programming screen
+        "photo-1587620962725-abab7fe55159",  # Code close-up
+        "photo-1515879218367-8466d910aede",  # Terminal window
+        "photo-1542831371-29b0f74f9713",  # JavaScript code
+        "photo-1607799279861-4dd421887fb3",  # GitHub coding
+        "photo-1544256718-3bcf237f3974",  # Dark mode code
+        "photo-1580894894513-541e068a3e2b",  # Programming setup
+        "photo-1534665482403-a909d0d97c67",  # Developer workspace
     ],
 }
 
@@ -539,8 +599,9 @@ def get_unsplash_image(article: "BlogArticle") -> str:
         key = "ai"
 
     photos = UNSPLASH_IMAGES[key]
-    # Use slug hash to pick a unique photo from the pool
-    slug_hash = sum(ord(c) for c in article.slug)
+    # Use a proper hash for better distribution across the pool
+    import hashlib
+    slug_hash = int(hashlib.md5(article.slug.encode()).hexdigest(), 16)
     photo_id = photos[slug_hash % len(photos)]
     return f"https://images.unsplash.com/{photo_id}?w=1200&h=630&fit=crop"
 
