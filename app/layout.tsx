@@ -144,6 +144,12 @@ export default async function RootLayout({
   return (
     <html lang={lang} className="dark">
       <head>
+        {/* Ahrefs Analytics */}
+        <script
+          async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="7f5DzCgKMSyuIQTovR8PfQ"
+        />
         {/* Google Analytics */}
         <script
           async
