@@ -3,12 +3,11 @@ import { techStackT } from "@/lib/translations";
 
 // SimpleIcons CDN — returns white SVG logos for dark backgrounds
 function ProviderLogo({ icon, name, color }: { icon: string; name: string; color: string }) {
-  // Use white versions of logos for dark background
   const logoUrl = `https://cdn.simpleicons.org/${icon}/ffffff`;
 
   return (
     <div className="relative w-10 h-10 flex items-center justify-center">
-      {/* Colored glow dot behind logo */}
+      {/* Colored glow behind logo */}
       <div
         className="absolute inset-0 rounded-full opacity-20 blur-md"
         style={{ backgroundColor: color }}
@@ -20,10 +19,6 @@ function ProviderLogo({ icon, name, color }: { icon: string; name: string; color
         width={28}
         height={28}
         className="relative z-10 object-contain"
-        onError={(e) => {
-          // Fallback: hide img and show text initial
-          (e.target as HTMLImageElement).style.display = "none";
-        }}
       />
     </div>
   );

@@ -40,7 +40,7 @@ export default async function Services() {
   const t = servicesT[lang];
 
   // Flatten all agents for count and JSON-LD
-  const allAgents = t.categories.flatMap((cat) => cat.agents);
+  const allAgents = t.categories.flatMap((cat) => [...cat.agents] as { title: string; description: string; stats: string }[]);
 
   const servicesJsonLd = {
     "@context": "https://schema.org",
