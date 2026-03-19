@@ -52,8 +52,57 @@ Meer dan 18 agent types: Klantenservice, Voice, Chatbot, Helpdesk, Content, SEO 
 Email Marketing, Social Media, Ads & Campaign, Lead Generation, Appointment Setter,
 E-commerce, Automation, Data & Analytics, Data Entry, Compliance, Web Scraping, Custom.
 Tech-agnostisch: OpenAI GPT-4o, Anthropic Claude, Google Gemini, Meta Llama.
+
+FLAGSHIP PRODUCTEN:
+- OpenClaw: De persoonlijke AI-communicatie-agent van NovaClaw. Beantwoordt klantvragen,
+  kwalificeert leads, plant afspraken en onderhoudt klantrelaties. 24/7 actief, volledig
+  getraind op het merk van de klant, integreert met WhatsApp, e-mail en CRM. GDPR-compliant.
+- NemoClaw: De autonome research & intelligence-agent van NovaClaw. Scrapet het web,
+  verzamelt marktdata, analyseert concurrenten en levert dagelijks gestructureerde rapporten.
+  Monitort prijzen, vacatures, nieuws en social media. Verrijkt CRM automatisch met data.
+
 Website: novaclaw.tech | Email: info@novaclaw.tech
 """
+
+# Rotating OpenClaw / NemoClaw topics for dedicated product articles
+PRODUCT_TOPICS = [
+    {
+        "title": "OpenClaw: hoe een AI klantenservice-agent jouw bedrijf 24/7 bereikbaar maakt",
+        "summary": "OpenClaw is de AI-communicatie-agent van NovaClaw die klantvragen beantwoordt, leads kwalificeert en afspraken plant. Voordelen, werking en ROI.",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+    {
+        "title": "NemoClaw uitgelegd: de autonome research-agent die je concurrenten bijhoudt",
+        "summary": "NemoClaw scrapet het web, analyseert markttrends en levert dagelijks rapporten. Hoe werkt het en voor welke bedrijven is het geschikt?",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+    {
+        "title": "OpenClaw vs. een menselijke klantenservice: wat levert meer op?",
+        "summary": "Vergelijking tussen een AI klantenservice-agent (OpenClaw) en een menselijk team. Kosten, snelheid, klanttevredenheid en wanneer te combineren.",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+    {
+        "title": "5 manieren waarop NemoClaw jouw salesteam versterkt met marktintelligentie",
+        "summary": "NemoClaw als competitive intelligence tool: hoe de research-agent dagelijks bruikbare data aanlevert aan je salesteam.",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+    {
+        "title": "OpenClaw integreren met WhatsApp Business: stap-voor-stap",
+        "summary": "Hoe je OpenClaw koppelt aan WhatsApp Business voor automatische klantenservice. Technische uitleg en praktijkvoorbeelden.",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+    {
+        "title": "NemoClaw voor e-commerce: dagelijks je concurrenten monitoren op autopilot",
+        "summary": "Hoe webshops NemoClaw gebruiken om prijswijzigingen, nieuwe producten en reviewtrends van concurrenten automatisch bij te houden.",
+        "source": "novaclaw_product",
+        "category": "product",
+    },
+]
 
 
 def extract_json(text: str) -> Any:
@@ -688,7 +737,25 @@ async def run_blog_generator():
         # STEP 2: Score trends
         print("\n[2/5] Scoring trends for blog-worthiness...")
         trends = await score_trends(trends, session)
-        top_trend = trends[0]
+        scored_top = trends[0]
+
+        # Every 3rd day: use a rotating OpenClaw/NemoClaw product topic
+        day_of_year = datetime.utcnow().timetuple().tm_yday
+        if day_of_year % 3 == 0:
+            product_idx = (day_of_year // 3) % len(PRODUCT_TOPICS)
+            product_topic = PRODUCT_TOPICS[product_idx]
+            top_trend = Trend(
+                source=product_topic["source"],
+                category=product_topic["category"],
+                title=product_topic["title"],
+                url="https://novaclaw.tech",
+                summary=product_topic["summary"],
+                relevance_score=0.95,
+            )
+            print(f"  [product] Using dedicated product topic (day {day_of_year})")
+        else:
+            top_trend = scored_top
+
         print(f"  Top trend: {top_trend.title[:80]} (score: {top_trend.relevance_score:.2f})")
         print(f"  Source: {top_trend.source}")
 

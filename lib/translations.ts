@@ -3,6 +3,92 @@
    Pattern: { nl: {...}, en: {...} } per component section.
    ============================================================ */
 
+// ─── AGENT PRODUCTS (OpenClaw + NemoClaw) ───────────────────
+export const agentProductsT = {
+  nl: {
+    label: "Onze Flagship Agents",
+    heading: "Twee Krachtige AI Agents, Één Bureau",
+    subheading:
+      "OpenClaw en NemoClaw zijn de twee gespecialiseerde AI-agents die NovaClaw bouwt en beheert voor jouw bedrijf.",
+    openclaw: {
+      badge: "Conversatie & Communicatie",
+      description:
+        "OpenClaw is jouw persoonlijke AI-communicatie-agent. Hij beantwoordt klantvragen, kwalificeert leads, plant afspraken en onderhoudt klantrelaties — 24/7, in jouw tone of voice.",
+      features: [
+        "Volledig getraind op jouw merk, producten en processen",
+        "Integreert met WhatsApp, e-mail, website en CRM",
+        "Leert continu van elke interactie",
+        "GDPR-compliant en gehost in Europa",
+        "Gemiddeld 90% snellere responstijd",
+      ],
+      usecases: ["Klantenservice", "Lead kwalificatie", "Meertalig", "GDPR-proof"],
+      cta: "Bestel jouw OpenClaw bot",
+    },
+    nemoclaw: {
+      badge: "Research & Intelligence",
+      description:
+        "NemoClaw is jouw autonome research-agent. Hij duikt het web in, verzamelt marktdata, analyseert concurrenten en levert dagelijks gestructureerde rapporten — zonder dat jij er een vinger voor uitsteekt.",
+      features: [
+        "Scrapet realtime nieuws, trends en concurrenten",
+        "Genereert dagelijkse markt- en competitor-rapporten",
+        "Verrijkt je CRM automatisch met bedrijfsdata",
+        "Monitort prijzen, vacatures en social media",
+        "Levert gestructureerde output direct in je werktools",
+      ],
+      usecases: ["Marktonderzoek", "Competitor intel", "Data-extractie", "Rapportage"],
+      cta: "Bestel jouw NemoClaw agent",
+    },
+    compareLabel: "Samen dekken ze het volledige AI-automatiseringsspectrum",
+    comparePoints: [
+      { value: "24/7", label: "Actief" },
+      { value: "2 agents", label: "Flagship producten" },
+      { value: ">18 types", label: "Use cases gedekt" },
+      { value: "100%", label: "Op maat gebouwd" },
+    ],
+  },
+  en: {
+    label: "Our Flagship Agents",
+    heading: "Two Powerful AI Agents, One Agency",
+    subheading:
+      "OpenClaw and NemoClaw are the two specialized AI agents that NovaClaw builds and manages for your business.",
+    openclaw: {
+      badge: "Conversation & Communication",
+      description:
+        "OpenClaw is your personal AI communication agent. It answers customer questions, qualifies leads, schedules appointments and maintains customer relationships — 24/7, in your tone of voice.",
+      features: [
+        "Fully trained on your brand, products and processes",
+        "Integrates with WhatsApp, email, website and CRM",
+        "Continuously learns from every interaction",
+        "GDPR-compliant and hosted in Europe",
+        "Average 90% faster response time",
+      ],
+      usecases: ["Customer service", "Lead qualification", "Multilingual", "GDPR-proof"],
+      cta: "Order your OpenClaw bot",
+    },
+    nemoclaw: {
+      badge: "Research & Intelligence",
+      description:
+        "NemoClaw is your autonomous research agent. It dives into the web, collects market data, analyzes competitors and delivers daily structured reports — without you lifting a finger.",
+      features: [
+        "Scrapes real-time news, trends and competitors",
+        "Generates daily market and competitor reports",
+        "Automatically enriches your CRM with company data",
+        "Monitors prices, job postings and social media",
+        "Delivers structured output directly into your work tools",
+      ],
+      usecases: ["Market research", "Competitor intel", "Data extraction", "Reporting"],
+      cta: "Order your NemoClaw agent",
+    },
+    compareLabel: "Together they cover the full AI automation spectrum",
+    comparePoints: [
+      { value: "24/7", label: "Active" },
+      { value: "2 agents", label: "Flagship products" },
+      { value: ">18 types", label: "Use cases covered" },
+      { value: "100%", label: "Built to measure" },
+    ],
+  },
+} as const;
+
 // ─── LAYOUT / METADATA ──────────────────────────────────────
 export const layoutT = {
   nl: {
@@ -484,26 +570,42 @@ export const techStackT = {
   nl: {
     label: "Technologie-Agnostisch",
     heading: "Wij kiezen per project de optimale AI-technologie",
+    aiLabel: "AI Modellen",
+    infraLabel: "Automatisering & Infrastructuur",
     techs: [
-      { name: "OpenAI", subtitle: "GPT-4o", description: "Geavanceerde taalmodellen" },
-      { name: "Anthropic", subtitle: "Claude", description: "Veilige AI-assistenten" },
-      { name: "Google", subtitle: "Gemini", description: "Multimodale AI" },
-      { name: "Meta", subtitle: "Llama", description: "Open-source modellen" },
+      { name: "OpenAI", subtitle: "GPT-4o", description: "Geavanceerde taalmodellen", icon: "openai", color: "#10a37f" },
+      { name: "Anthropic", subtitle: "Claude", description: "Veilige AI-assistenten", icon: "anthropic", color: "#d4a373" },
+      { name: "Google", subtitle: "Gemini", description: "Multimodale AI", icon: "google", color: "#4285f4" },
+      { name: "Meta", subtitle: "Llama", description: "Open-source modellen", icon: "meta", color: "#0866ff" },
+    ],
+    infra: [
+      { name: "n8n", subtitle: "Workflow", description: "Visuele automatisering", icon: "n8n", color: "#ea4b71" },
+      { name: "Make", subtitle: "Integrations", description: "No-code koppeling", icon: "make", color: "#6d00cc" },
+      { name: "Supabase", subtitle: "Database", description: "Realtime backend", icon: "supabase", color: "#3ecf8e" },
+      { name: "Vercel", subtitle: "Hosting", description: "Edge deployment", icon: "vercel", color: "#ffffff" },
     ],
     footer:
-      "Wij zijn niet gebonden aan een leverancier. Voor elk project selecteren wij het AI-model dat de beste resultaten levert voor jouw specifieke use case. Van GPT-4o voor complexe redeneertaken tot Gemini voor multimodale analyse.",
+      "Wij zijn niet gebonden aan een leverancier. Voor elk project selecteren wij het AI-model én de infrastructuur die de beste resultaten levert voor jouw specifieke use case.",
   },
   en: {
     label: "Technology Agnostic",
     heading: "We choose the optimal AI technology per project",
+    aiLabel: "AI Models",
+    infraLabel: "Automation & Infrastructure",
     techs: [
-      { name: "OpenAI", subtitle: "GPT-4o", description: "Advanced language models" },
-      { name: "Anthropic", subtitle: "Claude", description: "Safe AI assistants" },
-      { name: "Google", subtitle: "Gemini", description: "Multimodal AI" },
-      { name: "Meta", subtitle: "Llama", description: "Open-source models" },
+      { name: "OpenAI", subtitle: "GPT-4o", description: "Advanced language models", icon: "openai", color: "#10a37f" },
+      { name: "Anthropic", subtitle: "Claude", description: "Safe AI assistants", icon: "anthropic", color: "#d4a373" },
+      { name: "Google", subtitle: "Gemini", description: "Multimodal AI", icon: "google", color: "#4285f4" },
+      { name: "Meta", subtitle: "Llama", description: "Open-source models", icon: "meta", color: "#0866ff" },
+    ],
+    infra: [
+      { name: "n8n", subtitle: "Workflow", description: "Visual automation", icon: "n8n", color: "#ea4b71" },
+      { name: "Make", subtitle: "Integrations", description: "No-code integration", icon: "make", color: "#6d00cc" },
+      { name: "Supabase", subtitle: "Database", description: "Realtime backend", icon: "supabase", color: "#3ecf8e" },
+      { name: "Vercel", subtitle: "Hosting", description: "Edge deployment", icon: "vercel", color: "#ffffff" },
     ],
     footer:
-      "We are not bound to any vendor. For each project we select the AI model that delivers the best results for your specific use case. From GPT-4o for complex reasoning to Gemini for multimodal analysis.",
+      "We are not bound to any vendor. For each project we select the AI model and infrastructure that delivers the best results for your specific use case.",
   },
 } as const;
 

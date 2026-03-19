@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import AgentProducts from "@/components/AgentProducts";
 import Services from "@/components/Services";
 import TechStack from "@/components/TechStack";
 import Results from "@/components/Results";
@@ -20,6 +21,7 @@ export default function Home() {
       <ParticleField />
       <Navbar />
       <section id="contact" className="pt-16"><Hero /></section>
+      <AgentProducts />
       <section id="diensten"><Services /></section>
       <TechStack />
       <section id="resultaten"><Results /></section>
