@@ -1,9 +1,14 @@
 import { getServerLang } from "@/lib/i18n";
 import { techStackT } from "@/lib/translations";
 
-// SimpleIcons CDN — returns white SVG logos for dark backgrounds
+// Logo source: local SVGs in /public/logos/ for reliability;
+// fallback to SimpleIcons CDN for those not stored locally.
+const LOCAL_LOGOS: Record<string, string> = {
+  openai: "/logos/openai.svg",
+};
+
 function ProviderLogo({ icon, name, color }: { icon: string; name: string; color: string }) {
-  const logoUrl = `https://cdn.simpleicons.org/${icon}/ffffff`;
+  const logoUrl = LOCAL_LOGOS[icon] ?? `https://cdn.simpleicons.org/${icon}/ffffff`;
 
   return (
     <div className="relative w-10 h-10 flex items-center justify-center">

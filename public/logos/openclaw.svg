@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56">
+  <defs>
+    <linearGradient id="ocGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <filter id="ocGlow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="56" height="56" rx="14" fill="#050d1a"/>
+  <!-- Cyan border glow -->
+  <rect width="56" height="56" rx="14" fill="none" stroke="url(#ocGrad)" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Three claw marks (talon shape) going downward -->
+  <g filter="url(#ocGlow)">
+    <!-- Left talon -->
+    <path d="M18 10 C16 15 15 21 16 27 C17 31 20 33 20 33 L21 29 C20 26 20 21 21 16 Z"
+          fill="url(#ocGrad)" opacity="0.85"/>
+    <!-- Center talon (tallest) -->
+    <path d="M28 8 C26 14 25 21 26 28 C27 33 28 35 28 35 L30 31 C29 27 29 20 30 14 Z"
+          fill="url(#ocGrad)"/>
+    <!-- Right talon -->
+    <path d="M38 10 C40 15 41 21 40 27 C39 31 36 33 36 33 L35 29 C36 26 36 21 35 16 Z"
+          fill="url(#ocGrad)" opacity="0.85"/>
+    <!-- Knuckle bar connecting talons -->
+    <rect x="16" y="33" width="24" height="5" rx="2.5" fill="url(#ocGrad)"/>
+  </g>
+
+  <!-- "OC" brand mark -->
+  <text x="28" y="50" text-anchor="middle"
+        fill="#00e5ff" font-family="ui-monospace, monospace"
+        font-size="9" font-weight="900" letter-spacing="2" opacity="0.9">OC</text>
+</svg>

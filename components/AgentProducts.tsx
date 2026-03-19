@@ -1,8 +1,6 @@
 import { getServerLang } from "@/lib/i18n";
 import { agentProductsT } from "@/lib/translations";
 import {
-  Bot,
-  Search,
   Zap,
   Shield,
   Globe,
@@ -10,6 +8,7 @@ import {
   MessageSquareMore,
   Database,
   CheckCircle2,
+  Search,
 } from "lucide-react";
 
 export default async function AgentProducts() {
@@ -53,8 +52,9 @@ export default async function AgentProducts() {
 
             {/* Icon + name */}
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-neon-cyan/10 border border-neon-cyan/20 flex items-center justify-center">
-                <Bot className="w-7 h-7 text-neon-cyan" strokeWidth={1.5} />
+              <div className="w-14 h-14 rounded-xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/openclaw.svg" alt="OpenClaw logo" width={56} height={56} className="w-full h-full" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-white">OpenClaw</h3>
@@ -111,8 +111,9 @@ export default async function AgentProducts() {
 
             {/* Icon + name */}
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-xl bg-neon-purple/10 border border-neon-purple/20 flex items-center justify-center">
-                <Search className="w-7 h-7 text-neon-purple" strokeWidth={1.5} />
+              <div className="w-14 h-14 rounded-xl overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/nemoclaw.svg" alt="NemoClaw logo" width={56} height={56} className="w-full h-full" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-white">NemoClaw</h3>
