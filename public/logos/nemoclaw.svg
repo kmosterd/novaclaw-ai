@@ -1,34 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56">
-  <defs>
-    <linearGradient id="ncGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#c084fc"/>
-      <stop offset="100%" stop-color="#7c3aed"/>
-    </linearGradient>
-    <filter id="ncGlow">
-      <feGaussianBlur stdDeviation="1.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
+  <rect width="56" height="56" rx="12" fill="#0d1117"/>
 
-  <!-- Dark background -->
-  <rect width="56" height="56" rx="14" fill="#050d1a"/>
-  <!-- Purple border glow -->
-  <rect width="56" height="56" rx="14" fill="none" stroke="url(#ncGrad)" stroke-width="1.5" opacity="0.6"/>
+  <!-- "NVIDIA" in NVIDIA green, small caps -->
+  <text x="28" y="22"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        letter-spacing="1.5"
+        fill="#76b900">NVIDIA</text>
 
-  <!-- Magnifying glass (search / intelligence) -->
-  <g filter="url(#ncGlow)">
-    <!-- Glass circle -->
-    <circle cx="24" cy="23" r="10" fill="none" stroke="url(#ncGrad)" stroke-width="2.5"/>
-    <!-- Handle -->
-    <line x1="31.5" y1="30.5" x2="40" y2="39" stroke="url(#ncGrad)" stroke-width="2.5" stroke-linecap="round"/>
-    <!-- Wave inside glass (data / intelligence) -->
-    <path d="M17 23 C19 20 22 26 25 23 C27 21 29 24 31 23"
-          fill="none" stroke="url(#ncGrad)" stroke-width="1.8"
-          stroke-linecap="round" opacity="0.75"/>
-  </g>
-
-  <!-- "NC" brand mark -->
-  <text x="28" y="52" text-anchor="middle"
-        fill="#c084fc" font-family="ui-monospace, monospace"
-        font-size="9" font-weight="900" letter-spacing="2" opacity="0.9">NC</text>
+  <!-- "NEMOCLAW" in white bold -->
+  <text x="28" y="36"
+        text-anchor="middle"
+        font-family="Arial Black, Arial, sans-serif"
+        font-size="8"
+        font-weight="900"
+        letter-spacing="0.8"
+        fill="white">NEMOCLAW</text>
 </svg>
