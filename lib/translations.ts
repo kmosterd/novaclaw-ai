@@ -6,14 +6,14 @@
 // ─── AGENT PRODUCTS (OpenClaw + NemoClaw) ───────────────────
 export const agentProductsT = {
   nl: {
-    label: "Onze Flagship Agents",
-    heading: "Twee Krachtige AI Agents, Één Bureau",
+    label: "Onze Flagship AI-oplossingen",
+    heading: "OpenClaw & NVIDIA NeMo — Twee Krachtige AI-Oplossingen",
     subheading:
-      "OpenClaw en NemoClaw zijn de twee gespecialiseerde AI-agents die NovaClaw bouwt en beheert voor jouw bedrijf.",
+      "NovaClaw bouwt OpenClaw als eigen AI-communicatie-agent en implementeert NVIDIA NeMo voor autonome research en intelligence.",
     openclaw: {
-      badge: "Conversatie & Communicatie",
+      badge: "Conversatie & Communicatie · door NovaClaw",
       description:
-        "OpenClaw is jouw persoonlijke AI-communicatie-agent. Hij beantwoordt klantvragen, kwalificeert leads, plant afspraken en onderhoudt klantrelaties — 24/7, in jouw tone of voice.",
+        "OpenClaw is de AI-communicatie-agent van NovaClaw. Hij beantwoordt klantvragen, kwalificeert leads, plant afspraken en onderhoudt klantrelaties — 24/7, in jouw tone of voice.",
       features: [
         "Volledig getraind op jouw merk, producten en processen",
         "Integreert met WhatsApp, e-mail, website en CRM",
@@ -25,36 +25,36 @@ export const agentProductsT = {
       cta: "Bestel jouw OpenClaw bot",
     },
     nemoclaw: {
-      badge: "Research & Intelligence",
+      badge: "Research & Intelligence · powered by NVIDIA",
       description:
-        "NemoClaw is jouw autonome research-agent. Hij duikt het web in, verzamelt marktdata, analyseert concurrenten en levert dagelijks gestructureerde rapporten — zonder dat jij er een vinger voor uitsteekt.",
+        "NovaClaw implementeert NVIDIA NeMo — het enterprise AI-framework van NVIDIA — als autonome research- en intelligence-agent voor jouw bedrijf. Realtime marktdata, competitor-analyse en dagelijkse rapporten, zonder handmatig werk.",
       features: [
+        "Gebouwd op NVIDIA NeMo enterprise AI-framework",
         "Scrapet realtime nieuws, trends en concurrenten",
         "Genereert dagelijkse markt- en competitor-rapporten",
         "Verrijkt je CRM automatisch met bedrijfsdata",
         "Monitort prijzen, vacatures en social media",
-        "Levert gestructureerde output direct in je werktools",
       ],
       usecases: ["Marktonderzoek", "Competitor intel", "Data-extractie", "Rapportage"],
-      cta: "Bestel jouw NemoClaw agent",
+      cta: "Vraag een NVIDIA NeMo implementatie aan",
     },
     compareLabel: "Samen dekken ze het volledige AI-automatiseringsspectrum",
     comparePoints: [
       { value: "24/7", label: "Actief" },
-      { value: "2 agents", label: "Flagship producten" },
+      { value: "NVIDIA", label: "NeMo-technologie" },
       { value: ">18 types", label: "Use cases gedekt" },
       { value: "100%", label: "Op maat gebouwd" },
     ],
   },
   en: {
-    label: "Our Flagship Agents",
-    heading: "Two Powerful AI Agents, One Agency",
+    label: "Our Flagship AI Solutions",
+    heading: "OpenClaw & NVIDIA NeMo — Two Powerful AI Solutions",
     subheading:
-      "OpenClaw and NemoClaw are the two specialized AI agents that NovaClaw builds and manages for your business.",
+      "NovaClaw builds OpenClaw as its own AI communication agent and deploys NVIDIA NeMo for autonomous research and intelligence.",
     openclaw: {
-      badge: "Conversation & Communication",
+      badge: "Conversation & Communication · by NovaClaw",
       description:
-        "OpenClaw is your personal AI communication agent. It answers customer questions, qualifies leads, schedules appointments and maintains customer relationships — 24/7, in your tone of voice.",
+        "OpenClaw is NovaClaw's AI communication agent. It answers customer questions, qualifies leads, schedules appointments and maintains customer relationships — 24/7, in your tone of voice.",
       features: [
         "Fully trained on your brand, products and processes",
         "Integrates with WhatsApp, email, website and CRM",
@@ -66,23 +66,23 @@ export const agentProductsT = {
       cta: "Order your OpenClaw bot",
     },
     nemoclaw: {
-      badge: "Research & Intelligence",
+      badge: "Research & Intelligence · powered by NVIDIA",
       description:
-        "NemoClaw is your autonomous research agent. It dives into the web, collects market data, analyzes competitors and delivers daily structured reports — without you lifting a finger.",
+        "NovaClaw deploys NVIDIA NeMo — NVIDIA's enterprise AI framework — as an autonomous research and intelligence agent for your business. Real-time market data, competitor analysis and daily reports, without any manual effort.",
       features: [
+        "Built on the NVIDIA NeMo enterprise AI framework",
         "Scrapes real-time news, trends and competitors",
         "Generates daily market and competitor reports",
         "Automatically enriches your CRM with company data",
         "Monitors prices, job postings and social media",
-        "Delivers structured output directly into your work tools",
       ],
       usecases: ["Market research", "Competitor intel", "Data extraction", "Reporting"],
-      cta: "Order your NemoClaw agent",
+      cta: "Request an NVIDIA NeMo implementation",
     },
     compareLabel: "Together they cover the full AI automation spectrum",
     comparePoints: [
       { value: "24/7", label: "Active" },
-      { value: "2 agents", label: "Flagship products" },
+      { value: "NVIDIA", label: "NeMo technology" },
       { value: ">18 types", label: "Use cases covered" },
       { value: "100%", label: "Built to measure" },
     ],

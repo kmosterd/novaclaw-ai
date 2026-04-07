@@ -53,18 +53,36 @@ Email Marketing, Social Media, Ads & Campaign, Lead Generation, Appointment Sett
 E-commerce, Automation, Data & Analytics, Data Entry, Compliance, Web Scraping, Custom.
 Tech-agnostisch: OpenAI GPT-4o, Anthropic Claude, Google Gemini, Meta Llama.
 
-FLAGSHIP PRODUCTEN:
+EIGEN PRODUCTEN VAN NOVACLAW:
 - OpenClaw: De persoonlijke AI-communicatie-agent van NovaClaw. Beantwoordt klantvragen,
   kwalificeert leads, plant afspraken en onderhoudt klantrelaties. 24/7 actief, volledig
   getraind op het merk van de klant, integreert met WhatsApp, e-mail en CRM. GDPR-compliant.
-- NemoClaw: De autonome research & intelligence-agent van NovaClaw. Scrapet het web,
-  verzamelt marktdata, analyseert concurrenten en levert dagelijks gestructureerde rapporten.
-  Monitort prijzen, vacatures, nieuws en social media. Verrijkt CRM automatisch met data.
+  OpenClaw IS een product van NovaClaw.
+
+TECHNOLOGIE DIE NOVACLAW INZET (NIET eigendom van NovaClaw):
+- NemoClaw / NVIDIA NeMo: Dit is een product en framework van NVIDIA, NIET van NovaClaw.
+  NovaClaw gebruikt NVIDIA NeMo/NemoClaw om Personal Assistance AI te bouwen voor klanten.
+  Schrijf nooit dat NemoClaw een product van NovaClaw is. NovaClaw is gebruiker, niet eigenaar.
 
 Website: novaclaw.tech | Email: info@novaclaw.tech
 """
 
-# Rotating OpenClaw / NemoClaw topics for dedicated product articles
+# Hard factual boundaries — used by the fact-checker to detect hallucinations.
+# Add new facts here when product/partnership details change.
+KNOWN_FACTS = [
+    "OpenClaw IS een product van NovaClaw.",
+    "NemoClaw / NVIDIA NeMo is een product van NVIDIA, NIET van NovaClaw.",
+    "NovaClaw heeft NemoClaw NIET uitgevonden en bezit het NIET.",
+    "NovaClaw gebruikt NVIDIA NeMo/NemoClaw als technologie om Personal Assistance AI te bouwen.",
+    "NovaClaw is een Nederlands AI agency (niet Belgisch, niet Duits, niet Amerikaans).",
+    "NovaClaw biedt meer dan 18 agent-types aan.",
+    "NovaClaw is tech-agnostisch: OpenAI GPT-4o, Anthropic Claude, Google Gemini, Meta Llama.",
+    "NovaClaw website: novaclaw.tech",
+]
+
+# Rotating product topics for dedicated articles.
+# OpenClaw topics: describe NovaClaw's own product.
+# NemoClaw topics: describe NVIDIA's NeMo framework and how NovaClaw uses it for clients.
 PRODUCT_TOPICS = [
     {
         "title": "OpenClaw: hoe een AI klantenservice-agent jouw bedrijf 24/7 bereikbaar maakt",
@@ -73,34 +91,34 @@ PRODUCT_TOPICS = [
         "category": "product",
     },
     {
-        "title": "NemoClaw uitgelegd: de autonome research-agent die je concurrenten bijhoudt",
-        "summary": "NemoClaw scrapet het web, analyseert markttrends en levert dagelijks rapporten. Hoe werkt het en voor welke bedrijven is het geschikt?",
+        "title": "NVIDIA NeMo uitgelegd: hoe NovaClaw dit framework inzet voor Personal Assistance AI",
+        "summary": "NVIDIA NeMo (ook wel NemoClaw) is een krachtig AI-framework van NVIDIA. NovaClaw gebruikt het om op maat gemaakte Personal Assistance AI te bouwen voor klanten. Wat is NeMo en wat zijn de voordelen?",
         "source": "novaclaw_product",
-        "category": "product",
+        "category": "AI Agents",
     },
     {
         "title": "OpenClaw vs. een menselijke klantenservice: wat levert meer op?",
-        "summary": "Vergelijking tussen een AI klantenservice-agent (OpenClaw) en een menselijk team. Kosten, snelheid, klanttevredenheid en wanneer te combineren.",
+        "summary": "Vergelijking tussen een AI klantenservice-agent (OpenClaw van NovaClaw) en een menselijk team. Kosten, snelheid, klanttevredenheid en wanneer te combineren.",
         "source": "novaclaw_product",
         "category": "product",
     },
     {
-        "title": "5 manieren waarop NemoClaw jouw salesteam versterkt met marktintelligentie",
-        "summary": "NemoClaw als competitive intelligence tool: hoe de research-agent dagelijks bruikbare data aanlevert aan je salesteam.",
+        "title": "Wat is NVIDIA NeMo en waarom gebruiken AI-bureaus het voor Personal Assistance AI?",
+        "summary": "NVIDIA NeMo is een enterprise AI-framework voor het bouwen van conversationele en autonome AI. NovaClaw zet NeMo in als technologiebasis voor Personal Assistance AI-oplossingen.",
         "source": "novaclaw_product",
-        "category": "product",
+        "category": "AI Trends",
     },
     {
         "title": "OpenClaw integreren met WhatsApp Business: stap-voor-stap",
-        "summary": "Hoe je OpenClaw koppelt aan WhatsApp Business voor automatische klantenservice. Technische uitleg en praktijkvoorbeelden.",
+        "summary": "Hoe je OpenClaw (de AI-agent van NovaClaw) koppelt aan WhatsApp Business voor automatische klantenservice. Technische uitleg en praktijkvoorbeelden.",
         "source": "novaclaw_product",
         "category": "product",
     },
     {
-        "title": "NemoClaw voor e-commerce: dagelijks je concurrenten monitoren op autopilot",
-        "summary": "Hoe webshops NemoClaw gebruiken om prijswijzigingen, nieuwe producten en reviewtrends van concurrenten automatisch bij te houden.",
+        "title": "NVIDIA NeMo vs. andere AI-frameworks: waarom NovaClaw kiest voor enterprise-grade AI",
+        "summary": "Vergelijking van NVIDIA NeMo met alternatieven. Hoe NovaClaw het NeMo-framework inzet om betrouwbare, schaalbare Personal Assistance AI te bouwen voor Nederlandse bedrijven.",
         "source": "novaclaw_product",
-        "category": "product",
+        "category": "AI Trends",
     },
 ]
 
@@ -491,6 +509,83 @@ Return JSON: {{"approved": true/false, "score": 0.0-1.0, "feedback": "brief feed
 
 
 # ============================================
+# FACT-CHECKER AGENT
+# ============================================
+
+async def fact_check_article(
+    article: BlogArticle,
+    session: aiohttp.ClientSession
+) -> Dict[str, Any]:
+    """
+    Dedicated fact-checker that verifies the article against KNOWN_FACTS.
+    Returns {"passed": bool, "violations": [...], "verdict": "..."}.
+    If violations are found, the article should NOT be auto-published.
+    """
+
+    if not ANTHROPIC_API_KEY:
+        return {"passed": True, "violations": [], "verdict": "No API key — skipped"}
+
+    facts_block = "\n".join(f"- {f}" for f in KNOWN_FACTS)
+
+    prompt = f"""You are a strict fact-checker for NovaClaw, a Dutch AI agency.
+Your job is to detect factual errors in blog articles before publication.
+
+KNOWN FACTS (these are absolute truths — never contradict them):
+{facts_block}
+
+ARTICLE TO CHECK:
+Title: {article.title}
+Language: {article.lang}
+Content (first 1500 chars):
+{article.content[:1500]}
+
+INSTRUCTIONS:
+1. Read the article carefully.
+2. Check every claim against the KNOWN FACTS list.
+3. Flag any sentence that contradicts a known fact (e.g. calling NemoClaw a NovaClaw product).
+4. Also flag vague claims like "NovaClaw's NemoClaw" or "our NemoClaw" that imply ownership.
+5. Do NOT flag generic AI claims that are not covered by KNOWN FACTS.
+
+Return JSON:
+{{
+  "passed": true or false,
+  "violations": ["exact quote from article that is wrong", ...],
+  "verdict": "one sentence summary"
+}}
+
+If no violations found, return {{"passed": true, "violations": [], "verdict": "No factual errors found."}}"""
+
+    try:
+        async with session.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01"
+            },
+            json={
+                "model": CLAUDE_MODEL,
+                "max_tokens": 500,
+                "messages": [{"role": "user", "content": prompt}]
+            }
+        ) as response:
+            if response.status == 200:
+                data = await response.json()
+                raw = data["content"][0]["text"]
+                result = extract_json(raw)
+                if isinstance(result, list):
+                    result = result[0]
+                return result
+            else:
+                print(f"  [warn] Fact-checker error: {response.status}")
+    except Exception as e:
+        print(f"  [warn] Fact-checker failed: {e}")
+
+    # On failure: flag for manual review (do not auto-publish)
+    return {"passed": False, "violations": [], "verdict": "Fact-checker unavailable — flagged for review"}
+
+
+# ============================================
 # UNSPLASH FEATURED IMAGES
 # ============================================
 
@@ -779,7 +874,7 @@ async def run_blog_generator():
             return
 
         # STEP 4: Critic review
-        print("\n[4/5] Critic reviewing articles...")
+        print("\n[4/6] Critic reviewing articles...")
         reviewed = []
         for article in articles:
             critic = await review_article(article, session)
@@ -788,17 +883,35 @@ async def run_blog_generator():
             print(f"  {status}: {article.lang.upper()} (score: {score:.2f}) — {critic.get('feedback', '')[:60]}")
             reviewed.append((article, critic))
 
-        # STEP 5: Save to Supabase
-        print("\n[5/5] Saving to database...")
+        # STEP 5: Fact-check articles
+        print("\n[5/6] Fact-checking articles for hallucinations...")
+        fact_checked = []
+        for article, critic in reviewed:
+            fc = await fact_check_article(article, session)
+            if fc.get("passed"):
+                print(f"  ✓ Fact-check passed: {article.lang.upper()} — {fc.get('verdict', '')[:80]}")
+            else:
+                violations = fc.get("violations", [])
+                print(f"  ✗ Fact-check FAILED: {article.lang.upper()} — {fc.get('verdict', '')[:80]}")
+                for v in violations:
+                    print(f"      Violation: {v[:120]}")
+                # Force score below publish threshold so it goes to review
+                critic = {**critic, "score": 0.0, "approved": False,
+                          "feedback": f"[FACT-CHECK FAILED] {fc.get('verdict', '')}"}
+            fact_checked.append((article, critic, fc))
+
+        # STEP 6: Save to Supabase
+        print("\n[6/6] Saving to database...")
         saved_count = 0
 
         if DRY_RUN:
             print("  [dry-run] Skipping database writes")
-            for article, critic in reviewed:
-                print(f"  Would save: {article.lang.upper()} — {article.title[:60]}")
+            for article, critic, fc in fact_checked:
+                tag = "FACT-FAIL" if not fc.get("passed") else "OK"
+                print(f"  Would save [{tag}]: {article.lang.upper()} — {article.title[:60]}")
                 saved_count += 1
         else:
-            for article, critic in reviewed:
+            for article, critic, fc in fact_checked:
                 if critic.get("score", 0) >= 0.5:  # Save if score >= 0.5
                     result = save_blog_post(supabase, article, critic)
                     if result:
