@@ -41,6 +41,34 @@ lijst staat en dus gegarandeerd werkt, ook als het ophalen van de live lijst
 een keer faalt. Het is niet het nieuwste model — dat verandert te snel om in een
 script te zetten.
 
+### Je keuze geldt per browser, 30 dagen
+
+bolt.diy bewaart je keuze in cookies:
+
+```ts
+Cookies.set('selectedModel', newModel, { expires: 30 });
+Cookies.set('selectedProvider', newProvider.name, { expires: 30 });
+```
+
+Gevolgen die je merkt:
+
+- Op een **ander apparaat of een andere browser** begin je opnieuw bij de
+  standaard uit `BOLT_MODEL`.
+- Na **30 dagen** zonder gebruik val je terug op die standaard.
+- In een **privévenster** geldt je keuze alleen voor die sessie.
+
+Deel je de tool met anderen, zet dan een goede `BOLT_MODEL` (zie hieronder).
+Dan hoeft niemand eerst iets aan te klikken.
+
+### De providerlijst opschonen
+
+bolt.diy registreert 19 providers, ook die waarvoor je geen sleutel hebt. Dat
+maakt de dropdown onoverzichtelijk. Zet ze uit via tandwiel → **Providers**;
+alleen OpenRouter aanlaten volstaat.
+
+Ook die instelling is per browser — hij gaat naar localStorage en een cookie,
+niet naar de server.
+
 ## De standaard veranderen
 
 Wil je dat bolt.diy standaard op een ander model opent, geef dan het model-ID op
@@ -142,6 +170,33 @@ midden in een gesprek, zonder iets opnieuw in te stellen.
 ## Sleutel per persoon in plaats van op de server
 
 Laat `OPEN_ROUTER_API_KEY` leeg en laat iedereen zijn eigen sleutel invullen via
-het tandwiel → **Providers** in bolt.diy. Die blijft dan in de browser van die
-persoon en raakt de server niet. Handig als je de tool deelt en niet wilt dat
-alles op jouw rekening komt.
+het tandwiel → **Providers** in bolt.diy. Handig als je de tool deelt en niet
+wilt dat alles op jouw rekening komt.
+
+Let wel op wat dat technisch is. bolt.diy bewaart zo'n sleutel in een cookie:
+
+```ts
+Cookies.set('apiKeys', JSON.stringify(newApiKeys));
+```
+
+Een cookie gaat bij **elk verzoek** mee naar de server. De sleutel blijft dus
+niet netjes in de browser hangen zoals de term "in de browser opslaan"
+suggereert; hij reist alleen niet naar Cloudflare's projectinstellingen. Op je
+eigen HTTPS-adres achter Access is dat prima, maar reken er niet op als
+isolatiemaatregel tussen gebruikers onderling.
+
+Wil je harde scheiding van rekeningen, geef dan iedereen een eigen OpenRouter-
+sleutel mét eigen credit limit — dat is de grens die telt.
+
+## Overzicht: waar staat wat
+
+| Instelling | Waar bewaard | Geldt voor | Herbouw nodig? |
+|---|---|---|---|
+| Model in de dropdown | Cookie, 30 dagen | Alleen die browser | Nee |
+| Provider in de dropdown | Cookie, 30 dagen | Alleen die browser | Nee |
+| Providers aan/uit | localStorage + cookie | Alleen die browser | Nee |
+| Sleutel via de UI | Cookie | Alleen die browser | Nee |
+| `BOLT_MODEL` | In de bundel | Iedereen, als startpunt | Ja |
+| `BOLT_PROVIDER` | In de bundel | Iedereen, als startpunt | Ja |
+| `BOLT_MAX_TOKENS` | In de bundel | Iedereen | Ja |
+| `OPEN_ROUTER_API_KEY` | Cloudflare secret / `.env` | Iedereen die binnenkomt | Nee |
