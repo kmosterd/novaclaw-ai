@@ -5,7 +5,7 @@ SHELL := /bin/bash
 S     := ./scripts
 
 .DEFAULT_GOAL := help
-.PHONY: help prepare check secrets deploy setup url logs open
+.PHONY: help prepare check preview secrets deploy setup url logs
 
 help: ## Toon dit overzicht
 	@echo "bolt.diy op Cloudflare Pages — beschikbare commando's:"
@@ -21,6 +21,9 @@ prepare: ## Haal bolt.diy op en bouw de bundel
 
 check: ## Meet de bundel tegen Cloudflare's limiet van 25 MiB
 	@$(S)/check-bundle.sh
+
+preview: ## Draai bolt.diy lokaal op http://127.0.0.1:5173 om je sleutel te testen
+	@$(S)/preview.sh
 
 secrets: ## Zet je API-sleutels als Cloudflare Pages secrets
 	@$(S)/02-secrets.sh

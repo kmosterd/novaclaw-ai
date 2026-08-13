@@ -17,6 +17,10 @@ BOLT_CF_APP="${BOLT_CF_APP:-$BOLT_CF_ROOT/app}"
 BOLT_REPO="${BOLT_REPO:-https://github.com/stackblitz-labs/bolt.diy.git}"
 BOLT_REF="${BOLT_REF:-stable}"
 
+# Poort voor `make preview`, het lokale proefdraaien. Speelt geen rol bij de
+# deploy naar Cloudflare.
+BOLT_PORT="${BOLT_PORT:-5173}"
+
 # Cloudflare's harde limiet voor een Pages Functions-bundel, in bytes.
 # Overschrijden betekent: deploy geweigerd. check-bundle.sh meet hiertegen.
 CF_BUNDLE_LIMIT=$((25 * 1024 * 1024))
