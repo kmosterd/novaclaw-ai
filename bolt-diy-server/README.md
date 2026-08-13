@@ -22,8 +22,12 @@ doelplatform — de repository bevat een `wrangler.toml` en een kant-en-klare
 `deploy`-opdracht — en er is niets dat kan uitvallen.
 
 ```bash
-cd bolt-diy-server/cloudflare && make setup
+git clone -b claude/bolt-diy-mac-mini-server-vzb6ki \
+  https://github.com/kmosterd/novaclaw-ai.git ~/novaclaw-ai
+cd ~/novaclaw-ai/bolt-diy-server/cloudflare && ./scripts/bootstrap.sh
 ```
+
+Eén blok in Terminal; het script vraagt onderweg wat het nodig heeft.
 
 Zie [cloudflare/README.md](cloudflare/README.md). Het bundle-limiet van 25 MiB
 waar mensen over struikelen is gemeten en geen probleem: bolt.diy gebruikt er
@@ -154,7 +158,9 @@ bolt-diy-server/
 ├── cloudflare/             ← ROUTE 1: Cloudflare Pages
 │   ├── Makefile
 │   ├── scripts/
+│   │   ├── bootstrap.sh    ← alles in één keer, met prompts
 │   │   ├── 01-prepare.sh   ← ophalen + bouwen
+│   │   ├── preview.sh      ← lokaal proefdraaien
 │   │   ├── 02-secrets.sh   ← sleutels als Cloudflare secrets
 │   │   ├── 03-deploy.sh    ← live zetten
 │   │   └── check-bundle.sh ← meet tegen het limiet van 25 MiB

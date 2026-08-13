@@ -11,17 +11,25 @@ heeft een kant-en-klare `deploy`-opdracht. We doen hier dus niets exotisch.
 
 ## Snel starten
 
+Eén blok plakken in Terminal op je Mac:
+
 ```bash
-cd bolt-diy-server/cloudflare
-make setup
+git clone -b claude/bolt-diy-mac-mini-server-vzb6ki \
+  https://github.com/kmosterd/novaclaw-ai.git ~/novaclaw-ai 2>/dev/null \
+  || git -C ~/novaclaw-ai pull
+cd ~/novaclaw-ai/bolt-diy-server/cloudflare && ./scripts/bootstrap.sh
 ```
 
-Dat doet drie dingen: bolt.diy ophalen en bouwen (met OpenRouter als
-standaardprovider), je API-sleutels als secrets naar Cloudflare zetten, en
-deployen. Je krijgt een adres als `https://novaclaw-bolt.pages.dev`.
+`bootstrap.sh` loopt de hele keten af en vraagt onderweg wat het nodig heeft:
+bolt.diy ophalen en bouwen, je OpenRouter-sleutel (verborgen invoer), optioneel
+lokaal proefdraaien, inloggen bij Cloudflare, en deployen. Reken op 15 minuten,
+waarvan het meeste wachten op de build.
 
 Je hebt maar één sleutel nodig: `OPEN_ROUTER_API_KEY`. Zie
 [../docs/openrouter.md](../docs/openrouter.md).
+
+Liever stap voor stap, of al eens gedraaid? Dan kan het ook met losse
+commando's — zie hieronder. `make setup` doet hetzelfde zonder de prompts.
 
 **Daarna direct de login aanzetten** — zie [docs/access-setup.md](docs/access-setup.md).
 Tot dat gebeurd is staat je site open voor iedereen, met jouw API-sleutels
@@ -74,8 +82,10 @@ De Mac mini-opzet blijft beschikbaar in de map hierboven; ze bijten elkaar niet.
 ## Commando's
 
 ```
+make bootstrap Volledige installatie met prompts (aanbevolen bij de eerste keer)
 make prepare   Haal bolt.diy op en bouw de bundel
 make check     Meet de bundel tegen het limiet van 25 MiB
+make preview   Draai lokaal op 127.0.0.1:5173 om je sleutel te testen
 make secrets   Zet je API-sleutels als Cloudflare secrets
 make deploy    Zet de bundel live
 make setup     Alles hierboven in één keer

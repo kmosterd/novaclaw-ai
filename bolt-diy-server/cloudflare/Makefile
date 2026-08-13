@@ -5,7 +5,7 @@ SHELL := /bin/bash
 S     := ./scripts
 
 .DEFAULT_GOAL := help
-.PHONY: help prepare check preview secrets deploy setup url logs
+.PHONY: help bootstrap prepare check preview secrets deploy setup url logs
 
 help: ## Toon dit overzicht
 	@echo "bolt.diy op Cloudflare Pages — beschikbare commando's:"
@@ -13,8 +13,11 @@ help: ## Toon dit overzicht
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
 	@echo
-	@echo "Eerste keer? Draai:  make setup"
+	@echo "Eerste keer? Draai:  make bootstrap"
 	@echo "Daarna NIET vergeten: login instellen, zie docs/access-setup.md"
+
+bootstrap: ## Volledige installatie met prompts (aanbevolen bij de eerste keer)
+	@$(S)/bootstrap.sh
 
 prepare: ## Haal bolt.diy op en bouw de bundel
 	@$(S)/01-prepare.sh
