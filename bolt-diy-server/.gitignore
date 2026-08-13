@@ -1,0 +1,9 @@
+# API-sleutels — mogen nooit in git belanden.
+.env
+.env.local
+docker/.env
+
+# Gegenereerde bestanden
+*.log
+logs/
+Caddyfile
