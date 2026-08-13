@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  LaunchAgent voor bolt.diy. Wordt door scripts/03-service-install.sh ingevuld;
+  bewerk het gegenereerde bestand in ~/Library/LaunchAgents, niet deze template.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>__LABEL__</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__RUN_SERVER__</string>
+    </array>
+
+    <!-- Starten bij inloggen en opnieuw starten als het proces omvalt. -->
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <!-- Bij een crashloop niet honderden keren per seconde herstarten. -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <key>WorkingDirectory</key>
+    <string>__BOLT_APP__</string>
+
+    <key>StandardOutPath</key>
+    <string>__BOLT_LOGS__/boltdiy.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__BOLT_LOGS__/boltdiy.err.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>__PATH__</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>BOLT_ROOT</key>
+        <string>__BOLT_ROOT__</string>
+        <key>BOLT_PORT</key>
+        <string>__BOLT_PORT__</string>
+        <key>BOLT_BIND</key>
+        <string>__BOLT_BIND__</string>
+    </dict>
+
+    <!-- Zonder dit stopt macOS het proces bij weinig geheugendruk. -->
+    <key>ProcessType</key>
+    <string>Interactive</string>
+</dict>
+</plist>
