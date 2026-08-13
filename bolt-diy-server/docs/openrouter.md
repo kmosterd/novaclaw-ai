@@ -65,6 +65,42 @@ Een andere provider dan OpenRouter kan ook:
 export BOLT_PROVIDER=Anthropic BOLT_MODEL=claude-sonnet-4-5
 ```
 
+## Langere antwoorden toestaan
+
+bolt.diy begrenst elk antwoord op **8000 tokens**, ongeacht wat het model
+aankan. Dat staat hardgecodeerd in de OpenRouter-provider en loopt door naar
+`maxTokens` in de `streamText`-aanroep.
+
+Je merkt dit bij grote bestanden: het model kapt af, bolt.diy hervat automatisch,
+maar maximaal twee keer (`MAX_RESPONSE_SEGMENTS = 2`). Daarna houdt het op en
+zie je afgebroken code.
+
+Ophogen:
+
+```bash
+export BOLT_MAX_TOKENS=16000
+
+# Cloudflare Pages
+cd bolt-diy-server/cloudflare && make prepare && make deploy
+
+# Mac mini
+cd bolt-diy-server && make update
+```
+
+Let op: dit is de **antwoord**lengte, niet het contextvenster. Je invoer was al
+onbeperkt (tot wat het model aankan); alleen het antwoord was gekapt.
+
+**Zet dit niet blind hoog.** Vraag je meer output dan een model ondersteunt, dan
+krijg je een API-fout in plaats van een kort antwoord. 16000 is een veilige stap;
+boven de 32000 waarschuwt het script je. Werkt een model ineens niet meer nadat
+je dit hebt verhoogd, zet het dan terug naar 8000.
+
+De statische modellenlijst in bolt.diy blijft hierbij met rust gelaten. Die
+waarden zijn per model gekozen (4096 voor Cohere Command, 8000 voor Grok, 64000
+voor de rest) en gelden alleen als het ophalen van de live lijst faalt — daar
+blanco een hogere waarde overheen zetten zou een model boven zijn eigen limiet
+duwen.
+
 ## Waarom hier een patch voor nodig is
 
 bolt.diy kiest zijn standaardprovider zo:
@@ -75,9 +111,9 @@ getDefaultProvider(): BaseProvider {
 }
 ```
 
-Dat is registratievolgorde, geen instelling. `DEFAULT_MODEL` staat er
-hardgecodeerd naast. `shared/set-default-provider.sh` vervangt die twee regels
-door een opzoeking op naam:
+Dat is registratievolgorde, geen instelling. `DEFAULT_MODEL` en de
+antwoordlengte staan er hardgecodeerd naast. `shared/apply-defaults.sh` past
+alle drie aan; voor de provider wordt de aanroep een opzoeking op naam:
 
 ```ts
 export const DEFAULT_PROVIDER = llmManager.getProvider('OpenRouter') ?? llmManager.getDefaultProvider();

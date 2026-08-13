@@ -176,7 +176,7 @@ bolt-diy-server/
 ├── docker/                 ← alternatieve installatie met Docker
 │
 ├── shared/                 ← gebruikt door beide routes
-│   └── set-default-provider.sh  ← zet OpenRouter als standaard
+│   └── apply-defaults.sh   ← provider, model en antwoordlengte
 └── docs/
     ├── openrouter.md       ← OpenRouter, model kiezen, kosten (beide routes)
     ├── security.md         ← wat je zelf moet regelen (beide routes)
@@ -199,6 +199,7 @@ De scripts lezen omgevingsvariabelen, met deze standaardwaarden:
 | `BOLT_NODE_FORMULA` | `node@22` | Node-versie via Homebrew |
 | `BOLT_PROVIDER` | `OpenRouter` | Standaardprovider bij het openen |
 | `BOLT_MODEL` | `anthropic/claude-3.5-sonnet` | Standaardmodel |
+| `BOLT_MAX_TOKENS` | `8000` | Max tokens per antwoord — zie docs/openrouter.md |
 
 Bijvoorbeeld een andere poort:
 

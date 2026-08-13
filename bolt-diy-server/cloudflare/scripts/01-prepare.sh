@@ -45,11 +45,11 @@ ok "bolt.diy op $(git -C "$BOLT_CF_APP" rev-parse --short HEAD) ($BOLT_REF)"
 
 cd "$BOLT_CF_APP"
 
-# --- Standaardprovider instellen --------------------------------------------
+# --- Standaarden instellen --------------------------------------------------
 # Zonder dit begint iedere bezoeker bij een willekeurige provider. Moet vóór de
 # build, want de waarden worden mee gecompileerd.
-info "Standaardprovider op ${BOLT_PROVIDER:-OpenRouter} zetten"
-"$SCRIPT_DIR/../../shared/set-default-provider.sh" "$BOLT_CF_APP" \
+info "Standaarden zetten: ${BOLT_PROVIDER:-OpenRouter} / max ${BOLT_MAX_TOKENS:-8000} tokens"
+"$SCRIPT_DIR/../../shared/apply-defaults.sh" "$BOLT_CF_APP" \
   || warn "Patch mislukt; bolt.diy start dan op een willekeurige provider"
 
 # --- Bouwen -----------------------------------------------------------------

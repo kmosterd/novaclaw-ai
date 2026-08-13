@@ -96,6 +96,7 @@ make logs      Volg de live logs van de worker
 | `BOLT_REF` | `stable` | Branch of tag van bolt.diy |
 | `BOLT_PROVIDER` | `OpenRouter` | Standaardprovider bij het openen |
 | `BOLT_MODEL` | `anthropic/claude-3.5-sonnet` | Standaardmodel |
+| `BOLT_MAX_TOKENS` | `8000` | Max tokens per antwoord — zie docs/openrouter.md |
 
 Andere projectnaam:
 
