@@ -16,9 +16,12 @@ cd bolt-diy-server/cloudflare
 make setup
 ```
 
-Dat doet drie dingen: bolt.diy ophalen en bouwen, je API-sleutels als secrets
-naar Cloudflare zetten, en deployen. Je krijgt een adres als
-`https://novaclaw-bolt.pages.dev`.
+Dat doet drie dingen: bolt.diy ophalen en bouwen (met OpenRouter als
+standaardprovider), je API-sleutels als secrets naar Cloudflare zetten, en
+deployen. Je krijgt een adres als `https://novaclaw-bolt.pages.dev`.
+
+Je hebt maar één sleutel nodig: `OPEN_ROUTER_API_KEY`. Zie
+[../docs/openrouter.md](../docs/openrouter.md).
 
 **Daarna direct de login aanzetten** — zie [docs/access-setup.md](docs/access-setup.md).
 Tot dat gebeurd is staat je site open voor iedereen, met jouw API-sleutels
@@ -91,6 +94,8 @@ make logs      Volg de live logs van de worker
 | `BOLT_CF_APP` | `$BOLT_CF_ROOT/app` | Bestaande checkout hergebruiken |
 | `BOLT_CF_ENV_FILE` | `$BOLT_CF_ROOT/.env` | Waar je sleutels staan |
 | `BOLT_REF` | `stable` | Branch of tag van bolt.diy |
+| `BOLT_PROVIDER` | `OpenRouter` | Standaardprovider bij het openen |
+| `BOLT_MODEL` | `anthropic/claude-3.5-sonnet` | Standaardmodel |
 
 Andere projectnaam:
 
@@ -176,4 +181,5 @@ deploy. Wat dan helpt, in volgorde van opbrengst:
 
 - [docs/access-setup.md](docs/access-setup.md) — login instellen (doe dit)
 - [docs/troubleshooting.md](docs/troubleshooting.md) — als er iets niet werkt
+- [../docs/openrouter.md](../docs/openrouter.md) — OpenRouter instellen, model kiezen, kosten beperken
 - [../docs/security.md](../docs/security.md) — sleutels, limieten, wat te doen bij een lek

@@ -174,10 +174,14 @@ bolt-diy-server/
 │   └── lib/common.sh       ← gedeelde configuratie
 ├── launchd/                ← plist-sjabloon
 ├── docker/                 ← alternatieve installatie met Docker
+│
+├── shared/                 ← gebruikt door beide routes
+│   └── set-default-provider.sh  ← zet OpenRouter als standaard
 └── docs/
+    ├── openrouter.md       ← OpenRouter, model kiezen, kosten (beide routes)
+    ├── security.md         ← wat je zelf moet regelen (beide routes)
     ├── remote-access.md    ← apparaten toevoegen, ACL's, extra wachtwoord
-    ├── troubleshooting.md  ← als er iets niet werkt
-    └── security.md         ← wat je zelf moet regelen (beide routes)
+    └── troubleshooting.md  ← als er iets niet werkt
 ```
 
 ---
@@ -193,6 +197,8 @@ De scripts lezen omgevingsvariabelen, met deze standaardwaarden:
 | `BOLT_BIND` | `127.0.0.1` | Bind-adres — wijzig dit niet zonder reden |
 | `BOLT_REF` | `stable` | Branch of tag van bolt.diy |
 | `BOLT_NODE_FORMULA` | `node@22` | Node-versie via Homebrew |
+| `BOLT_PROVIDER` | `OpenRouter` | Standaardprovider bij het openen |
+| `BOLT_MODEL` | `anthropic/claude-3.5-sonnet` | Standaardmodel |
 
 Bijvoorbeeld een andere poort:
 
@@ -209,7 +215,7 @@ make service && make tailscale
 - [Homebrew](https://brew.sh)
 - Xcode Command Line Tools (`xcode-select --install`)
 - Een gratis [Tailscale](https://tailscale.com)-account
-- Minstens één API-sleutel (Anthropic, OpenAI, of een andere provider)
+- Een [OpenRouter](https://openrouter.ai/settings/keys)-sleutel (of een andere provider)
 
 `make preflight` controleert dit allemaal voordat er iets geïnstalleerd wordt.
 
@@ -231,6 +237,7 @@ make service && make tailscale
 
 **Beide:**
 
+- [docs/openrouter.md](docs/openrouter.md) — OpenRouter instellen, model kiezen, kosten beperken
 - [docs/security.md](docs/security.md) — sleutels, limieten, wat te doen bij een lek
 
 bolt.diy zelf: [github.com/stackblitz-labs/bolt.diy](https://github.com/stackblitz-labs/bolt.diy) (MIT)

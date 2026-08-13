@@ -73,6 +73,13 @@ else
   ok "Bestaande $BOLT_ROOT/.env behouden"
 fi
 
+# --- Standaardprovider instellen --------------------------------------------
+# Zonder dit begint iedere bezoeker bij een willekeurige provider. Moet vóór de
+# build, want de waarden worden mee gecompileerd.
+info "Standaardprovider op ${BOLT_PROVIDER:-OpenRouter} zetten"
+"$PROJECT_DIR/shared/set-default-provider.sh" "$BOLT_APP" \
+  || warn "Patch mislukt; bolt.diy start dan op een willekeurige provider"
+
 # --- Dependencies en build --------------------------------------------------
 info "Dependencies installeren (dit duurt een paar minuten)"
 cd "$BOLT_APP"
