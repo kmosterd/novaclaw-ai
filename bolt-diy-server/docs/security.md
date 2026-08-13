@@ -1,6 +1,21 @@
 # Beveiliging
 
-## Wat deze opzet afdekt
+Geldt voor beide routes. De secties over `pmset`, FileVault en het LAN slaan
+alleen op de Mac mini-opzet.
+
+## Cloudflare Pages in het kort
+
+| Maatregel | Waarom |
+|---|---|
+| Cloudflare Access ervoor | bolt.diy heeft géén eigen login; zonder Access staat je site open |
+| Access ook op `*.<project>.pages.dev` | Preview-URL's vallen niet onder een policy op het kale hostname |
+| Sleutels als **secret**, niet als variable | Versleuteld opgeslagen en niet terug te lezen in het dashboard |
+| Sleutels niet in de bundel | `01-prepare.sh` bouwt met een lege `.env.local` |
+
+Het gevaarlijke moment is tussen de eerste deploy en het aanzetten van Access.
+Doe die twee direct achter elkaar en test in een privévenster.
+
+## Wat de Mac mini-opzet afdekt
 
 | Maatregel | Waarom |
 |---|---|
@@ -54,19 +69,28 @@ FileVault en accepteer dat je na een herstart één keer moet inloggen.
 
 ## Onderhoud
 
+Mac mini:
+
 ```bash
 make update     # bolt.diy bijwerken (draait zichzelf terug bij een fout)
 brew upgrade    # Node en Tailscale bijwerken
 ```
 
-Een keer per maand is voor deze opzet ruim voldoende.
+Cloudflare Pages:
+
+```bash
+cd cloudflare && make prepare && make deploy
+```
+
+Een keer per maand is voor beide ruim voldoende.
 
 ## Sleutel gelekt — wat nu
 
 1. Trek de sleutel in bij de provider (Anthropic/OpenAI console).
-2. Maak een nieuwe aan en zet die in `~/bolt-diy/.env`.
-3. `make restart`
-4. Controleer je verbruik van de afgelopen dagen op onverwachte pieken.
+2. Maak een nieuwe aan en zet die in je sleutelbestand:
+   - Mac mini: `~/bolt-diy/.env`, daarna `make restart`
+   - Cloudflare: `~/bolt-diy-cf/.env`, daarna `cd cloudflare && make secrets`
+3. Controleer je verbruik van de afgelopen dagen op onverwachte pieken.
 
 Is de sleutel in git beland: intrekken is het enige dat helpt. Een commit
 terugdraaien haalt hem niet uit de geschiedenis van iedereen die al gekloond

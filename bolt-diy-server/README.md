@@ -1,15 +1,44 @@
-# bolt.diy op de Mac mini
+# bolt.diy zelf hosten
 
 Zelf gehoste [bolt.diy](https://github.com/stackblitz-labs/bolt.diy) — de open
-source variant van bolt.new — op een Mac mini, veilig bereikbaar vanaf je
-laptop of telefoon waar je ook bent.
+source variant van bolt.new — veilig bereikbaar vanaf je laptop of telefoon,
+waar je ook bent.
+
+Er zijn twee routes. Ze staan naast elkaar en bijten elkaar niet.
+
+| | [Cloudflare Pages](cloudflare/) | [Mac mini](#mac-mini) |
+|---|---|---|
+| Hardware nodig | Geen | Mac mini die aan blijft |
+| Beschikbaarheid | Altijd aan, wereldwijd snel | Valt weg bij stroomuitval |
+| Onderhoud | Niets | Node, launchd, slaapstand |
+| Login | Cloudflare Access (gratis tot 50 gebruikers) | Tailscale-account |
+| API-sleutels | Versleuteld bij Cloudflare | Op je eigen schijf |
+| Lokale modellen (Ollama) | Niet mogelijk | Werkt |
+| Kosten | Gratis binnen de free tier | Stroom |
+
+**Begin bij Cloudflare Pages** tenzij je lokale modellen wilt draaien of je
+sleutels per se op eigen hardware wilt houden. Het is bolt.diy's eigen
+doelplatform — de repository bevat een `wrangler.toml` en een kant-en-klare
+`deploy`-opdracht — en er is niets dat kan uitvallen.
+
+```bash
+cd bolt-diy-server/cloudflare && make setup
+```
+
+Zie [cloudflare/README.md](cloudflare/README.md). Het bundle-limiet van 25 MiB
+waar mensen over struikelen is gemeten en geen probleem: bolt.diy gebruikt er
+**4 %** van.
+
+---
+
+<a name="mac-mini"></a>
+
+## Route 2: Mac mini
 
 Geen poorten open in je router, geen wachtwoord dat geraden kan worden, en je
 API-sleutels blijven op je eigen machine.
 
----
-
-## Snel starten
+### Snel starten
 
 Op de **Mac mini**:
 
@@ -38,7 +67,7 @@ Klaar. Vibe coden vanaf de bank.
 
 ---
 
-## Hoe het in elkaar zit
+### Hoe het in elkaar zit
 
 ```
    jouw laptop / telefoon                        Mac mini
@@ -70,7 +99,7 @@ Let's Encrypt-certificaat op je `*.ts.net`-naam.
 
 ---
 
-## Waarom Tailscale en niet gewoon een poort openzetten
+### Waarom Tailscale en niet gewoon een poort openzetten
 
 bolt.diy heeft **geen ingebouwde login**. Zet je het op het open internet, dan
 kan iedereen die de URL vindt jouw API-sleutels leegtrekken — dat kost echt
@@ -84,7 +113,7 @@ ertussen zet.
 
 ---
 
-## Commando's
+### Commando's
 
 ```
 make preflight   Controleer of deze Mac klaar is (verandert niets)
@@ -103,7 +132,7 @@ Stap voor stap installeren kan ook: `make preflight`, `make install`,
 
 ---
 
-## Wat waar staat
+### Wat waar staat
 
 Op de Mac mini, na installatie:
 
@@ -120,8 +149,20 @@ In deze repository:
 
 ```
 bolt-diy-server/
-├── Makefile                ← bedieningspaneel
-├── .env.example            ← sjabloon voor je sleutels
+├── .env.example            ← sjabloon voor je sleutels (beide routes)
+│
+├── cloudflare/             ← ROUTE 1: Cloudflare Pages
+│   ├── Makefile
+│   ├── scripts/
+│   │   ├── 01-prepare.sh   ← ophalen + bouwen
+│   │   ├── 02-secrets.sh   ← sleutels als Cloudflare secrets
+│   │   ├── 03-deploy.sh    ← live zetten
+│   │   └── check-bundle.sh ← meet tegen het limiet van 25 MiB
+│   └── docs/
+│       ├── access-setup.md ← login instellen (verplicht!)
+│       └── troubleshooting.md
+│
+├── Makefile                ← ROUTE 2: bedieningspaneel Mac mini
 ├── scripts/
 │   ├── 00-preflight.sh     ← systeemcontrole
 │   ├── 01-install.sh       ← Node + bolt.diy + build
@@ -136,12 +177,12 @@ bolt-diy-server/
 └── docs/
     ├── remote-access.md    ← apparaten toevoegen, ACL's, extra wachtwoord
     ├── troubleshooting.md  ← als er iets niet werkt
-    └── security.md         ← wat je zelf moet regelen
+    └── security.md         ← wat je zelf moet regelen (beide routes)
 ```
 
 ---
 
-## Instellingen
+### Instellingen
 
 De scripts lezen omgevingsvariabelen, met deze standaardwaarden:
 
@@ -162,7 +203,7 @@ make service && make tailscale
 
 ---
 
-## Vereisten
+### Vereisten
 
 - Mac mini met macOS 13 of nieuwer (Apple Silicon of Intel), 8 GB RAM is genoeg
 - [Homebrew](https://brew.sh)
@@ -176,9 +217,20 @@ make service && make tailscale
 
 ## Verder lezen
 
+**Cloudflare Pages:**
+
+- [cloudflare/README.md](cloudflare/README.md) — installatie, bundelmetingen, bijwerken
+- [cloudflare/docs/access-setup.md](cloudflare/docs/access-setup.md) — login instellen
+- [cloudflare/docs/troubleshooting.md](cloudflare/docs/troubleshooting.md) — als er iets niet werkt
+
+**Mac mini:**
+
 - [docs/remote-access.md](docs/remote-access.md) — apparaten toevoegen, ACL's, basic auth
 - [docs/troubleshooting.md](docs/troubleshooting.md) — als er iets niet werkt
-- [docs/security.md](docs/security.md) — sleutels, limieten, FileVault
 - [docker/README.md](docker/README.md) — alternatief met Docker
+
+**Beide:**
+
+- [docs/security.md](docs/security.md) — sleutels, limieten, wat te doen bij een lek
 
 bolt.diy zelf: [github.com/stackblitz-labs/bolt.diy](https://github.com/stackblitz-labs/bolt.diy) (MIT)
